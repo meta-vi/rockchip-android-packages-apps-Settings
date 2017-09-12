@@ -9,6 +9,7 @@ import android.os.Handler;
 import android.os.Message;
 
 import java.io.Serializable;
+
 import com.android.settings.R;
 
 /**
@@ -37,7 +38,7 @@ public class ConfirmSetModeDialogFragment extends DialogFragment {
         mDisplayInfo = (DisplayInfo) getArguments().getSerializable("displayinfo");
         mListener = (OnDialogDismissListener) getArguments().getSerializable("listener");
 
-        mHdmiResoSetConfirmDialog =  new AlertDialog.Builder(getActivity())
+        mHdmiResoSetConfirmDialog = new AlertDialog.Builder(getActivity())
                 .setTitle(getString(R.string.confirm_dialog_title))
                 .setMessage(getString(R.string.confirm_dialog_message) + " 10s")
                 .setPositiveButton(getString(R.string.okay), new DialogInterface.OnClickListener() {
@@ -85,15 +86,15 @@ public class ConfirmSetModeDialogFragment extends DialogFragment {
     }
 
     private Handler myHander = new Handler() {
-        public void handleMessage(Message msg){
-            switch(msg.what){
+        public void handleMessage(Message msg) {
+            switch (msg.what) {
                 case TYPE_NEGATIVE:
                     if (!isTimeCountRunning) {
                         return;
                     }
                     if (mNegativeCount > 0) {
                         if (mHdmiResoSetConfirmDialog != null) {
-                            String text= getString(R.string.confirm_dialog_message);
+                            String text = getString(R.string.confirm_dialog_message);
                             text = text + " " + mNegativeCount + "s";
                             mHdmiResoSetConfirmDialog.setMessage(text);
                         }
