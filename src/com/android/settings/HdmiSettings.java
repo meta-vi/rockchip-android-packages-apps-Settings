@@ -99,7 +99,6 @@ public class HdmiSettings extends SettingsPreferenceFragment
             String HDMIINTENT = "android.intent.action.HDMI_PLUGGED";
             if (action.equals(HDMIINTENT)) {
                 boolean state = receivedIt.getBooleanExtra("state", false);
-
                 if (state) {
                     Log.d(TAG, "BroadcastReceiver.onReceive() : Connected HDMI-TV");
 
@@ -129,8 +128,10 @@ public class HdmiSettings extends SettingsPreferenceFragment
         mHdmiResolution = (ListPreference) findPreference(KEY_HDMI_RESOLUTION);
         mHdmiResolution.setOnPreferenceChangeListener(this);
         mHdmiResolution.setOnPreferenceClickListener(this);
-        mHdmiResolution.setEntries(DrmDisplaySetting.getDisplayModes(mDisplayInfo).toArray(new String[0]));
-        mHdmiResolution.setEntryValues(DrmDisplaySetting.getDisplayModes(mDisplayInfo).toArray(new String[0]));
+        if (mDisplayInfo != null) {
+            mHdmiResolution.setEntries(DrmDisplaySetting.getDisplayModes(mDisplayInfo).toArray(new String[0]));
+            mHdmiResolution.setEntryValues(DrmDisplaySetting.getDisplayModes(mDisplayInfo).toArray(new String[0]));
+        }
         mHdmiScale = findPreference(KEY_HDMI_SCALE);
         mHdmiScale.setOnPreferenceClickListener(this);
         mHdmiLcd = (ListPreference) findPreference(KEY_HDMI_LCD);
@@ -200,7 +201,10 @@ public class HdmiSettings extends SettingsPreferenceFragment
     }
 
     protected DisplayInfo getDisplayInfo() {
-        return DrmDisplaySetting.getHdmiDisplayInfo();
+        DrmDisplaySetting.updateDisplayInfos();
+        DisplayInfo mdisplayInfo = DrmDisplaySetting.getHdmiDisplayInfo();
+
+        return mdisplayInfo;
     }
 
     /**
@@ -208,7 +212,9 @@ public class HdmiSettings extends SettingsPreferenceFragment
      */
     public void updateResolutionValue() {
         String resolutionValue = null;
-        resolutionValue = DrmDisplaySetting.getCurDisplayMode(getDisplayInfo());
+        mDisplayInfo = getDisplayInfo();
+        if (mDisplayInfo != null)
+            resolutionValue = DrmDisplaySetting.getCurDisplayMode(mDisplayInfo);
         Log.i(TAG, "resolutionValue:" + resolutionValue);
         mOldResolution = resolutionValue;
         if (resolutionValue != null)
@@ -224,28 +230,35 @@ public class HdmiSettings extends SettingsPreferenceFragment
         } else {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
+                    mDisplayInfo = getDisplayInfo();
                     //增加延迟，保证数据能够拿到
-                    mHdmiResolution.setEntries(DrmDisplaySetting.getDisplayModes(getDisplayInfo()).toArray(new String[0]));
-                    mHdmiResolution.setEntryValues(DrmDisplaySetting.getDisplayModes(getDisplayInfo()).toArray(new String[0]));
-                    updateResolutionValue();
-                    mHdmiResolution.setEnabled(true);
-                    mHdmiScale.setEnabled(true);
+                    if (mDisplayInfo != null) {
+                        mHdmiResolution.setEntries(DrmDisplaySetting.getDisplayModes(mDisplayInfo).toArray(new String[0]));
+                        mHdmiResolution.setEntryValues(DrmDisplaySetting.getDisplayModes(mDisplayInfo).toArray(new String[0]));
+                        updateResolutionValue();
+                        mHdmiResolution.setEnabled(true);
+                        mHdmiScale.setEnabled(true);
+                    }
+
                 }
-            }, 700);
+            }, 1000);
 
         }
     }
 
     protected void showConfirmSetModeDialog() {
-        DialogFragment df = ConfirmSetModeDialogFragment.newInstance(getDisplayInfo(), new ConfirmSetModeDialogFragment.OnDialogDismissListener() {
-            @Override
-            public void onDismiss(boolean isok) {
-                Log.i(TAG, "showConfirmSetModeDialog->onDismiss->isok:" + isok);
-                Log.i(TAG, "showConfirmSetModeDialog->onDismiss->mOldResolution:" + mOldResolution);
-                updateResolutionValue();
-            }
-        });
-        df.show(getFragmentManager(), "ConfirmDialog");
+        mDisplayInfo = getDisplayInfo();
+        if (mDisplayInfo != null) {
+            DialogFragment df = ConfirmSetModeDialogFragment.newInstance(mDisplayInfo, new ConfirmSetModeDialogFragment.OnDialogDismissListener() {
+                @Override
+                public void onDismiss(boolean isok) {
+                    Log.i(TAG, "showConfirmSetModeDialog->onDismiss->isok:" + isok);
+                    Log.i(TAG, "showConfirmSetModeDialog->onDismiss->mOldResolution:" + mOldResolution);
+                    updateResolutionValue();
+                }
+            });
+            df.show(getFragmentManager(), "ConfirmDialog");
+        }
     }
 
     @Override
@@ -259,8 +272,11 @@ public class HdmiSettings extends SettingsPreferenceFragment
         if (preference == mHdmiScale) {
             Intent screenScaleIntent = new Intent(getActivity(), ScreenScaleActivity.class);
             screenScaleIntent.putExtra(ConstData.IntentKey.PLATFORM, mStrPlatform);
-            screenScaleIntent.putExtra(ConstData.IntentKey.DISPLAY_INFO, getDisplayInfo());
-            startActivity(screenScaleIntent);
+            mDisplayInfo = getDisplayInfo();
+            if (mDisplayInfo != null) {
+                screenScaleIntent.putExtra(ConstData.IntentKey.DISPLAY_INFO, mDisplayInfo);
+                startActivity(screenScaleIntent);
+            }
         } else if (preference == mHdmiResolution) {
             updateHDMIState();
         }
@@ -277,8 +293,11 @@ public class HdmiSettings extends SettingsPreferenceFragment
                 return true;
             int index = mHdmiResolution.findIndexOfValue((String) obj);
             Log.i(TAG, "onPreferenceChange: index= " + index);
-            DrmDisplaySetting.setDisplayModeTemp(getDisplayInfo(), index);
-            showConfirmSetModeDialog();
+            mDisplayInfo = getDisplayInfo();
+            if (mDisplayInfo != null) {
+                DrmDisplaySetting.setDisplayModeTemp(mDisplayInfo, index);
+                showConfirmSetModeDialog();
+            }
         }
         return true;
     }

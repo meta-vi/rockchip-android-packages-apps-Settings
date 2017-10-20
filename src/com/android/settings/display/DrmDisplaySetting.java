@@ -142,6 +142,31 @@ public class DrmDisplaySetting {
         }
     }
 
+    public static void saveConfig() {
+        Object rkDisplayOutputManager = null;
+        try {
+            rkDisplayOutputManager = Class.forName("android.os.RkDisplayOutputManager").newInstance();
+        } catch (Exception e) {
+            // no handle
+        }
+        if (rkDisplayOutputManager != null) {
+            int result = (Integer) ReflectUtils.invokeMethodNoParameter(rkDisplayOutputManager, "saveConfig");
+        }
+    }
+
+    public static void updateDisplayInfos() {
+        Object rkDisplayOutputManager = null;
+        try {
+            rkDisplayOutputManager = Class.forName("android.os.RkDisplayOutputManager").newInstance();
+        } catch (Exception e) {
+            // no handle
+        }
+        if (rkDisplayOutputManager != null) {
+            logd("updateDisplayInfos");
+            int result = (Integer) ReflectUtils.invokeMethodNoParameter(rkDisplayOutputManager, "updateDisplayInfos");
+        }
+    }
+
     public static void confirmSaveDisplayMode(DisplayInfo di, boolean isSave) {
         if (di == null) {
             return;
@@ -151,6 +176,7 @@ public class DrmDisplaySetting {
         } else if (di.getDisplayId() == DISPLAY_TYPE_DP) {
             confirmSaveDpMode(isSave);
         }
+        saveConfig();
     }
 
     /**
