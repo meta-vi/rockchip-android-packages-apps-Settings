@@ -60,6 +60,10 @@ import com.android.settings.data.ConstData;
 import android.hardware.display.DisplayManager;
 import android.view.Display;
 
+import android.view.IWindowManager;
+import android.view.Surface;
+import android.os.ServiceManager;
+
 public class HdmiSettings extends SettingsPreferenceFragment
         implements OnPreferenceChangeListener, SwitchBar.OnSwitchChangeListener, Preference.OnPreferenceClickListener {
     /**
@@ -69,6 +73,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
     private static final String KEY_HDMI_RESOLUTION = "hdmi_resolution";
     private static final String KEY_HDMI_SCALE = "hdmi_screen_zoom";
     private static final String KEY_HDMI_LCD = "hdmi_lcd_timeout";
+    private static final String KEY_HDMI_ROTATION="hdmi_rotation";
     // for identify the HdmiFile state
     private boolean IsHdmiConnect = false;
     // for identify the Hdmi connection state
@@ -77,6 +82,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
 
     private ListPreference mHdmiResolution;
     private ListPreference mHdmiLcd;
+    private ListPreference mHdmiRotation;
     private Preference mHdmiScale;
     private DisplayOutputManager mDisplayManagement = null;
     private Context context;
@@ -91,6 +97,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
     protected boolean mIsUseDisplayd;
     private DisplayManager mDisplayManager;
     private DisplayListener mDisplayListener;
+    private IWindowManager wm;
 
     private final BroadcastReceiver HdmiListener = new BroadcastReceiver() {
         @Override
@@ -135,6 +142,8 @@ public class HdmiSettings extends SettingsPreferenceFragment
         mHdmiScale = findPreference(KEY_HDMI_SCALE);
         mHdmiScale.setOnPreferenceClickListener(this);
         mHdmiLcd = (ListPreference) findPreference(KEY_HDMI_LCD);
+        mHdmiRotation = (ListPreference) findPreference(KEY_HDMI_ROTATION);
+        mHdmiRotation.setOnPreferenceChangeListener(this);
         init();
         Log.d(TAG, "onCreate---------------------");
     }
@@ -198,6 +207,31 @@ public class HdmiSettings extends SettingsPreferenceFragment
             lcdTimeout /= 10;
         }
         mHdmiLcd.setValue(String.valueOf(lcdTimeout));
+
+        //init hdmi rotation
+        try {
+             wm = IWindowManager.Stub.asInterface(
+                  ServiceManager.getService(Context.WINDOW_SERVICE));
+             int rotation = wm.getRotation();
+             switch (rotation) {
+                  case Surface.ROTATION_0:
+                       mHdmiRotation.setValue("0");
+                       break;
+                  case Surface.ROTATION_90:
+                       mHdmiRotation.setValue("90");
+                       break;
+                  case Surface.ROTATION_180:
+                       mHdmiRotation.setValue("180");
+                       break;
+                  case Surface.ROTATION_270:
+                       mHdmiRotation.setValue("270");
+                       break;
+                  default:
+                       mHdmiRotation.setValue("0");
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
+            }
     }
 
     protected DisplayInfo getDisplayInfo() {
@@ -227,6 +261,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
         if (allDisplays == null || allDisplays.length < 2 || switchValue.equals("off")) {
             mHdmiResolution.setEnabled(false);
             mHdmiScale.setEnabled(false);
+            mHdmiRotation.setEnabled(false);
         } else {
             new Handler().postDelayed(new Runnable() {
                 public void run() {
@@ -238,6 +273,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
                         updateResolutionValue();
                         mHdmiResolution.setEnabled(true);
                         mHdmiScale.setEnabled(true);
+                        mHdmiRotation.setEnabled(true);
                     }
 
                 }
@@ -299,6 +335,26 @@ public class HdmiSettings extends SettingsPreferenceFragment
                 showConfirmSetModeDialog();
             }
         }
+        if (KEY_HDMI_ROTATION.equals(key)) {
+            try {
+                int value = Integer.parseInt((String) obj);
+                android.os.SystemProperties.set("persist.sys.orientation", (String) obj);
+                Log.d(TAG,"freezeRotation~~~value:"+(String) obj);
+                if(value == 0)
+                      wm.freezeRotation(Surface.ROTATION_0);
+                else if(value == 90)
+                      wm.freezeRotation(Surface.ROTATION_90);
+                else if(value == 180)
+                      wm.freezeRotation(Surface.ROTATION_180);
+                else if(value == 270)
+                      wm.freezeRotation(Surface.ROTATION_270);
+                else
+                      return true;
+                //android.os.SystemProperties.set("sys.boot_completed", "1");
+             } catch (Exception e) {
+                      Log.e(TAG, "freezeRotation error");
+             }
+         }
         return true;
     }
 
