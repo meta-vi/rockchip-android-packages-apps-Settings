@@ -72,7 +72,6 @@ public class HdmiSettings extends SettingsPreferenceFragment
     private static final String TAG = "HdmiSettings";
     private static final String KEY_HDMI_RESOLUTION = "hdmi_resolution";
     private static final String KEY_HDMI_SCALE = "hdmi_screen_zoom";
-    private static final String KEY_HDMI_LCD = "hdmi_lcd_timeout";
     private static final String KEY_HDMI_ROTATION="hdmi_rotation";
     // for identify the HdmiFile state
     private boolean IsHdmiConnect = false;
@@ -81,7 +80,6 @@ public class HdmiSettings extends SettingsPreferenceFragment
     private boolean IsHdmiDisplayOn = false;
 
     private ListPreference mHdmiResolution;
-    private ListPreference mHdmiLcd;
     private ListPreference mHdmiRotation;
     private Preference mHdmiScale;
     private DisplayOutputManager mDisplayManagement = null;
@@ -141,7 +139,6 @@ public class HdmiSettings extends SettingsPreferenceFragment
         }
         mHdmiScale = findPreference(KEY_HDMI_SCALE);
         mHdmiScale.setOnPreferenceClickListener(this);
-        mHdmiLcd = (ListPreference) findPreference(KEY_HDMI_LCD);
         mHdmiRotation = (ListPreference) findPreference(KEY_HDMI_ROTATION);
         mHdmiRotation.setOnPreferenceChangeListener(this);
         init();
@@ -181,15 +178,12 @@ public class HdmiSettings extends SettingsPreferenceFragment
         super.onResume();
         updateHDMIState();
         mDisplayManager.registerDisplayListener(mDisplayListener, null);
-        getContentResolver().registerContentObserver(
-                Settings.System.getUriFor(Settings.System.HDMI_LCD_TIMEOUT), true, mHdmiTimeoutSettingObserver);
     }
 
     public void onPause() {
         super.onPause();
         Log.d(TAG, "onPause----------------");
         mDisplayManager.unregisterDisplayListener(mDisplayListener);
-        getContentResolver().unregisterContentObserver(mHdmiTimeoutSettingObserver);
     }
 
     public void onDestroy() {
@@ -199,14 +193,6 @@ public class HdmiSettings extends SettingsPreferenceFragment
 
     private void init() {
         mIsUseDisplayd = SystemProperties.getBoolean("ro.rk.displayd.enable", false);
-        mHdmiLcd.setOnPreferenceChangeListener(this);
-        ContentResolver resolver = context.getContentResolver();
-        long lcdTimeout = -1;
-        if ((lcdTimeout = Settings.System.getLong(resolver, Settings.System.HDMI_LCD_TIMEOUT,
-                DEF_HDMI_LCD_TIMEOUT_VALUE)) > 0) {
-            lcdTimeout /= 10;
-        }
-        mHdmiLcd.setValue(String.valueOf(lcdTimeout));
 
         //init hdmi rotation
         try {
@@ -372,24 +358,6 @@ public class HdmiSettings extends SettingsPreferenceFragment
             updateHDMIState();
         }
     }
-
-    private ContentObserver mHdmiTimeoutSettingObserver = new ContentObserver(new Handler()) {
-        @Override
-        public void onChange(boolean selfChange) {
-
-            ContentResolver resolver = getActivity().getContentResolver();
-            final long currentTimeout = Settings.System.getLong(resolver,
-                    Settings.System.HDMI_LCD_TIMEOUT, -1);
-            long lcdTimeout = -1;
-            if ((lcdTimeout = Settings.System.getLong(resolver,
-                    Settings.System.HDMI_LCD_TIMEOUT,
-                    DEF_HDMI_LCD_TIMEOUT_VALUE)) > 0) {
-                lcdTimeout /= 10;
-            }
-            mHdmiLcd.setValue(String.valueOf(lcdTimeout));
-        }
-    };
-
 
     class DisplayListener implements DisplayManager.DisplayListener {
         @Override
