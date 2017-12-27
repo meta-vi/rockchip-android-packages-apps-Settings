@@ -3268,6 +3268,7 @@
    <string name="hdmi_disconnect">HDMI已断开连接.</string>
    <string name="hdmi_settings">"HDMI配置"</string>
    <string name="hdmi_lcd_timeout">屏幕休眠</string>
+   <string name="audio_output">音源輸出</string>
    <string name="hdmi_title">"打开HDMI"</string>
    <string name="hdmi_resolution_title">"分辨率设置</string>
    <string name="hdmi_screen_zoom">"屏幕缩放"</string>

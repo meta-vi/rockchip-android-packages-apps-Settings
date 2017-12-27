@@ -68,6 +68,17 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
 
+import android.support.v7.preference.ListPreference;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.KeyEvent;
+import android.view.inputmethod.BaseInputConnection;
+import android.media.IAudioService;
+import android.os.ServiceManager;
+import android.os.IBinder;
+import android.os.RemoteException;
+import android.os.SystemProperties;
+
 import static com.android.settingslib.RestrictedLockUtils.EnforcedAdmin;
 
 public class SoundSettings extends SettingsPreferenceFragment implements Indexable {
@@ -84,6 +95,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements Indexab
     private static final String KEY_WIFI_DISPLAY = "wifi_display";
     private static final String KEY_ZEN_MODE = "zen_mode";
     private static final String KEY_CELL_BROADCAST_SETTINGS = "cell_broadcast_settings";
+    private static final String KEY_AUDIO_OUTPUT = "audio_output";
 
     private static final String SELECTED_PREFERENCE_KEY = "selected_preference";
     private static final int REQUEST_CODE = 200;
@@ -113,6 +125,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements Indexab
     private Preference mPhoneRingtonePreference;
     private Preference mNotificationRingtonePreference;
     private Preference mAlarmRingtonePreference;
+    private ListPreference mAudioOutput;
     private TwoStatePreference mVibrateWhenRinging;
     private ComponentName mSuppressor;
     private int mRingerMode = -1;
@@ -120,6 +133,8 @@ public class SoundSettings extends SettingsPreferenceFragment implements Indexab
     private PackageManager mPm;
     private UserManager mUserManager;
     private RingtonePreference mRequestPreference;
+
+    private IAudioService mAudioService;
 
     @Override
     protected int getMetricsCategory() {
@@ -177,6 +192,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements Indexab
             removePreference(KEY_CELL_BROADCAST_SETTINGS);
         }
         initRingtones();
+        initAudioOutput();
         initVibrateWhenRinging();
         updateRingerMode();
         updateEffectsSuppressor();
@@ -363,6 +379,123 @@ public class SoundSettings extends SettingsPreferenceFragment implements Indexab
                 getPreferenceScreen().findPreference(KEY_NOTIFICATION_RINGTONE);
         mAlarmRingtonePreference = getPreferenceScreen().findPreference(KEY_ALARM_RINGTONE);
     }
+
+    private void initAudioOutput() {
+        IBinder b = ServiceManager.getService(Context.AUDIO_SERVICE);
+        mAudioService = IAudioService.Stub.asInterface(b);
+
+        boolean isA2dpOn = false;
+        try {
+            isA2dpOn = mAudioService.isBluetoothA2dpOn();
+            Log.i(TAG, "isA2dpOn=" + isA2dpOn);
+        } catch (RemoteException e) {
+            Log.e(TAG, "Error get Bluetooth A2DP state", e);
+        }
+        if (isA2dpOn)
+            SystemProperties.set("persist.audio.output", "3");
+
+        mAudioOutput = (ListPreference) findPreference(KEY_AUDIO_OUTPUT);
+        mAudioOutput.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+                try {
+                    int value = Integer.parseInt((String) newValue);
+                    setAudioOutput(value);
+                } catch (NumberFormatException e) {
+                    Log.e(TAG, "onPreferenceChanged audio_output setting error");
+                }
+                return true;
+            }
+        });
+
+        String txt = "";
+        txt = SystemProperties.get("persist.audio.output");
+        int txt_value = Integer.parseInt((String) txt);
+        Log.d(TAG, "txt_value = " + txt_value);
+
+        mAudioOutput.setValueIndex(txt_value);
+    }
+
+    private void setAudioOutput(int value) {
+        Log.i(TAG, "setAudioOutput -------------- start : " + value);
+
+        boolean isA2dpOn = false;
+        try {
+            isA2dpOn = mAudioService.isBluetoothA2dpOn();
+            Log.i(TAG, "isA2dpOn=" + isA2dpOn);
+        } catch (RemoteException e) {
+            Log.e(TAG, "Error get Bluetooth A2DP state", e);
+        }
+
+        switch (value) {
+        case 0:
+            SystemProperties.set("persist.audio.output","0");
+            if (isA2dpOn) {
+                try {
+                    mAudioService.setBluetoothA2dpOn(false);
+                } catch (RemoteException e) {
+                    Log.e(TAG, "Error changing Bluetooth A2DP state", e);
+                }
+            }
+            Log.i(TAG, "setAudioOutput HDMI");
+            break;
+        case 1:
+            SystemProperties.set("persist.audio.output","1");
+            if (isA2dpOn) {
+                try {
+                    mAudioService.setBluetoothA2dpOn(false);
+                } catch (RemoteException e) {
+                    Log.e(TAG, "Error changing Bluetooth A2DP state", e);
+                }
+            }
+            Log.i(TAG, "setAudioOutput SPDIF");
+            break;
+        case 2:
+            SystemProperties.set("persist.audio.output","2");
+            if (isA2dpOn) {
+                try {
+                    mAudioService.setBluetoothA2dpOn(false);
+                 } catch (RemoteException e) {
+                     Log.e(TAG, "Error changing Bluetooth A2DP state", e);
+                 }
+            }
+            Log.i(TAG, "setAudioOutput HeadSet");
+            break;
+        case 3:
+            if (!isA2dpOn) {
+                SystemProperties.set("persist.audio.output","3");
+                try {
+                    mAudioService.setBluetoothA2dpOn(true);
+                } catch (RemoteException e) {
+                    Log.e(TAG, "Error changing Bluetooth A2DP state", e);
+                }
+                Log.i(TAG, "setAudioOutput A2DP");
+            }
+            break;
+        case 4:
+            SystemProperties.set("persist.audio.output","4");
+            if (isA2dpOn) {
+                try {
+                    mAudioService.setBluetoothA2dpOn(false);
+                 } catch (RemoteException e) {
+                     Log.e(TAG, "Error changing Bluetooth A2DP state", e);
+                 }
+            }
+            Log.i(TAG, "setAudioOutput USB");
+            break;
+        default:
+            SystemProperties.set("persist.audio.output","0");
+            Log.i(TAG, "setAudioOutput HDMI default");
+            break;
+        }
+        View view = View.inflate(getActivity(), R.layout.credentials_dialog, null);
+        BaseInputConnection mInputConnection = new BaseInputConnection(view.findViewById(R.id.hint), true);
+        KeyEvent kd = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PAUSE);
+        KeyEvent ku = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MEDIA_PAUSE);
+        mInputConnection.sendKeyEvent(kd);
+        mInputConnection.sendKeyEvent(ku);
+        Log.i(TAG, "setAudioOutput ------------- end : " + value);
+    }
+
 
     private void lookupRingtoneNames() {
         AsyncTask.execute(mLookupRingtoneNames);
