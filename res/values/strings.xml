@@ -7955,6 +7955,7 @@
     <string name="hdmi_title">Turn on HDMI</string>
     <string name="hdmi_resolution_title">HDMI Resolution</string>
     <string name="hdmi_lcd_timeout">Screen Timeout</string>
+    <string name="audio_output">Audio Output</string>
     <string name="hdmi_settings">HDMI</string>
     <string name="hdmi_connect">HDMI is connected.</string>
     <string name="hdmi_disconnect">HDMI is disconnected.</string>

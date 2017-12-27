@@ -103,4 +103,10 @@
                 android:title="@string/wifi_display_settings_title"
                 android:fragment="com.android.settings.wfd.WifiDisplaySettings" />
 
+        <ListPreference
+                android:key="audio_output"
+                android:title="@string/audio_output"
+                android:entries="@array/audio_output_entries"
+                android:entryValues="@array/audio_output_values" />
+
 </PreferenceScreen>
