@@ -7959,6 +7959,9 @@
     <string name="hdmi_connect">HDMI is connected.</string>
     <string name="hdmi_disconnect">HDMI is disconnected.</string>
     <string name="hdmi_rotation">HDMI Rotation</string>
+    <string name="hdmi_dual_screen_title">dual screen</string>
+    <string name="hdmi_dual_screen_vh">Vice screen rotation switch</string>
+    <string name="hdmi_dual_screen_Ver_hor">Portrait or Landscape Display</string>
 
     <string name="screen_settings">Screen</string>
     <string name="screen_interface">Output Interface</string>

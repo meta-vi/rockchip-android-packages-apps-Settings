@@ -3272,6 +3272,9 @@
    <string name="hdmi_resolution_title">"分辨率设置</string>
    <string name="hdmi_screen_zoom">"屏幕缩放"</string>
    <string name="hdmi_rotation">屏幕旋转</string>
+   <string name="hdmi_dual_screen_title">双屏异显</string>
+   <string name="hdmi_dual_screen_vh">副屏旋转开关</string>
+   <string name="hdmi_dual_screen_Ver_hor">横向或纵向显示</string>
    
    
     <string name="screen_settings">屏幕设置</string>

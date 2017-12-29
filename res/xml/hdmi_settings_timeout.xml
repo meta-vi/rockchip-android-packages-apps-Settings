@@ -37,6 +37,19 @@
            android:title="@string/hdmi_rotation"
            android:entries="@array/hdmi_rotation_entries"
            android:entryValues="@array/hdmi_rotation_values"/>
+        <CheckBoxPreference
+            android:key="dual_screen_setting"
+            android:title="@string/hdmi_dual_screen_title"
+            />
+        <CheckBoxPreference
+            android:key="dual_screen_vh"
+            android:title="@string/hdmi_dual_screen_vh"
+            />
+        <ListPreference
+           android:key="dual_screen_vhlist" 
+           android:title="@string/hdmi_dual_screen_Ver_hor"
+           android:entries="@array/dual_screen_ver_hor_entries"
+           android:entryValues="@array/dual_screen_ver_hor_values"/>
 <!-- 
    <com.android.settings.HdmiScreenZoomPreference
            android:key="hdmi_screen_zoom"
