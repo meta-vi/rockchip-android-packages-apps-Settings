@@ -3303,4 +3303,6 @@
     <string name="trigger_carrier_provisioning" msgid="3434865918009286187">"触发运营商配置"</string>
     <string name="confirm_dialog_title">保存确认</string>
     <string name="confirm_dialog_message">将会取消</string>
+    <string name="color_temperature_mode_desc">色温调节</string>
+    <string name="select_color_temperature_dialog_title">选择色温模式 </string>
 </resources>

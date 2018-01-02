@@ -7978,4 +7978,9 @@
     <!-- $_rbox_$_modify_$_zhengyang: end for screen settings -->
     <string name="confirm_dialog_title">Save Confirm</string>
     <string name="confirm_dialog_message">Will cancel in</string>
+
+    <!-- Name of feature to change color temperature setting for the display [CHAR LIMIT=60] -->
+    <string name="color_temperature_mode_desc">Color temperature mode</string>
+    <!-- temperature of the color for the display [CHAR LIMIT=60] -->
+    <string name="select_color_temperature_dialog_title">Select Color temperature </string>
 </resources>

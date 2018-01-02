@@ -1118,6 +1118,30 @@
     <item>sdcard</item>
     <item>usb</item>
     </string-array>
+
+    <!-- Titles for color temperature selection preference. [CHAR LIMIT=14] -->
+    <string-array name="select_color_temperature_title">
+        <item>warm colors</item>
+        <item>soft colors</item>
+        <item>standard colors</item>
+        <item>cool colors</item>
+    </string-array>
+
+    <!-- Values for color temperature selection preference. -->
+    <string-array name="select_color_temperature_values" translatable="false" >
+        <item>3500</item>
+        <item>5500</item>
+        <item>6500</item>
+        <item>7500</item>
+    </string-array>
+
+    <!-- Summaries for color temperature selection preference. [CHAR LIMIT=50]-->
+    <string-array name="select_color_temperature_summaries" >
+        <item>warm colors</item>
+        <item>soft colors</item>
+        <item>standard colors</item>
+        <item>cool colors</item>
+    </string-array>
     
         <!--ethernet mode select -->    
     <string-array name="ethernet_mode_location">

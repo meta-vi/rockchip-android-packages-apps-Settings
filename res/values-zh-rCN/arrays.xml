@@ -493,4 +493,17 @@
     <item>sdcard</item>
     <item>usb</item>
   </string-array>
+  <string-array name="select_color_temperature_title">
+    <item>暖色</item>
+    <item>柔和</item>
+    <item>标准</item>
+    <item>冷色</item>
+  </string-array>
+  <!-- Summaries for color temperature selection preference. [CHAR LIMIT=50]-->
+  <string-array name="select_color_temperature_summaries" >
+    <item>暖色</item>
+    <item>柔和</item>
+    <item>标准</item>
+    <item>冷色</item>
+  </string-array>
 </resources>
