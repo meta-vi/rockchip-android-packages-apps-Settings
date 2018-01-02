@@ -166,7 +166,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
     private static final String SELECT_LOGD_SIZE_KEY = "select_logd_size";
     private static final String SELECT_LOGD_SIZE_PROPERTY = "persist.logd.size";
     private static final String SELECT_LOGD_TAG_PROPERTY = "persist.log.tag";
-    private static final String SELECT_COLOR_TEMPERATURE_PROPERTY = "persist.sys.color.temperature";
+    private static final String SELECT_COLOR_TEMPERATURE_PROPERTY = "sys.color.temperature";
     // Tricky, isLoggable only checks for first character, assumes silence
     private static final String SELECT_LOGD_TAG_SILENCE = "Settings";
     private static final String SELECT_LOGD_SNET_TAG_PROPERTY = "persist.log.tag.snet_event_log";
@@ -741,7 +741,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         updateUSBAudioOptions();
         updateForceResizableOptions();
         updateWebViewMultiprocessOptions();
-        updateColorTemperatureOptions(null);
+        updateColorTemperatureOptions();
         updateWebViewProviderOptions();
         updateOemUnlockOptions();
         if (mColorTemperaturePreference != null) {
@@ -777,10 +777,10 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         pokeSystemProperties();
     }
 
-    private void updateColorTemperatureOptions(String newValue) {
+    private void updateColorTemperatureOptions() {
         Log.d(TAG,"updateColorTemperatureOptions");
         if(mColorTemperature != null) {
-            String currentValue = newValue == null ? "6500" : newValue;//SystemProperties.get(SELECT_COLOR_TEMPERATURE_PROPERTY);
+            String currentValue = SystemProperties.get(SELECT_COLOR_TEMPERATURE_PROPERTY);
             String[] values = getResources().getStringArray(R.array.select_color_temperature_values);
             String[] summaries = getResources().getStringArray(R.array.select_color_temperature_summaries);
             int index = 2; // Defaults to drm-only. Needs to match with R.array.hdcp_checking_values
@@ -1574,8 +1574,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
         if(currentTag == newTag){
             return;
         }
-        //don't save current mode when reboot
-        //SystemProperties.set(SELECT_COLOR_TEMPERATURE_PROPERTY, newTag);
+        SystemProperties.set(SELECT_COLOR_TEMPERATURE_PROPERTY, newTag);
         Object rkDisplayOutputManager = null;
         int displayNumber;
         int currMainState = 0;
@@ -1625,7 +1624,7 @@ public class DevelopmentSettings extends RestrictedSettingsFragment
             new Object[]{1,1024,red,green,blue});
             ReflectUtils.invokeMethod(rkDisplayOutputManager, "saveConfig", new Class[]{}, new Object[]{});
         }
-        updateColorTemperatureOptions(newTag);
+        updateColorTemperatureOptions();
     }
 
     private void writeLogdSizeOption(Object newValue) {
