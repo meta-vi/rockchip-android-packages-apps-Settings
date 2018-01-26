@@ -352,7 +352,6 @@ public class HdmiSettings extends SettingsPreferenceFragment
             updateHDMIState();
         } else if (preference == mHdmiDualScreenList) {
             String value = SystemProperties.get("persist.orientation.vhinit","0");
-            Log.v("DualScreenLog"," click  value =  "+value); 
             mHdmiDualScreenList.setValue(value);
         }
         return true;
@@ -397,7 +396,6 @@ public class HdmiSettings extends SettingsPreferenceFragment
                 }
             }
 	    } else if (preference == mHdmiDualScreen) {
-            Log.i("DualScreenLog","Hdmi Dual Screen config = "+ (Boolean)obj);
             android.provider.Settings.System.putInt(getActivity().getContentResolver(),DOUBLE_SCREEN_CONFIG,(Boolean)obj?1:0);
             SystemProperties.set("persist.orientation.vhinit", "0");
             SystemProperties.set("persist.orientation.vhshow", "false");
@@ -406,7 +404,6 @@ public class HdmiSettings extends SettingsPreferenceFragment
             mHdmiDualScreenList.setEnabled(false);
             this.finish();
 	    } else if (preference == mHdmiDualScreenVH) {
-           Log.i("DualScreenLog","Hdmi Dual Screen VH config = "+ (Boolean)obj);
             if((Boolean)obj) {
                 SystemProperties.set("persist.orientation.vhshow", "true");   
                 mHdmiDualScreenList.setEnabled(true);
@@ -418,10 +415,8 @@ public class HdmiSettings extends SettingsPreferenceFragment
             SystemProperties.set("persist.orientation.vhinit", "0");
 	    } else if (preference == mHdmiDualScreenList) {
             if("0".equals(obj.toString())) {
-                Log.v("DualScreenLog"," change  obj =  "+obj.toString()+ "     Horizontal"); 
                 SystemProperties.set("persist.orientation.vhinit", "0");
             } else if ("1".equals(obj.toString())) {
-                Log.v("DualScreenLog"," change  obj =  "+obj.toString()+ "     Verticali"); 
                 SystemProperties.set("persist.orientation.vhinit", "1");
             }
         }
