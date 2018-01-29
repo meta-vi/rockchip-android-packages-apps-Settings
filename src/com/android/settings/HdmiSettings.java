@@ -130,8 +130,8 @@ public class HdmiSettings extends SettingsPreferenceFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        IntentFilter filter = new IntentFilter("android.intent.action.HDMI_PLUGGED");
-        getContext().registerReceiver(HdmiListener, filter);
+//        IntentFilter filter = new IntentFilter("android.intent.action.HDMI_PLUGGED");
+//        getContext().registerReceiver(HdmiListener, filter);
         context = getActivity();
         mDisplayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
         mDisplayListener = new DisplayListener();
@@ -199,6 +199,8 @@ public class HdmiSettings extends SettingsPreferenceFragment
     @Override
     public void onResume() {
         super.onResume();
+        IntentFilter filter = new IntentFilter("android.intent.action.HDMI_PLUGGED");
+        getContext().registerReceiver(HdmiListener, filter);
         updateHDMIState();
         mDisplayManager.registerDisplayListener(mDisplayListener, null);
         if (android.provider.Settings.System.getInt(getActivity().getContentResolver(),DOUBLE_SCREEN_STATE,0) == 0) {
@@ -220,11 +222,13 @@ public class HdmiSettings extends SettingsPreferenceFragment
         super.onPause();
         Log.d(TAG, "onPause----------------");
         mDisplayManager.unregisterDisplayListener(mDisplayListener);
+        getContext().unregisterReceiver(HdmiListener);
     }
 
     public void onDestroy() {
         mSwitchBar.removeOnSwitchChangeListener(this);
         super.onDestroy();
+        Log.d(TAG, "onDestroy----------------");
     }
 
     private void init() {
