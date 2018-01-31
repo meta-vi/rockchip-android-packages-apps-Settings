@@ -288,8 +288,8 @@ public class HdmiSettings extends SettingsPreferenceFragment
             mHdmiResolution.setEnabled(false);
             mHdmiScale.setEnabled(false);
             mHdmiRotation.setEnabled(false);
-	        mHdmiDualScreen.setEnabled(false);
-	        mHdmiDualScreenVH.setEnabled(false);
+	        //mHdmiDualScreen.setEnabled(false);
+	        //mHdmiDualScreenVH.setEnabled(false);
 	        mHdmiDualScreenList.setEnabled(false);
             SystemProperties.set("persist.orientation.vhshow", "false");
             SystemProperties.set("persist.orientation.vhinit", "0");
