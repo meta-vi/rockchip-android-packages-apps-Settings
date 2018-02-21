@@ -29,6 +29,10 @@
     <item msgid="5345178126174698955">"太平洋"</item>
     <item msgid="8392017019801393511">"全部"</item>
   </string-array>
+  <string-array name="dual_screen_ver_hor_entries">
+    <item msgid="3342301044271213232">横向显示</item>
+    <item msgid="3342301044271121323">纵向显示</item>
+  </string-array>
   <string-array name="screen_timeout_entries">
     <item>"永不休眠"</item>
     <item msgid="3342301044271143016">"15秒"</item>
@@ -488,5 +492,18 @@
     <item>flash</item>
     <item>sdcard</item>
     <item>usb</item>
+  </string-array>
+  <string-array name="select_color_temperature_title">
+    <item>暖色</item>
+    <item>柔和</item>
+    <item>标准</item>
+    <item>冷色</item>
+  </string-array>
+  <!-- Summaries for color temperature selection preference. [CHAR LIMIT=50]-->
+  <string-array name="select_color_temperature_summaries" >
+    <item>暖色</item>
+    <item>柔和</item>
+    <item>标准</item>
+    <item>冷色</item>
   </string-array>
 </resources>

@@ -1114,6 +1114,15 @@
         <item>4</item>
     </string-array>
 
+    <string-array name="dual_screen_ver_hor_entries">
+        <item>Landscape</item>
+        <item>Portrait</item>
+    </string-array>
+    <string-array name="dual_screen_ver_hor_values">
+        <item>0</item>
+        <item>1</item>
+    </string-array>
+
     <string-array name="screenshot_storage_location">
     <item>Internal Storage</item>
     <item>SD Card</item>
@@ -1123,6 +1132,30 @@
     <item>flash</item>
     <item>sdcard</item>
     <item>usb</item>
+    </string-array>
+
+    <!-- Titles for color temperature selection preference. [CHAR LIMIT=14] -->
+    <string-array name="select_color_temperature_title">
+        <item>warm colors</item>
+        <item>soft colors</item>
+        <item>standard colors</item>
+        <item>cool colors</item>
+    </string-array>
+
+    <!-- Values for color temperature selection preference. -->
+    <string-array name="select_color_temperature_values" translatable="false" >
+        <item>3500</item>
+        <item>5500</item>
+        <item>6500</item>
+        <item>7500</item>
+    </string-array>
+
+    <!-- Summaries for color temperature selection preference. [CHAR LIMIT=50]-->
+    <string-array name="select_color_temperature_summaries" >
+        <item>warm colors</item>
+        <item>soft colors</item>
+        <item>standard colors</item>
+        <item>cool colors</item>
     </string-array>
     
         <!--ethernet mode select -->    
@@ -1136,5 +1169,18 @@
         <item>DHCP</item>
         <item>PPPoE</item>
     </string-array>
-    
+
+    <string-array name="hdmi_rotation_entries">
+        <item>0</item>
+        <item>90</item>
+        <item>180</item>
+        <item>270</item>
+    </string-array>
+    <string-array name="hdmi_rotation_values">
+        <item>0</item>
+        <item>90</item>
+        <item>180</item>
+        <item>270</item>
+    </string-array>
+
 </resources>

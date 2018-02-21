@@ -7959,6 +7959,11 @@
     <string name="hdmi_settings">HDMI</string>
     <string name="hdmi_connect">HDMI is connected.</string>
     <string name="hdmi_disconnect">HDMI is disconnected.</string>
+    <string name="hdmi_rotation">HDMI Rotation</string>
+    <string name="hdmi_dual_screen_title">dual screen</string>
+    <string name="hdmi_dual_screen_vh">Vice screen rotation switch</string>
+    <string name="hdmi_dual_screen_Ver_hor">Portrait or Landscape Display</string>
+
     <string name="screen_settings">Screen</string>
     <string name="screen_interface">Output Interface</string>
     <string name="screen_iface_lcd_title">LCD</string>
@@ -7974,4 +7979,9 @@
     <!-- $_rbox_$_modify_$_zhengyang: end for screen settings -->
     <string name="confirm_dialog_title">Save Confirm</string>
     <string name="confirm_dialog_message">Will cancel in</string>
+
+    <!-- Name of feature to change color temperature setting for the display [CHAR LIMIT=60] -->
+    <string name="color_temperature_mode_desc">Color temperature mode</string>
+    <!-- temperature of the color for the display [CHAR LIMIT=60] -->
+    <string name="select_color_temperature_dialog_title">Select Color temperature </string>
 </resources>
