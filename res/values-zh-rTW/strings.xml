@@ -3275,4 +3275,6 @@
     <string name="trigger_carrier_provisioning" msgid="3434865918009286187">"觸發行動通訊業者佈建程序"</string>
     <string name="confirm_dialog_title">保存確認</string>
     <string name="confirm_dialog_message">將會取消</string>
+
+    <string name="screen_never_timeout_summary" msgid="327761329263064328">"永不休眠"</string>
 </resources>
