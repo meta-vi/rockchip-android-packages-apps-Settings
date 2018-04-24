@@ -1104,14 +1104,14 @@
         <item>SPDIF</item>
         <item>HeadSet</item>
         <item>A2DP</item>
-        <item>USB</item>
+   <!-- <item>USB</item> -->
     </string-array>
     <string-array name="audio_output_values">
         <item>0</item>
         <item>1</item>
         <item>2</item>
         <item>3</item>
-        <item>4</item>
+   <!-- <item>4</item> -->
     </string-array>
 
     <string-array name="dual_screen_ver_hor_entries">

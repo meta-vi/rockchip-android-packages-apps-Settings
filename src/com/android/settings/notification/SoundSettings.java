@@ -471,6 +471,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements Indexab
                 Log.i(TAG, "setAudioOutput A2DP");
             }
             break;
+        /*
         case 4:
             SystemProperties.set("persist.audio.output","4");
             if (isA2dpOn) {
@@ -482,6 +483,7 @@ public class SoundSettings extends SettingsPreferenceFragment implements Indexab
             }
             Log.i(TAG, "setAudioOutput USB");
             break;
+        */
         default:
             SystemProperties.set("persist.audio.output","0");
             Log.i(TAG, "setAudioOutput HDMI default");
