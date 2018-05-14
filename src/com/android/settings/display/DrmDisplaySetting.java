@@ -39,7 +39,7 @@ public class DrmDisplaySetting {
 
     private final static String SYS_NODE_STATUS_DISCONNECTED = "disconnected";
 
-    public final static int DISPLAY_TYPE_HDMI = 1;//mid hdmi is aux
+    public final static int DISPLAY_TYPE_HDMI = 0;//mid hdmi is aux
     public final static int DISPLAY_TYPE_DP = 1;
 
 
@@ -194,7 +194,7 @@ public class DrmDisplaySetting {
     private final static String SYS_NODE_HDMI_STATUS =
             "/sys/devices/platform/display-subsystem/drm/card0/card0-HDMI-A-1/status";
 
-    private final static String PROP_RESOLUTION_HDMI = "persist.sys.resolution.aux";
+    private final static String PROP_RESOLUTION_HDMI = "persist.sys.resolution.main";
 
     private static String tmpSetHdmiMode = null;
     private static String curSetHdmiMode = "Auto";
@@ -260,11 +260,11 @@ public class DrmDisplaySetting {
         if (rkDisplayOutputManager == null)
             return null;
         logd(" getHdmiMode 1");
-        int[] mainTypes = (int[]) ReflectUtils.invokeMethod(rkDisplayOutputManager, "getIfaceList", new Class[]{int.class}, new Object[]{1});
+        int[] mainTypes = (int[]) ReflectUtils.invokeMethod(rkDisplayOutputManager, "getIfaceList", new Class[]{int.class}, new Object[]{DISPLAY_TYPE_HDMI});
         logd(" getHdmiMode 2");
         if (mainTypes != null && mainTypes.length > 0) {
-            int currMainType = (Integer) ReflectUtils.invokeMethod(rkDisplayOutputManager, "getCurrentInterface", new Class[]{int.class}, new Object[]{1});
-            return (String) ReflectUtils.invokeMethod(rkDisplayOutputManager, "getCurrentMode", new Class[]{int.class, int.class}, new Object[]{1, currMainType});
+            int currMainType = (Integer) ReflectUtils.invokeMethod(rkDisplayOutputManager, "getCurrentInterface", new Class[]{int.class}, new Object[]{DISPLAY_TYPE_HDMI});
+            return (String) ReflectUtils.invokeMethod(rkDisplayOutputManager, "getCurrentMode", new Class[]{int.class, int.class}, new Object[]{DISPLAY_TYPE_HDMI, currMainType});
         }
         return null;
     }
@@ -297,12 +297,12 @@ public class DrmDisplaySetting {
         if (rkDisplayOutputManager == null)
             return;
         logd(" setHdmiMode 1");
-        int[] mainTypes = (int[]) ReflectUtils.invokeMethod(rkDisplayOutputManager, "getIfaceList", new Class[]{int.class}, new Object[]{1});
+        int[] mainTypes = (int[]) ReflectUtils.invokeMethod(rkDisplayOutputManager, "getIfaceList", new Class[]{int.class}, new Object[]{DISPLAY_TYPE_HDMI});
         logd(" setHdmiMode 2");
         if (mainTypes != null && mainTypes.length > 0) {
             logd(" setHdmiMode mode = " + mode);
-            int currMainType = (Integer) ReflectUtils.invokeMethod(rkDisplayOutputManager, "getCurrentInterface", new Class[]{int.class}, new Object[]{1});
-            ReflectUtils.invokeMethod(rkDisplayOutputManager, "setMode", new Class[]{int.class, int.class, String.class}, new Object[]{1, currMainType, mode});
+            int currMainType = (Integer) ReflectUtils.invokeMethod(rkDisplayOutputManager, "getCurrentInterface", new Class[]{int.class}, new Object[]{DISPLAY_TYPE_HDMI});
+            ReflectUtils.invokeMethod(rkDisplayOutputManager, "setMode", new Class[]{int.class, int.class, String.class}, new Object[]{DISPLAY_TYPE_HDMI, currMainType, mode});
         }
         logd(" setHdmiMode 3");
     }
