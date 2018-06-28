@@ -305,7 +305,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
                         updateResolutionValue();
                         mHdmiResolution.setEnabled(true);
                         mHdmiScale.setEnabled(true);
-                        mHdmiRotation.setEnabled(true);
+                        mHdmiRotation.setEnabled(false);
                         if(getActivity() != null && getActivity().getContentResolver() != null) {
 			                if (android.provider.Settings.System.getInt(getActivity().getContentResolver(),DOUBLE_SCREEN_STATE,0) == 0) {
                                 mHdmiDualScreen.setEnabled(true);
