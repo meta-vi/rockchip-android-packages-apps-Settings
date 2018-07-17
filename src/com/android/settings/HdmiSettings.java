@@ -154,14 +154,17 @@ public class HdmiSettings extends SettingsPreferenceFragment
         mHdmiDualScreen = (CheckBoxPreference)findPreference(KEY_HDMI_DUAL_SCREEN);
         mHdmiDualScreen.setChecked(enable);
         mHdmiDualScreen.setOnPreferenceChangeListener(this);
+        mHdmiDualScreen.setVisible(false);
  
         mHdmiDualScreenVH = (CheckBoxPreference)findPreference(KEY_HDMI_DUAL_SCREEN_VH);
+        mHdmiDualScreenVH.setVisible(false);
         mHdmiDualScreenVH.setEnabled(enable);
         if(enable) {
             mHdmiDualScreenVH.setChecked(SystemProperties.getBoolean("persist.orientation.vhshow", false));
         }
         mHdmiDualScreenVH.setOnPreferenceChangeListener(this);
         mHdmiDualScreenList = (ListPreference)findPreference(KEY_HDMI_DUAL_SCREEN_LIST);
+        mHdmiDualScreenList.setVisible(false);
         mHdmiDualScreenList.setOnPreferenceChangeListener(this);
         mHdmiDualScreenList.setOnPreferenceClickListener(this);
         mHdmiDualScreenList.setEnabled(SystemProperties.getBoolean("persist.orientation.vhshow", false));
