@@ -91,6 +91,7 @@ import com.android.settings.sim.SimSettings;
 import com.android.settings.support.SupportDashboardActivity;
 import com.android.settings.system.ResetDashboardFragment;
 import com.android.settings.system.SystemDashboardFragment;
+import com.android.settings.ScreenshotSetting;
 import com.android.settings.tts.TextToSpeechSettings;
 import com.android.settings.tts.TtsEnginePreferenceFragment;
 import com.android.settings.users.UserSettings;
@@ -193,6 +194,7 @@ public class SearchIndexableResourcesImpl implements SearchIndexableResources {
         addIndex(RecentLocationRequestSeeAllFragment.class);
         addIndex(PreviouslyConnectedDeviceDashboardFragment.class);
         addIndex(BluetoothDashboardFragment.class);
+        addIndex(ScreenshotSetting.class);
     }
 
     @Override

@@ -106,6 +106,7 @@
             android:usesCleartextTraffic="true"
             android:defaultToDeviceProtectedStorage="true"
             android:directBootAware="true"
+            android:name=".SettingsApplication"
             android:appComponentFactory="android.support.v4.app.CoreComponentFactory">
 
         <uses-library android:name="org.apache.http.legacy" />
@@ -3326,6 +3327,29 @@
 
         <service android:name=".fuelgauge.batterytip.AnomalyDetectionJobService"
                  android:permission="android.permission.BIND_JOB_SERVICE" />
+
+        <!-- SCREENSHOT -->
+        <activity
+            android:name="Settings$ScreenshotSettingsActivity"
+            android:taskAffinity="com.android.settings"
+            android:label="@string/screenshot_manager"
+            android:icon="@drawable/ic_homepage_screenshot"
+            android:parentActivityName="Settings">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.VOICE_LAUNCH" />
+                <category android:name="com.android.settings.SHORTCUT" />
+            </intent-filter>
+
+            <intent-filter android:priority="6">
+                <action android:name="com.android.settings.action.SETTINGS" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.category"
+                android:value="com.android.settings.category.ia.homepage" />
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="com.android.settings.ScreenshotSetting" />
+        </activity>
 
         <!-- This is the longest AndroidManifest.xml ever. -->
     </application>

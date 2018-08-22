@@ -4151,4 +4151,13 @@
     <string name="pref_title_network_details" msgid="7186418845727358964">"网络详情"</string>
     <string name="about_phone_device_name_warning" msgid="8885670415541365348">"您的设备名称会显示在手机上的应用中。此外，当您连接到蓝牙设备或设置 WLAN 热点时，其他人可能也会看到您的设备名称。"</string>
     <string name="devices_title" msgid="7701726109334110391">"设备"</string>
+
+    <!--screen shot-->
+    <string name="app_name">截屏管理器</string>
+    <string name="screenshot_manager">截屏</string>
+    <string name="screenshot_delay_title">延时截屏设置 </string>
+    <string name="screenshot_show">在状态栏上显示截屏按钮</string>
+    <string name="screenshot_version">截屏管理器版本</string>
+    <string name="screenshot_storage_title">设置截屏图片存储位置</string>
+    <string name="later">秒以后截屏</string>
 </resources>
