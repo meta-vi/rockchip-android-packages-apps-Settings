@@ -20,6 +20,10 @@ LOCAL_USE_AAPT2 := true
 
 LOCAL_SRC_FILES := $(call all-java-files-under, src)
 
+ifeq ($(TARGET_BOARD_PLATFORM_PRODUCT), atv)
+LOCAL_MANIFEST_FILE := tv/AndroidManifest.xml
+endif
+
 LOCAL_STATIC_ANDROID_LIBRARIES := \
     android-slices-builders \
     android-slices-core \
