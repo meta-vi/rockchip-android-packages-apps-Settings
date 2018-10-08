@@ -2083,9 +2083,6 @@
             android:icon="@drawable/tile_icon_show_layout"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
             android:enabled="false">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
         </service>
         <service
             android:name=".development.qstile.DevelopmentTiles$GPUProfiling"
@@ -2093,9 +2090,6 @@
             android:icon="@drawable/tile_icon_graphics"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
             android:enabled="false">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
         </service>
         <service
             android:name=".development.qstile.DevelopmentTiles$ForceRTL"
@@ -2103,9 +2097,6 @@
             android:icon="@drawable/tile_icon_force_rtl"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
             android:enabled="false">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
         </service>
         <service
             android:name=".development.qstile.DevelopmentTiles$AnimationSpeed"
@@ -2113,9 +2104,6 @@
             android:icon="@drawable/tile_icon_animation_speed"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
             android:enabled="false">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
         </service>
         <service
             android:name=".development.qstile.DevelopmentTiles$WinscopeTrace"
@@ -2123,9 +2111,6 @@
             android:icon="@drawable/tile_icon_winscope_trace"
             android:permission="android.permission.BIND_QUICK_SETTINGS_TILE"
             android:enabled="false">
-            <intent-filter>
-                <action android:name="android.service.quicksettings.action.QS_TILE" />
-            </intent-filter>
         </service>
 
         <activity android:name=".HelpTrampoline"
@@ -2145,21 +2130,12 @@
                 android:excludeFromRecents="true"
                 android:launchMode="singleInstance"
                 android:label="@string/autofill_app">
-            <intent-filter android:priority="1">
-                <action android:name="android.settings.REQUEST_SET_AUTOFILL_SERVICE" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data android:scheme="package" />
-            </intent-filter>
         </activity>
 
         <activity android:name="Settings$AdvancedConnectedDeviceActivity"
                   android:label="@string/connected_device_connections_title"
                   android:taskAffinity="com.android.settings"
                   android:parentActivityName="Settings$ConnectedDeviceDashboardActivity">
-            <intent-filter android:priority="1">
-                <action android:name="com.android.settings.ADVANCED_CONNECTED_DEVICE_SETTINGS" />
-                <category android:name="android.intent.category.DEFAULT" />
-            </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                        android:value="com.android.settings.connecteddevice.AdvancedConnectedDeviceDashboardFragment" />
             <meta-data android:name="com.android.settings.PRIMARY_PROFILE_CONTROLLED"
@@ -2181,21 +2157,10 @@
                   android:authorities="com.android.settings.slices;android.settings.slices"
                   android:exported="true"
                   android:grantUriPermissions="true">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.app.slice.category.SLICE" />
-                <data android:scheme="settings"
-                      android:host="com.android.settings.slices" />
-            </intent-filter>
         </provider>
 
         <receiver
             android:name=".slices.SliceBroadcastReceiver" >
-            <intent-filter>
-                <action android:name="com.android.settings.slice.action.WIFI_CHANGED"/>
-            </intent-filter>
         </receiver>
 
         <!-- Couldn't be triggered from outside of settings. Statsd can trigger it because we send
@@ -2204,10 +2169,6 @@
                   android:exported="false" />
 
         <receiver android:name=".fuelgauge.batterytip.AnomalyConfigReceiver">
-            <intent-filter>
-                <action android:name="android.app.action.STATSD_STARTED"/>
-                <action android:name="android.intent.action.BOOT_COMPLETED"/>
-            </intent-filter>
         </receiver>
 
         <service android:name=".fuelgauge.batterytip.AnomalyCleanupJobService"
@@ -2226,16 +2187,6 @@
             android:label="@string/screenshot_manager"
             android:icon="@drawable/ic_homepage_screenshot"
             android:parentActivityName="Settings">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.VOICE_LAUNCH" />
-                <category android:name="com.android.settings.SHORTCUT" />
-            </intent-filter>
-
-            <intent-filter android:priority="6">
-                <action android:name="com.android.settings.action.SETTINGS" />
-            </intent-filter>
             <meta-data android:name="com.android.settings.category"
                 android:value="com.android.settings.category.ia.homepage" />
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
