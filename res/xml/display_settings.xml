@@ -61,8 +61,8 @@
         android:key="screen_timeout"
         android:title="@string/screen_timeout"
         android:summary="@string/summary_placeholder"
-        android:entries="@array/screen_timeout_entries"
-        android:entryValues="@array/screen_timeout_values"
+        android:entries="@array/dream_timeout_entries"
+        android:entryValues="@array/dream_timeout_values"
         settings:keywords="@string/keywords_screen_timeout"/>
 
     <SwitchPreference
