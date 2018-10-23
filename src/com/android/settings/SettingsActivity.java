@@ -37,7 +37,6 @@ import android.graphics.Canvas;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.support.annotation.VisibleForTesting;
@@ -712,9 +711,11 @@ public class SettingsActivity extends SettingsDrawerActivity
                 WifiDisplaySettings.isAvailable(this), isAdmin)
                 || somethingChanged;
 
+
         somethingChanged = setTileEnabled(changedList, new ComponentName(packageName,
                         Settings.ScreenshotSettingsActivity.class.getName()),
-                SystemProperties.get("ro.build.characteristics","null").equals("tablet"), isAdmin) || somethingChanged;
+                ScreenshotSetting.isAvailable(), isAdmin)
+                || somethingChanged;
 
         // Enable/disable the Me Card page.
         final boolean aboutPhoneV2Enabled = featureFactory
