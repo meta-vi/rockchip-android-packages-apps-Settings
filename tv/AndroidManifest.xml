@@ -1687,6 +1687,14 @@
             android:label="@string/picture_in_picture_title"
             android:taskAffinity="com.android.settings"
             android:parentActivityName="Settings">
+            <intent-filter android:priority="1">
+                <action android:name="android.settings.PICTURE_IN_PICTURE_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.applications.appinfo.PictureInPictureSettings" />
         </activity>
@@ -1696,6 +1704,11 @@
             android:label="@string/picture_in_picture_title"
             android:taskAffinity="com.android.settings"
             android:parentActivityName="Settings">
+            <intent-filter>
+                <action android:name="android.settings.PICTURE_IN_PICTURE_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="package" />
+            </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.applications.appinfo.PictureInPictureDetails" />
         </activity>
