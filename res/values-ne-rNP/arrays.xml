@@ -30,6 +30,7 @@
     <item msgid="8392017019801393511">"सबै"</item>
   </string-array>
   <string-array name="screen_timeout_entries">
+    <item>Never sleep</item>
     <item msgid="3342301044271143016">"१५ सेकेन्ड"</item>
     <item msgid="8881760709354815449">"३० सेकेन्ड"</item>
     <item msgid="7589406073232279088">"१ मिनेट"</item>
