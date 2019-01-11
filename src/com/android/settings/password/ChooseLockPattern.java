@@ -44,6 +44,7 @@ import com.android.settings.EncryptionInterstitial;
 import com.android.settings.R;
 import com.android.settings.SettingsActivity;
 import com.android.settings.SetupWizardUtils;
+import com.android.settings.utils.CmdUtils;
 import com.android.settings.Utils;
 import com.android.settings.core.InstrumentedFragment;
 import com.android.settings.notification.RedactionInterstitial;
@@ -791,6 +792,7 @@ public class ChooseLockPattern extends SettingsActivity {
                     startActivity(intent);
                 }
             }
+            CmdUtils.execCmd("sync");
             getActivity().finish();
         }
     }
