@@ -717,7 +717,7 @@ public class SettingsActivity extends SettingsDrawerActivity
 
         somethingChanged = setTileEnabled(changedList, new ComponentName(packageName,
                         Settings.ScreenshotSettingsActivity.class.getName()),
-                ScreenshotSetting.isAvailable(), isAdmin)
+                ScreenshotSetting.isAvailable(this), isAdmin)
                 || somethingChanged;
 
         // Enable/disable the Me Card page.

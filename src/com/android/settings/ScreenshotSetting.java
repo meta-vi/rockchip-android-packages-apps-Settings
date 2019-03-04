@@ -18,6 +18,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
+import com.android.settings.gestures.SwipeUpPreferenceController;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.search.Indexable.SearchIndexProvider;
 
@@ -81,6 +82,7 @@ public class ScreenshotSetting extends SettingsPreferenceFragment implements OnP
         if (!mHasNavigationBar) {
             getPreferenceScreen().removePreference(mShow);
         }
+        getPreferenceScreen().removePreference(mStorage);
 
         mScreenshot = (SettingsApplication) getActivity().getApplication();
     }
@@ -133,21 +135,33 @@ public class ScreenshotSetting extends SettingsPreferenceFragment implements OnP
         public List<SearchIndexableResource> getXmlResourcesToIndex(Context context,
             boolean enabled) {
             List<SearchIndexableResource> indexables = new ArrayList<>();
-            if (isAvailable()) {
+            /*if (isAvailable()) {
                 SearchIndexableResource indexable = new SearchIndexableResource(context);
                 indexable.xmlResId = R.xml.screenshot;
                 indexables.add(indexable);
-            }
+            }*/
             return indexables;
         }
     };
 
-    public static boolean isAvailable(){
-        String productName = SystemProperties.get("ro.build.characteristics","null");
+    public static boolean isAvailable(Context context){
+        String productName = SystemProperties.get("ro.target.product","null");
         String gmsProp = SystemProperties.get("ro.com.google.gmsversion", "normal.go");
-        if("tablet".equals(productName) && gmsProp.contains(".go")) {
-            return true;
+        if("tablet".equals(productName)){
+            if(gmsProp.contains(".go")) {
+                return true;
+            }
+            if (SwipeUpPreferenceController.isGestureAvailable(context)) {
+                final int defaultValue = context.getResources()
+                        .getBoolean(com.android.internal.R.bool.config_swipe_up_gesture_default) ? 1 : 0;
+                final int swipeUpEnabled = Settings.Secure.getInt(context.getContentResolver(),
+                        Settings.Secure.SWIPE_UP_TO_SWITCH_APPS_ENABLED, defaultValue);
+                return swipeUpEnabled != 1;
+            } else {
+                return true;
+            }
         }
+
         return false;
     }
 }

@@ -41,7 +41,7 @@ public class SwipeUpPreferenceController extends GesturePreferenceController {
         mUserManager = (UserManager) context.getSystemService(Context.USER_SERVICE);
     }
 
-    static boolean isGestureAvailable(Context context) {
+    public static boolean isGestureAvailable(Context context) {
         if (!context.getResources().getBoolean(R.bool.config_swipe_up_gesture_setting_available)) {
             return false;
         }
