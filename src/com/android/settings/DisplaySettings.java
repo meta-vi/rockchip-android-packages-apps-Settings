@@ -26,6 +26,7 @@ import com.android.settings.display.AmbientDisplayPreferenceController;
 import com.android.settings.display.BrightnessLevelPreferenceController;
 import com.android.settings.display.CameraGesturePreferenceController;
 import com.android.settings.display.ColorModePreferenceController;
+import com.android.settings.display.HdmiSettingsPreferenceController;
 import com.android.settings.display.LiftToWakePreferenceController;
 import com.android.settings.display.NightDisplayPreferenceController;
 import com.android.settings.display.NightModePreferenceController;
@@ -53,6 +54,7 @@ public class DisplaySettings extends DashboardFragment {
     private static final String KEY_AMBIENT_DISPLAY = "ambient_display";
     private static final String KEY_AUTO_BRIGHTNESS = "auto_brightness_entry";
     private static final String KEY_NIGHT_DISPLAY = "night_display";
+    private static final String KET_HDMI_SETTINGS = "hdmi_settings";
 
     @Override
     public int getMetricsCategory() {
@@ -99,6 +101,7 @@ public class DisplaySettings extends DashboardFragment {
         controllers.add(new ThemePreferenceController(context));
         controllers.add(new BrightnessLevelPreferenceController(context, lifecycle));
         controllers.add(new ColorModePreferenceController(context));
+        controllers.add(new HdmiSettingsPreferenceController(context, KET_HDMI_SETTINGS));
         return controllers;
     }
 

@@ -4161,4 +4161,12 @@
     <string name="screenshot_version">截屏管理器版本</string>
     <string name="screenshot_storage_title">设置截屏图片存储位置</string>
     <string name="later">秒以后截屏</string>
+
+    <!--hdmi settings-->
+    <string name="hdmi_title">"打开HDMI"</string>
+    <string name="hdmi_resolution_title">"分辨率设置</string>
+    <string name="hdmi_screen_zoom">"屏幕缩放"</string>
+    <string name="hdmi_rotation">"屏幕旋转"</string>
+    <string name="confirm_dialog_title">保存确认</string>
+    <string name="confirm_dialog_message">将会取消</string>
 </resources>

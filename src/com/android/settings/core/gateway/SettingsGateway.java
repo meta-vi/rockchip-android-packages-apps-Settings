@@ -70,6 +70,7 @@ import com.android.settings.deviceinfo.PublicVolumeSettings;
 import com.android.settings.deviceinfo.StorageDashboardFragment;
 import com.android.settings.deviceinfo.StorageSettings;
 import com.android.settings.deviceinfo.aboutphone.MyDeviceInfoFragment;
+import com.android.settings.display.HdmiSettings;
 import com.android.settings.display.NightDisplaySettings;
 import com.android.settings.dream.DreamSettings;
 import com.android.settings.enterprise.EnterprisePrivacySettings;
@@ -150,6 +151,7 @@ public class SettingsGateway {
             AdvancedConnectedDeviceDashboardFragment.class.getName(),
             WifiSettings.class.getName(),
             ScreenshotSetting.class.getName(),
+            HdmiSettings.class.getName(),
             ConfigureWifiSettings.class.getName(),
             SavedAccessPointsWifiSettings.class.getName(),
             SimSettings.class.getName(),
@@ -306,5 +308,7 @@ public class SettingsGateway {
             Settings.DeviceInfoSettingsActivity.class.getName(),
             Settings.EnterprisePrivacySettingsActivity.class.getName(),
             Settings.MyDeviceInfoActivity.class.getName(),
+            // Home page > Display
+            Settings.HdmiSettingsActivity.class.getName(),
     };
 }

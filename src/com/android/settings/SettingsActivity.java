@@ -61,6 +61,7 @@ import com.android.settings.backup.BackupSettingsActivity;
 import com.android.settings.core.FeatureFlags;
 import com.android.settings.core.SubSettingLauncher;
 import com.android.settings.core.gateway.SettingsGateway;
+import com.android.settings.display.HdmiSettings;
 import com.android.settings.dashboard.DashboardFeatureProvider;
 import com.android.settings.dashboard.DashboardSummary;
 import com.android.settings.overlay.FeatureFactory;
@@ -718,6 +719,11 @@ public class SettingsActivity extends SettingsDrawerActivity
         somethingChanged = setTileEnabled(changedList, new ComponentName(packageName,
                         Settings.ScreenshotSettingsActivity.class.getName()),
                 ScreenshotSetting.isAvailable(this), isAdmin)
+                || somethingChanged;
+
+        somethingChanged = setTileEnabled(changedList, new ComponentName(packageName,
+                        Settings.HdmiSettingsActivity.class.getName()),
+                HdmiSettings.isAvailable(), isAdmin)
                 || somethingChanged;
 
         // Enable/disable the Me Card page.
