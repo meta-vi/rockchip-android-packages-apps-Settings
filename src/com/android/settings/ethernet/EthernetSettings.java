@@ -91,6 +91,7 @@ import android.net.StaticIpConfiguration;
 import android.net.NetworkUtils;
 import android.net.LinkAddress;
 import android.net.LinkProperties;
+import android.widget.Toast;
 //import android.preference.ListPreference;
 //import com.android.internal.logging.MetricsProto.MetricsEvent;
 import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
@@ -202,7 +203,7 @@ public class EthernetSettings extends SettingsPreferenceFragment
         mHandler.removeMessages(MSG_GET_ETHERNET_STATE);
         if (delayMillis > 0) {
             Message msg = new Message();
-            msg.what = 0;
+            msg.what = MSG_GET_ETHERNET_STATE;
             msg.obj = EtherState;
             mHandler.sendMessageDelayed(msg, delayMillis);
         } else {
@@ -244,10 +245,13 @@ public class EthernetSettings extends SettingsPreferenceFragment
         super.onCreate(savedInstanceState);
         addPreferencesFromResource(R.xml.ethernet_settings);
 
+        mContext = this.getActivity().getApplicationContext();
         mEthManager = (EthernetManager) getSystemService(Context.ETHERNET_SERVICE);
 
         if (mEthManager == null) {
             Log.e(TAG, "get ethernet manager failed");
+            Toast.makeText(mContext, R.string.disabled_low_ram_device, Toast.LENGTH_SHORT).show();
+            finish();
             return;
         }
         String[] ifaces = mEthManager.getAvailableInterfaces();
@@ -256,9 +260,9 @@ public class EthernetSettings extends SettingsPreferenceFragment
         }
         if (null == mIfaceName) {
             Log.e(TAG, "get ethernet ifaceName failed");
-            return;
+            Toast.makeText(mContext, R.string.disabled_low_ram_device, Toast.LENGTH_SHORT).show();
+            finish();
         }
-        mContext = this.getActivity().getApplicationContext();
     }
 
     private Inet4Address getIPv4Address(String text) {
@@ -272,6 +276,9 @@ public class EthernetSettings extends SettingsPreferenceFragment
     @Override
     public void onResume() {
         super.onResume();
+        if (null == mIfaceName) {
+            return;
+        }
         if (mkeyEthMode == null) {
             mkeyEthMode = (ListPreference) findPreference(KEY_ETH_MODE);
             mkeyEthMode.setOnPreferenceChangeListener(this);
@@ -291,6 +298,9 @@ public class EthernetSettings extends SettingsPreferenceFragment
     @Override
     public void onPause() {
         super.onPause();
+        if (null == mIfaceName) {
+            return;
+        }
         mContext.unregisterReceiver(mReceiver);
     }
 
