@@ -132,6 +132,12 @@ public class TimeZoneSettings extends DashboardFragment {
             return;
         }
 
+        if (null == mTimeZoneData) {
+            Log.e(TAG, "mTimeZoneData is null when onActivityResult requestCode=" + requestCode);
+            finish();
+            return;
+        }
+
         switch (requestCode) {
             case REQUEST_CODE_REGION_PICKER:
             case REQUEST_CODE_ZONE_PICKER: {
@@ -313,6 +319,11 @@ public class TimeZoneSettings extends DashboardFragment {
         setPreferenceCategoryVisible((PreferenceCategory) findPreference(
             PREF_KEY_FIXED_OFFSET_CATEGORY), !selectByRegion);
         final String localeRegionId = getLocaleRegionId();
+        if (null == mTimeZoneData) {
+            Log.e(TAG, "selectByRegion=" + selectByRegion + ", but mTimeZoneData is null");
+            finish();
+            return;
+        }
         final Set<String> allCountryIsoCodes = mTimeZoneData.getRegionIds();
 
         String displayRegion = allCountryIsoCodes.contains(localeRegionId) ? localeRegionId : null;
