@@ -22,7 +22,7 @@ import com.android.settings.core.PreferenceControllerMixin;
 import com.android.settingslib.core.AbstractPreferenceController;
 
 public class HdmiSettingsPreferenceController extends AbstractPreferenceController implements
-        PreferenceControllerMixin{
+        PreferenceControllerMixin {
 
     private final String mHdmiSettingsKey;
 
@@ -33,7 +33,7 @@ public class HdmiSettingsPreferenceController extends AbstractPreferenceControll
 
     @Override
     public boolean isAvailable() {
-        return "true".equals(SystemProperties.get("ro.rk.hdmisetting"));
+        return HdmiSettings.isAvailable();
     }
 
     @Override

@@ -1,97 +1,91 @@
 package com.android.settings.display;
 
-import android.util.Log;
-
-import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
-
-import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileOutputStream;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
-import java.io.PrintWriter;
-import java.io.RandomAccessFile;
-import java.util.ArrayList;
-
-import javax.xml.transform.Result;
-
-import com.android.settings.widget.SwitchBar;
-
-import android.os.AsyncTask;
-import android.os.SystemProperties;
-import android.app.Activity;
+import android.app.DialogFragment;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.SharedPreferences;
+import android.hardware.display.DisplayManager;
 import android.os.Bundle;
-import android.provider.Settings;
-import android.util.Log;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.Switch;
-import android.widget.Toast;
-import android.content.ContentResolver;
 import android.os.Handler;
-import android.database.ContentObserver;
-import android.os.RemoteException;
+import android.os.ServiceManager;
+import android.os.SystemProperties;
+import android.support.v14.preference.SwitchPreference;
 import android.support.v7.preference.CheckBoxPreference;
 import android.support.v7.preference.ListPreference;
 import android.support.v7.preference.Preference;
+import android.support.v7.preference.PreferenceCategory;
 import android.support.v7.preference.PreferenceScreen;
 import android.support.v7.preference.Preference.OnPreferenceChangeListener;
-import android.os.SystemProperties;
+import android.util.Log;
+import android.view.IWindowManager;
+import android.view.LayoutInflater;
+import android.view.Surface;
+import android.view.View;
+import android.view.ViewGroup;
 
+import com.android.internal.logging.nano.MetricsProto.MetricsEvent;
 import com.android.settings.R;
-import com.android.settings.SettingsActivity;
 import com.android.settings.SettingsPreferenceFragment;
 
-import android.app.DialogFragment;
-
-import android.hardware.display.DisplayManager;
-import android.view.Display;
-
-import android.view.IWindowManager;
-import android.view.Surface;
-import android.os.ServiceManager;
+import static com.android.settings.display.HdmiSettings.DISPLAY_SHOW_SETTINGS.DOUBLE_SHOW;
+import static com.android.settings.display.HdmiSettings.DISPLAY_SHOW_SETTINGS.ONLY_SHOW_AUX;
+import static com.android.settings.display.HdmiSettings.DISPLAY_SHOW_SETTINGS.ONLY_SHOW_MAIN;
 
 public class HdmiSettings extends SettingsPreferenceFragment
-        implements OnPreferenceChangeListener, SwitchBar.OnSwitchChangeListener, Preference.OnPreferenceClickListener {
+        implements OnPreferenceChangeListener, Preference.OnPreferenceClickListener {
     /**
      * Called when the activity is first created.
      */
     private static final String TAG = "HdmiSettings";
-    private static final String KEY_HDMI_RESOLUTION = "hdmi_resolution";
-    private static final String KEY_HDMI_SCALE = "hdmi_screen_zoom";
-    private static final String KEY_HDMI_ROTATION = "hdmi_rotation";
-    private static final String KEY_HDMI_DUAL_SCREEN = "dual_screen_setting";
-    private static final String KEY_HDMI_DUAL_SCREEN_VH = "dual_screen_vh";
-    private static final String KEY_HDMI_DUAL_SCREEN_LIST = "dual_screen_vhlist";
-    private static final boolean SHOW_ROTATION = false;
-    // for identify the HdmiFile state
-    private boolean IsHdmiConnect = false;
-    // for identify the Hdmi connection state
-    private boolean IsHdmiPlug = false;
-    private boolean IsHdmiDisplayOn = false;
+    private static final String KEY_SYSTEM_ROTATION = "system_rotation";
+    private static final String KEY_MAIN_CATEGORY = "main_category";
+    private static final String KEY_MAIN_SWITCH = "main_switch";
+    private static final String KEY_MAIN_RESOLUTION = "main_resolution";
+    private static final String KEY_MAIN_SCALE = "main_screen_scale";
+    private static final String KEY_AUX_CATEGORY = "aux_category";
+    private static final String KEY_AUX_SWITCH = "aux_switch";
+    private static final String KEY_AUX_RESOLUTION = "aux_resolution";
+    private static final String KEY_AUX_SCALE = "aux_screen_scale";
+    private static final String KEY_AUX_SCREEN_VH = "aux_screen_vh";
+    private static final String KEY_AUX_SCREEN_VH_LIST = "aux_screen_vhlist";
+    private static final String SYS_HDMI_STATE = "sys.hdmi_status.aux";
+    private static final String SYS_DP_STATE = "sys.dp_status.aux";
+    /**
+     * TODO
+     * 目前hwc只配置了hdmi和dp的开关，如果是其他的设备，需要配合修改，才能进行开关
+     * sys.hdmi_status.aux：/sys/devices/platform/display-subsystem/drm/card0/card0-HDMI-A-1/status
+     * sys.hdmi_status.aux：/sys/devices/platform/display-subsystem/drm/card0/card0-DP-1/status
+     */
+    private String sys_main_state = SYS_HDMI_STATE;
+    private String sys_aux_state = SYS_DP_STATE;
 
-    private ListPreference mHdmiResolution;
-    private ListPreference mHdmiRotation;
-    private Preference mHdmiScale;
-    private SharedPreferences sharedPreferences;
-    private SharedPreferences.Editor editor;
-    private SwitchBar mSwitchBar;
-    private int mDisplay;
-    private String mOldResolution;
-    protected DisplayInfo mDisplayInfo;
-    protected boolean mIsUseDisplayd;
+    private ListPreference mSystemRotation;
+    private PreferenceCategory mMainCategory;
+    private SwitchPreference mMainSwitch;
+    private ListPreference mMainResolution;
+    private Preference mMainScale;
+    private PreferenceCategory mAuxCategory;
+    private SwitchPreference mAuxSwitch;
+    private ListPreference mAuxResolution;
+    private Preference mAuxScale;
+    private CheckBoxPreference mAuxScreenVH;
+    private ListPreference mAuxScreenVHList;
+    private Context context;
+    private String mOldMainResolution;
+    private String mOldAuxResolution;
+    protected DisplayInfo mMainDisplayInfo;
+    protected DisplayInfo mAuxDisplayInfo;
     private DisplayManager mDisplayManager;
     private DisplayListener mDisplayListener;
-    private IWindowManager wm;
+    private IWindowManager mWindowManager;
+    private DISPLAY_SHOW_SETTINGS mShowSettings = ONLY_SHOW_AUX;
+
+    enum DISPLAY_SHOW_SETTINGS {
+        ONLY_SHOW_MAIN,
+        ONLY_SHOW_AUX,
+        DOUBLE_SHOW
+    }
 
     private final BroadcastReceiver HdmiListener = new BroadcastReceiver() {
         @Override
@@ -102,7 +96,6 @@ public class HdmiSettings extends SettingsPreferenceFragment
                 boolean state = receivedIt.getBooleanExtra("state", false);
                 if (state) {
                     Log.d(TAG, "BroadcastReceiver.onReceive() : Connected HDMI-TV");
-
                 } else {
                     Log.d(TAG, "BroadcastReceiver.onReceive() : Disconnected HDMI-TV");
                 }
@@ -118,26 +111,40 @@ public class HdmiSettings extends SettingsPreferenceFragment
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        mDisplayManager = (DisplayManager) getActivity().getSystemService(Context.DISPLAY_SERVICE);
+        context = getActivity();
+        mDisplayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
+        mWindowManager = IWindowManager.Stub.asInterface(
+                ServiceManager.getService(Context.WINDOW_SERVICE));
         mDisplayListener = new DisplayListener();
-        mDisplayInfo = getDisplayInfo();
         addPreferencesFromResource(R.xml.hdmi_settings);
-        mHdmiResolution = (ListPreference) findPreference(KEY_HDMI_RESOLUTION);
-        mHdmiResolution.setOnPreferenceChangeListener(this);
-        mHdmiResolution.setOnPreferenceClickListener(this);
-        if (mDisplayInfo != null) {
-            mHdmiResolution.setEntries(DrmDisplaySetting.getDisplayModes(mDisplayInfo).toArray(new String[0]));
-            mHdmiResolution.setEntryValues(DrmDisplaySetting.getDisplayModes(mDisplayInfo).toArray(new String[0]));
+        int value = SystemProperties.getInt("persist.hdmi.ui.state", 0);
+        switch (value) {
+            case 0: {
+                mShowSettings = ONLY_SHOW_AUX;
+                sys_aux_state = SYS_HDMI_STATE;
+                break;
+            }
+            case 1: {
+                mShowSettings = ONLY_SHOW_MAIN;
+                sys_main_state = SYS_HDMI_STATE;
+                break;
+            }
+            default: {
+                mShowSettings = DOUBLE_SHOW;
+                String primary = SystemProperties.get("vendor.hwc.device.primary", "");
+                String extend = SystemProperties.get("vendor.hwc.device.extend", "");
+                if (primary.contains("HDMI")) {//配置hdmi为主显
+                    sys_main_state = SYS_HDMI_STATE;
+                    sys_aux_state = SYS_DP_STATE;
+                } else if (extend.contains("HDMI")) {//主显不配hdmi,副显配置hdmi
+                    sys_aux_state = SYS_HDMI_STATE;
+                    sys_main_state = SYS_DP_STATE;
+                }
+                break;
+            }
         }
-        mHdmiScale = findPreference(KEY_HDMI_SCALE);
-        mHdmiScale.setOnPreferenceClickListener(this);
-        mHdmiRotation = (ListPreference) findPreference(KEY_HDMI_ROTATION);
-        mHdmiRotation.setOnPreferenceChangeListener(this);
-        if (!SHOW_ROTATION) {
-            removePreference(KEY_HDMI_ROTATION);
-            init();
-        }
-        Log.d(TAG, "onCreate---------------------");
+        init();
+        Log.d(TAG, "---------onCreate---------------------");
     }
 
 
@@ -149,31 +156,11 @@ public class HdmiSettings extends SettingsPreferenceFragment
     }
 
     @Override
-    public void onActivityCreated(Bundle savedInstanceState) {
-        super.onActivityCreated(savedInstanceState);
-        SettingsActivity activity = (SettingsActivity) getActivity();
-        mSwitchBar = activity.getSwitchBar();
-        mSwitchBar.show();
-        mSwitchBar.addOnSwitchChangeListener(this);
-        //restore hdmi switch value
-        String switchValue = SystemProperties.get("sys.hdmi_status.aux", "on");
-        if (switchValue.equals("on")) {
-            mSwitchBar.setChecked(true);
-        } else {
-            mSwitchBar.setChecked(false);
-        }
-        //mSwitchBar.setChecked(sharedPreferences.getString("enable", "1").equals("1"));
-        //String resolutionValue=sharedPreferences.getString("resolution", "1280x720p-60");
-        //Log.d(TAG,"onActivityCreated resolutionValue="+resolutionValue);
-        // context.registerReceiver(hdmiReceiver, new IntentFilter("android.intent.action.HDMI_PLUG"));
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         IntentFilter filter = new IntentFilter("android.intent.action.HDMI_PLUGGED");
         getContext().registerReceiver(HdmiListener, filter);
-        updateHDMIState();
+        refreshState();
         mDisplayManager.registerDisplayListener(mDisplayListener, null);
     }
 
@@ -185,101 +172,226 @@ public class HdmiSettings extends SettingsPreferenceFragment
     }
 
     public void onDestroy() {
-        mSwitchBar.removeOnSwitchChangeListener(this);
         super.onDestroy();
         Log.d(TAG, "onDestroy----------------");
     }
 
     private void init() {
-        mIsUseDisplayd = SystemProperties.getBoolean("ro.rk.displayd.enable", false);
-
-        //init hdmi rotation
-        try {
-            wm = IWindowManager.Stub.asInterface(
-                    ServiceManager.getService(Context.WINDOW_SERVICE));
-            int rotation = wm.getDefaultDisplayRotation();
-            switch (rotation) {
-                case Surface.ROTATION_0:
-                    mHdmiRotation.setValue("0");
-                    break;
-                case Surface.ROTATION_90:
-                    mHdmiRotation.setValue("90");
-                    break;
-                case Surface.ROTATION_180:
-                    mHdmiRotation.setValue("180");
-                    break;
-                case Surface.ROTATION_270:
-                    mHdmiRotation.setValue("270");
-                    break;
-                default:
-                    mHdmiRotation.setValue("0");
+        //boolean showSystemRotation = mShowSettings != DISPLAY_SHOW_SETTINGS.ONLY_SHOW_AUX;
+        boolean showSystemRotation = false;
+        if (showSystemRotation) {
+            mSystemRotation = (ListPreference) findPreference(KEY_SYSTEM_ROTATION);
+            mSystemRotation.setOnPreferenceChangeListener(this);
+            try {
+                int rotation = mWindowManager.getDefaultDisplayRotation();
+                switch (rotation) {
+                    case Surface.ROTATION_0:
+                        mSystemRotation.setValue("0");
+                        break;
+                    case Surface.ROTATION_90:
+                        mSystemRotation.setValue("90");
+                        break;
+                    case Surface.ROTATION_180:
+                        mSystemRotation.setValue("180");
+                        break;
+                    case Surface.ROTATION_270:
+                        mSystemRotation.setValue("270");
+                        break;
+                    default:
+                        mSystemRotation.setValue("0");
+                }
+            } catch (Exception e) {
+                Log.e(TAG, e.toString());
             }
-        } catch (Exception e) {
-            Log.e(TAG, e.toString());
+        } else {
+            removePreference(KEY_SYSTEM_ROTATION);
+        }
+        //main
+        if (mShowSettings != ONLY_SHOW_AUX) {
+            mMainDisplayInfo = getDisplayInfo(0);
+            //restore main switch value
+            mMainCategory = (PreferenceCategory) findPreference(KEY_MAIN_CATEGORY);
+            if (mShowSettings == DOUBLE_SHOW) {
+                mMainCategory.setTitle(R.string.screen_main_title);
+            }
+            String switchState = SystemProperties.get(sys_main_state, "on");
+            mMainSwitch = (SwitchPreference) findPreference(KEY_MAIN_SWITCH);
+            if ("on".equals(switchState)) {
+                mMainSwitch.setChecked(true);
+            } else {
+                mMainSwitch.setChecked(false);
+            }
+            mMainSwitch.setOnPreferenceChangeListener(this);
+            mMainCategory.removePreference(mMainSwitch);
+            mMainResolution = (ListPreference) findPreference(KEY_MAIN_RESOLUTION);
+            mMainResolution.setOnPreferenceChangeListener(this);
+            mMainResolution.setOnPreferenceClickListener(this);
+            if (mMainDisplayInfo != null) {
+                mMainResolution.setEntries(DrmDisplaySetting.getDisplayModes(mMainDisplayInfo).toArray(new String[0]));
+                mMainResolution.setEntryValues(DrmDisplaySetting.getDisplayModes(mMainDisplayInfo).toArray(new String[0]));
+            }
+            mMainScale = findPreference(KEY_MAIN_SCALE);
+            mMainScale.setOnPreferenceClickListener(this);
+            //mMainCategory.removePreference(mMainSwitch);
+        } else {
+            removePreference(KEY_MAIN_CATEGORY);
+        }
+
+
+        //aux
+        if (mShowSettings != ONLY_SHOW_MAIN) {
+            mAuxDisplayInfo = getDisplayInfo(1);
+            mAuxCategory = (PreferenceCategory) findPreference(KEY_AUX_CATEGORY);
+            if (mShowSettings == DOUBLE_SHOW) {
+                mAuxCategory.setTitle(R.string.screen_aux_title);
+            }
+            mAuxSwitch = (SwitchPreference) findPreference(KEY_AUX_SWITCH);
+            String switchState = SystemProperties.get(sys_aux_state, "on");
+            if ("on".equals(switchState)) {
+                mAuxSwitch.setChecked(true);
+            } else {
+                mAuxSwitch.setChecked(false);
+            }
+            mAuxSwitch.setOnPreferenceChangeListener(this);
+            mAuxCategory.removePreference(mAuxSwitch);
+            mAuxResolution = (ListPreference) findPreference(KEY_AUX_RESOLUTION);
+            mAuxResolution.setOnPreferenceChangeListener(this);
+            mAuxResolution.setOnPreferenceClickListener(this);
+            if (mAuxDisplayInfo != null) {
+                mAuxResolution.setEntries(DrmDisplaySetting.getDisplayModes(mAuxDisplayInfo).toArray(new String[0]));
+                mAuxResolution.setEntryValues(DrmDisplaySetting.getDisplayModes(mAuxDisplayInfo).toArray(new String[0]));
+            }
+            mAuxScale = findPreference(KEY_AUX_SCALE);
+            mAuxScale.setOnPreferenceClickListener(this);
+
+            mAuxScreenVH = (CheckBoxPreference) findPreference(KEY_AUX_SCREEN_VH);
+            mAuxScreenVH.setChecked(SystemProperties.getBoolean("persist.sys.rotation.efull", false));
+            mAuxScreenVH.setOnPreferenceChangeListener(this);
+            mAuxCategory.removePreference(mAuxScreenVH);
+            mAuxScreenVHList = (ListPreference) findPreference(KEY_AUX_SCREEN_VH_LIST);
+            mAuxScreenVHList.setOnPreferenceChangeListener(this);
+            mAuxScreenVHList.setOnPreferenceClickListener(this);
+            mAuxCategory.removePreference(mAuxScreenVHList);
+        } else {
+            removePreference(KEY_AUX_CATEGORY);
         }
     }
 
-    protected DisplayInfo getDisplayInfo() {
+    protected DisplayInfo getDisplayInfo(int displayId) {
         DrmDisplaySetting.updateDisplayInfos();
-        DisplayInfo mdisplayInfo = DrmDisplaySetting.getHdmiDisplayInfo();
-
-        return mdisplayInfo;
+        return DrmDisplaySetting.getDisplayInfo(displayId);
     }
 
     /**
-     * 还原分辨率值
+     * 获取当前分辨率值
      */
-    public void updateResolutionValue() {
+    public void updateMainResolutionValue() {
         String resolutionValue = null;
-        mDisplayInfo = getDisplayInfo();
-        if (mDisplayInfo != null)
-            resolutionValue = DrmDisplaySetting.getCurDisplayMode(mDisplayInfo);
-        Log.i(TAG, "resolutionValue:" + resolutionValue);
-        mOldResolution = resolutionValue;
-        if (resolutionValue != null)
-            mHdmiResolution.setValue(resolutionValue);
-    }
-
-    private void updateHDMIState() {
-        Display[] allDisplays = mDisplayManager.getDisplays();
-        String switchValue = SystemProperties.get("sys.hdmi_status.aux", "on");
-        if (allDisplays == null || allDisplays.length < 2 || switchValue.equals("off")) {
-            mHdmiResolution.setEnabled(false);
-            mHdmiScale.setEnabled(false);
-            if (SHOW_ROTATION) {
-                mHdmiRotation.setEnabled(false);
-            }
-        } else {
-            new Handler().postDelayed(new Runnable() {
-                public void run() {
-                    mDisplayInfo = getDisplayInfo();
-                    //增加延迟，保证数据能够拿到
-                    if (mDisplayInfo != null) {
-                        mHdmiResolution.setEntries(DrmDisplaySetting.getDisplayModes(mDisplayInfo).toArray(new String[0]));
-                        mHdmiResolution.setEntryValues(DrmDisplaySetting.getDisplayModes(mDisplayInfo).toArray(new String[0]));
-                        updateResolutionValue();
-                        mHdmiResolution.setEnabled(true);
-                        mHdmiScale.setEnabled(true);
-                        if (SHOW_ROTATION) {
-                            mHdmiRotation.setEnabled(true);
-                        }
-                    }
-
-                }
-            }, 1000);
-
+        mMainDisplayInfo = getDisplayInfo(0);
+        if (mMainDisplayInfo != null) {
+            resolutionValue = DrmDisplaySetting.getCurDisplayMode(mMainDisplayInfo);
+        }
+        Log.i(TAG, "main resolutionValue:" + resolutionValue);
+        mOldMainResolution = resolutionValue;
+        if (resolutionValue != null) {
+            mMainResolution.setValue(resolutionValue);
         }
     }
 
-    protected void showConfirmSetModeDialog() {
-        mDisplayInfo = getDisplayInfo();
-        if (mDisplayInfo != null) {
-            DialogFragment df = ConfirmSetModeDialogFragment.newInstance(mDisplayInfo, new ConfirmSetModeDialogFragment.OnDialogDismissListener() {
+    public void updateAuxResolutionValue() {
+        String resolutionValue = null;
+        mAuxDisplayInfo = getDisplayInfo(1);
+        if (mAuxDisplayInfo != null) {
+            resolutionValue = DrmDisplaySetting.getCurDisplayMode(mAuxDisplayInfo);
+        }
+        Log.i(TAG, "aux resolutionValue:" + resolutionValue);
+        mOldAuxResolution = resolutionValue;
+        if (resolutionValue != null) {
+            mAuxResolution.setValue(resolutionValue);
+        }
+    }
+
+    private void updateMainState() {
+//        Display[] allDisplays = mDisplayManager.getDisplays();
+//        String switchValue = SystemProperties.get("sys.hdmi_status.aux", "on");
+//        if (allDisplays == null || allDisplays.length < 2 || switchValue.equals("off")) {
+//            mHdmiResolution.setEnabled(false);
+//            mHdmiScale.setEnabled(false);
+//            mHdmiRotation.setEnabled(false);
+//        } else {
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                mMainDisplayInfo = getDisplayInfo(0);
+                //增加延迟，保证数据能够拿到
+                if (mMainDisplayInfo != null) {
+                    mMainResolution.setEntries(DrmDisplaySetting.getDisplayModes(mMainDisplayInfo).toArray(new String[0]));
+                    mMainResolution.setEntryValues(DrmDisplaySetting.getDisplayModes(mMainDisplayInfo).toArray(new String[0]));
+                    updateMainResolutionValue();
+                    mMainResolution.setEnabled(true);
+                    mMainScale.setEnabled(true);
+                } else {
+                    mMainResolution.setEnabled(false);
+                    mMainScale.setEnabled(false);
+                }
+
+            }
+        }, 1000);
+    }
+
+    private void updateAuxState() {
+//        Display[] allDisplays = mDisplayManager.getDisplays();
+//        String switchValue = SystemProperties.get("sys.hdmi_status.aux", "on");
+//        if (allDisplays == null || allDisplays.length < 2 || switchValue.equals("off")) {
+//            mHdmiResolution.setEnabled(false);
+//            mHdmiScale.setEnabled(false);
+//            mHdmiRotation.setEnabled(false);
+//        } else {
+        new Handler().postDelayed(new Runnable() {
+            public void run() {
+                mAuxDisplayInfo = getDisplayInfo(1);
+                //增加延迟，保证数据能够拿到
+                if (mAuxDisplayInfo != null) {
+                    mAuxResolution.setEntries(DrmDisplaySetting.getDisplayModes(mAuxDisplayInfo).toArray(new String[0]));
+                    mAuxResolution.setEntryValues(DrmDisplaySetting.getDisplayModes(mAuxDisplayInfo).toArray(new String[0]));
+                    updateAuxResolutionValue();
+                    mAuxResolution.setEnabled(true);
+                    mAuxScale.setEnabled(true);
+                    mAuxScreenVH.setEnabled(true);
+                    mAuxScreenVHList.setEnabled(true);
+                } else {
+                    mAuxResolution.setEnabled(false);
+                    mAuxScale.setEnabled(false);
+                    mAuxScreenVH.setEnabled(false);
+                    mAuxScreenVHList.setEnabled(false);
+                }
+            }
+        }, 1000);
+    }
+
+    protected void showConfirmSetMainModeDialog() {
+        mMainDisplayInfo = getDisplayInfo(0);
+        if (mMainDisplayInfo != null) {
+            DialogFragment df = ConfirmSetModeDialogFragment.newInstance(mMainDisplayInfo, new ConfirmSetModeDialogFragment.OnDialogDismissListener() {
                 @Override
                 public void onDismiss(boolean isok) {
                     Log.i(TAG, "showConfirmSetModeDialog->onDismiss->isok:" + isok);
-                    Log.i(TAG, "showConfirmSetModeDialog->onDismiss->mOldResolution:" + mOldResolution);
-                    updateResolutionValue();
+                    Log.i(TAG, "showConfirmSetModeDialog->onDismiss->mOldResolution:" + mOldMainResolution);
+                    updateMainResolutionValue();
+                }
+            });
+            df.show(getFragmentManager(), "ConfirmDialog");
+        }
+    }
+
+    protected void showConfirmSetAuxModeDialog() {
+        mAuxDisplayInfo = getDisplayInfo(1);
+        if (mAuxDisplayInfo != null) {
+            DialogFragment df = ConfirmSetModeDialogFragment.newInstance(mAuxDisplayInfo, new ConfirmSetModeDialogFragment.OnDialogDismissListener() {
+                @Override
+                public void onDismiss(boolean isok) {
+                    Log.i(TAG, "showConfirmSetModeDialog->onDismiss->isok:" + isok);
+                    Log.i(TAG, "showConfirmSetModeDialog->onDismiss->mOldAuxResolution:" + mOldAuxResolution);
+                    updateAuxResolutionValue();
                 }
             });
             df.show(getFragmentManager(), "ConfirmDialog");
@@ -294,10 +406,27 @@ public class HdmiSettings extends SettingsPreferenceFragment
 
     @Override
     public boolean onPreferenceClick(Preference preference) {
-        if (preference == mHdmiScale) {
-            startActivity(new Intent(getActivity(), ScreenScaleActivity.class));
-        } else if (preference == mHdmiResolution) {
-            updateHDMIState();
+        if (preference == mMainScale) {
+            Intent screenScaleIntent = new Intent(getActivity(), ScreenScaleActivity.class);
+            mMainDisplayInfo = getDisplayInfo(0);
+            if (mMainDisplayInfo != null) {
+                screenScaleIntent.putExtra(ScreenScaleActivity.EXTRA_DISPLAY_INFO, mMainDisplayInfo);
+                startActivity(screenScaleIntent);
+            }
+        } else if (preference == mMainResolution) {
+            updateMainState();
+        } else if (preference == mAuxScreenVHList) {
+            String value = SystemProperties.get("persist.sys.rotation.einit", "0");
+            mAuxScreenVHList.setValue(value);
+        } else if (preference == mAuxScale) {
+            Intent screenScaleIntent = new Intent(getActivity(), ScreenScaleActivity.class);
+            mAuxDisplayInfo = getDisplayInfo(1);
+            if (mAuxDisplayInfo != null) {
+                screenScaleIntent.putExtra(ScreenScaleActivity.EXTRA_DISPLAY_INFO, mAuxDisplayInfo);
+                startActivity(screenScaleIntent);
+            }
+        } else if (preference == mAuxResolution) {
+            updateAuxState();
         }
         return true;
     }
@@ -307,75 +436,125 @@ public class HdmiSettings extends SettingsPreferenceFragment
         Log.i(TAG, "onPreferenceChange:" + obj);
         String key = preference.getKey();
         Log.d(TAG, key);
-        if (preference == mHdmiResolution) {
-            if (KEY_HDMI_RESOLUTION.equals(key)) {
-                if (obj.equals(mOldResolution))
+        if (preference == mMainResolution) {
+            if (KEY_MAIN_RESOLUTION.equals(key)) {
+                if (obj.equals(mOldMainResolution))
                     return true;
-                int index = mHdmiResolution.findIndexOfValue((String) obj);
-                Log.i(TAG, "onPreferenceChange: index= " + index);
-                mDisplayInfo = getDisplayInfo();
-                if (mDisplayInfo != null) {
-                    DrmDisplaySetting.setDisplayModeTemp(mDisplayInfo, index);
-                    showConfirmSetModeDialog();
+                int index = mMainResolution.findIndexOfValue((String) obj);
+                Log.i(TAG, "onMainPreferenceChange: index= " + index);
+                mMainDisplayInfo = getDisplayInfo(0);
+                if (mMainDisplayInfo != null) {
+                    DrmDisplaySetting.setDisplayModeTemp(mMainDisplayInfo, index);
+                    showConfirmSetMainModeDialog();
                 }
             }
-        } else if (preference == mHdmiRotation) {
-            if (KEY_HDMI_ROTATION.equals(key)) {
+        } else if (preference == mAuxResolution) {
+            if (KEY_AUX_RESOLUTION.equals(key)) {
+                if (obj.equals(mOldAuxResolution))
+                    return true;
+                int index = mAuxResolution.findIndexOfValue((String) obj);
+                Log.i(TAG, "onAuxPreferenceChange: index= " + index);
+                mAuxDisplayInfo = getDisplayInfo(1);
+                if (mAuxDisplayInfo != null) {
+                    DrmDisplaySetting.setDisplayModeTemp(mAuxDisplayInfo, index);
+                    showConfirmSetAuxModeDialog();
+                }
+            }
+        } else if (KEY_MAIN_SWITCH.equals(key)) {
+            if (Boolean.parseBoolean(obj.toString())) {
+                SystemProperties.set(sys_main_state, "on");
+            } else {
+                SystemProperties.set(sys_main_state, "off");
+            }
+            updateMainState();
+        } else if (KEY_AUX_SWITCH.equals(key)) {
+            if (Boolean.parseBoolean(obj.toString())) {
+                SystemProperties.set(sys_aux_state, "on");
+            } else {
+                SystemProperties.set(sys_aux_state, "off");
+            }
+            updateAuxState();
+        } else if (preference == mSystemRotation) {
+            if (KEY_SYSTEM_ROTATION.equals(key)) {
                 try {
                     int value = Integer.parseInt((String) obj);
                     android.os.SystemProperties.set("persist.sys.orientation", (String) obj);
                     Log.d(TAG, "freezeRotation~~~value:" + (String) obj);
-                    if (value == 0)
-                        wm.freezeRotation(Surface.ROTATION_0);
-                    else if (value == 90)
-                        wm.freezeRotation(Surface.ROTATION_90);
-                    else if (value == 180)
-                        wm.freezeRotation(Surface.ROTATION_180);
-                    else if (value == 270)
-                        wm.freezeRotation(Surface.ROTATION_270);
-                    else
+                    if (value == 0) {
+                        mWindowManager.freezeRotation(Surface.ROTATION_0);
+                    } else if (value == 90) {
+                        mWindowManager.freezeRotation(Surface.ROTATION_90);
+                    } else if (value == 180) {
+                        mWindowManager.freezeRotation(Surface.ROTATION_180);
+                    } else if (value == 270) {
+                        mWindowManager.freezeRotation(Surface.ROTATION_270);
+                    } else {
                         return true;
+                    }
                     //android.os.SystemProperties.set("sys.boot_completed", "1");
                 } catch (Exception e) {
                     Log.e(TAG, "freezeRotation error");
                 }
             }
+        } else if (preference == mAuxScreenVH) {
+            if ((Boolean) obj) {
+                SystemProperties.set("persist.sys.rotation.efull", "true");
+            } else {
+                SystemProperties.set("persist.sys.rotation.efull", "false");
+            }
+            SystemProperties.set(sys_aux_state, "off");
+            mAuxSwitch.setEnabled(false);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    SystemProperties.set(sys_aux_state, "on");
+                    mAuxSwitch.setEnabled(true);
+                }
+            }, 500);
+        } else if (preference == mAuxScreenVHList) {
+            SystemProperties.set("persist.sys.rotation.einit", obj.toString());
+            //mDisplayManager.forceScheduleTraversalLocked();
+            SystemProperties.set(sys_aux_state, "off");
+            mAuxSwitch.setEnabled(false);
+            new Handler().postDelayed(new Runnable() {
+                @Override
+                public void run() {
+                    SystemProperties.set(sys_aux_state, "on");
+                    mAuxSwitch.setEnabled(true);
+                }
+            }, 500);
+
         }
         return true;
     }
 
-    public static boolean isAvailable(){
+    public static boolean isAvailable() {
         return "true".equals(SystemProperties.get("ro.rk.hdmisetting"));
     }
 
-    @Override
-    public void onSwitchChanged(Switch switchView, boolean isChecked) {
-        Log.i(TAG, "onSwitchChanged->isChecked:" + isChecked);
-        if (isChecked) {
-            //Settings HDMI on
-            SystemProperties.set("sys.hdmi_status.aux", "on");
-            updateHDMIState();
-        } else {
-            //Settings HDMI off
-            SystemProperties.set("sys.hdmi_status.aux", "off");
-            updateHDMIState();
+    private void refreshState() {
+        if (mShowSettings != ONLY_SHOW_AUX) {
+            updateMainState();
+        }
+        if (mShowSettings != ONLY_SHOW_MAIN) {
+            updateAuxState();
         }
     }
 
     class DisplayListener implements DisplayManager.DisplayListener {
         @Override
         public void onDisplayAdded(int displayId) {
-            updateHDMIState();
+            refreshState();
         }
 
         @Override
         public void onDisplayChanged(int displayId) {
-            updateHDMIState();
+            refreshState();
         }
 
         @Override
         public void onDisplayRemoved(int displayId) {
-            updateHDMIState();
+            refreshState();
         }
     }
 }

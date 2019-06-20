@@ -45,6 +45,7 @@ public class ScreenScaleActivity extends Activity {
     private static final int MIN_SCALE = 80;
 
     public static final int SYSTEM_UI_FLAG_SHOW_FULLSCREEN = 0x00000004;
+    public static final String EXTRA_DISPLAY_INFO = "extra_display_info";
 
     private int mScreenWidth = 0;
     private int mScreenHeight = 0;
@@ -56,6 +57,10 @@ public class ScreenScaleActivity extends Activity {
     public static final String PROPERTY_OVERSCAN_AUX = "persist.sys.overscan.aux";
     private final int DISPLAY_OVERSCAN_X = 0;
     private final int DISPLAY_OVERSCAN_Y = 1;
+    private final int OVERSCAN_LEFT = 0;
+    private final int OVERSCAN_TOP = 1;
+    private final int OVERSCAN_RIGHT = 2;
+    private final int OVERSCAN_BOTTOM = 3;
 
     /**
      * 当前设备的显示信息
@@ -287,7 +292,8 @@ public class ScreenScaleActivity extends Activity {
         mLeftScale += 1;
         if (mLeftScale > MAX_SCALE)
             mLeftScale = MAX_SCALE;
-        setOverScanProperty(DISPLAY_OVERSCAN_X, mLeftScale);
+        setOverScanProperty(OVERSCAN_LEFT, mLeftScale);
+        setOverScanProperty(OVERSCAN_RIGHT, mLeftScale);
         if (!isClick) {
             mRightButton.setImageResource(R.drawable.ic_screen_scale_right_pressed);
             mHandler.removeMessages(RightButtonResume);
@@ -299,7 +305,8 @@ public class ScreenScaleActivity extends Activity {
         mLeftScale -= 1;
         if (mLeftScale < MIN_SCALE)
             mLeftScale = MIN_SCALE;
-        setOverScanProperty(DISPLAY_OVERSCAN_X, mLeftScale);
+        setOverScanProperty(OVERSCAN_LEFT, mLeftScale);
+        setOverScanProperty(OVERSCAN_RIGHT, mLeftScale);
         if (!isClick) {
             mLeftButton.setImageResource(R.drawable.ic_screen_scale_left_pressed);
             mHandler.removeMessages(LeftButtonResume);
@@ -311,7 +318,8 @@ public class ScreenScaleActivity extends Activity {
         mBottomScale -= 1;
         if (mBottomScale < MIN_SCALE)
             mBottomScale = MIN_SCALE;
-        setOverScanProperty(DISPLAY_OVERSCAN_Y, mBottomScale);
+        setOverScanProperty(OVERSCAN_TOP, mBottomScale);
+        setOverScanProperty(OVERSCAN_BOTTOM, mBottomScale);
         if (!isClick) {
             mUpButton.setImageResource(R.drawable.ic_screen_scale_up_pressed);
             mHandler.removeMessages(UpButtonResume);
@@ -323,7 +331,8 @@ public class ScreenScaleActivity extends Activity {
         mBottomScale += 1;
         if (mBottomScale > MAX_SCALE)
             mBottomScale = MAX_SCALE;
-        setOverScanProperty(DISPLAY_OVERSCAN_Y, mBottomScale);
+        setOverScanProperty(OVERSCAN_TOP, mBottomScale);
+        setOverScanProperty(OVERSCAN_BOTTOM, mBottomScale);
         if (!isClick) {
             mDownButton.setImageResource(R.drawable.ic_screen_scale_down_pressed);
             mHandler.removeMessages(DownButtonResume);
@@ -335,8 +344,7 @@ public class ScreenScaleActivity extends Activity {
      * 初始化数据
      */
     public void initData() {
-        DrmDisplaySetting.updateDisplayInfos();
-        mDisplayInfo = DrmDisplaySetting.getHdmiDisplayInfo();
+        mDisplayInfo = (DisplayInfo) getIntent().getSerializableExtra(EXTRA_DISPLAY_INFO);
         if (null == mDisplayInfo) {
             Toast.makeText(this, "not display info", Toast.LENGTH_SHORT).show();
             finish();

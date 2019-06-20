@@ -1227,4 +1227,16 @@
         <item>180</item>
         <item>270</item>
     </string-array>
+    <string-array name="dual_screen_ver_hor_entries">
+        <item>0</item>
+        <item>90</item>
+        <item>180</item>
+        <item>270</item>
+    </string-array>
+    <string-array name="dual_screen_ver_hor_values">
+        <item>0</item>
+        <item>1</item>
+        <item>2</item>
+        <item>3</item>
+    </string-array>
 </resources>
