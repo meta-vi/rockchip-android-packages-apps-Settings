@@ -112,6 +112,7 @@
             android:usesCleartextTraffic="true"
             android:defaultToDeviceProtectedStorage="true"
             android:directBootAware="true"
+            android:name=".SettingsApplication"
             android:appComponentFactory="androidx.core.app.CoreComponentFactory">
 
         <uses-library android:name="org.apache.http.legacy" />
@@ -3272,6 +3273,27 @@
             </intent-filter>
             <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
                 android:value="com.android.settings.gestures.GlobalActionsPanelSettings" />
+        </activity>
+
+        <!-- SCREENSHOT -->
+        <activity
+            android:name="Settings$ScreenshotSettingsActivity"
+            android:label="@string/screenshot_manager"
+            android:icon="@drawable/ic_homepage_screenshot"
+            android:configChanges="orientation|keyboardHidden|screenSize"
+            android:parentActivityName="Settings">
+            <intent-filter android:priority="1">
+                <action android:name="android.settings.SCREENSHOT_SETTINGS" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+            <intent-filter android:priority="60">
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="com.android.settings.SHORTCUT" />
+            </intent-filter>
+            <meta-data android:name="com.android.settings.FRAGMENT_CLASS"
+                android:value="com.android.settings.ScreenshotSettings" />
+            <meta-data android:name="com.android.settings.PRIMARY_PROFILE_CONTROLLED"
+                android:value="true" />
         </activity>
 
         <!-- This is the longest AndroidManifest.xml ever. -->
