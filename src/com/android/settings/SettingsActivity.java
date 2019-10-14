@@ -30,6 +30,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.res.Resources.Theme;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.SystemProperties;
 import android.os.UserHandle;
 import android.os.UserManager;
 import android.text.TextUtils;
@@ -640,6 +641,10 @@ public class SettingsActivity extends SettingsBaseActivity
                         Settings.WifiDisplaySettingsActivity.class.getName()),
                 WifiDisplaySettings.isAvailable(this), isAdmin)
                 || somethingChanged;
+
+        somethingChanged = setTileEnabled(changedList, new ComponentName(packageName,
+                        Settings.ScreenshotSettingsActivity.class.getName()),
+                SystemProperties.get("ro.build.characteristics","null").equals("tablet"), isAdmin) || somethingChanged;
 
         if (UserHandle.MU_ENABLED && !isAdmin) {
 
