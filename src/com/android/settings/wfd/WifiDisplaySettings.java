@@ -225,7 +225,7 @@ public final class WifiDisplaySettings extends SettingsPreferenceFragment implem
     public static boolean isAvailable(Context context) {
         return context.getSystemService(Context.DISPLAY_SERVICE) != null
                 && context.getPackageManager().hasSystemFeature(PackageManager.FEATURE_WIFI_DIRECT)
-                && !"tablet".equals(android.os.SystemProperties.get("ro.target.product"))
+                //&& !"tablet".equals(android.os.SystemProperties.get("ro.target.product"))
                 && context.getSystemService(Context.WIFI_P2P_SERVICE) != null;
     }
 
