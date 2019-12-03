@@ -419,6 +419,7 @@ public class DevelopmentSettingsDashboardFragment extends RestrictedDashboardFra
         controllers.add(new LocalTerminalPreferenceController(context));
         controllers.add(new BugReportInPowerPreferenceController(context));
         controllers.add(new AbcPreferenceController(context));
+        controllers.add(new NetAdbPreferenceController(context));
         controllers.add(new AutomaticSystemServerHeapDumpPreferenceController(context));
         controllers.add(new MockLocationAppPreferenceController(context, fragment));
         controllers.add(new DebugViewAttributesPreferenceController(context));
