@@ -4637,4 +4637,12 @@
     <string name="dual_cdma_sim_warning_notification_channel_title" msgid="4144088600737896010">"SIM 卡组合"</string>
     <string name="work_policy_privacy_settings" msgid="2348992644755730215">"您的工作政策信息"</string>
     <string name="work_policy_privacy_settings_summary" msgid="2236899807429121767">"由 IT 管理员管理的设置"</string>
+
+    <!--screen shot-->
+    <string name="app_name">截屏管理器</string>
+    <string name="screenshot_manager">截屏</string>
+    <string name="screenshot_delay_title">延时截屏设置 </string>
+    <string name="screenshot_show">在状态栏上显示截屏按钮</string>
+    <string name="screenshot_version">截屏管理器版本</string>
+    <string name="later">秒以后截屏</string>
 </resources>
