@@ -57,6 +57,7 @@ import com.android.settings.core.SettingsBaseActivity;
 import com.android.settings.core.SubSettingLauncher;
 import com.android.settings.core.gateway.SettingsGateway;
 import com.android.settings.dashboard.DashboardFeatureProvider;
+import com.android.settings.ethernet.EthernetSettings;
 import com.android.settings.homepage.TopLevelSettings;
 import com.android.settings.overlay.FeatureFactory;
 import com.android.settings.wfd.WifiDisplaySettings;
@@ -645,6 +646,11 @@ public class SettingsActivity extends SettingsBaseActivity
         somethingChanged = setTileEnabled(changedList, new ComponentName(packageName,
                         Settings.ScreenshotSettingsActivity.class.getName()),
                 SystemProperties.get("ro.build.characteristics","null").equals("tablet"), isAdmin) || somethingChanged;
+
+        somethingChanged = setTileEnabled(changedList, new ComponentName(packageName,
+                        Settings.EthernetSettingsActivity.class.getName()),
+                EthernetSettings.isAvailable(), isAdmin)
+                || somethingChanged;
 
         if (UserHandle.MU_ENABLED && !isAdmin) {
 

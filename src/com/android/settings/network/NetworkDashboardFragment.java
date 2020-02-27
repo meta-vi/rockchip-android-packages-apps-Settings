@@ -30,6 +30,7 @@ import com.android.settings.R;
 import com.android.settings.core.FeatureFlags;
 import com.android.settings.dashboard.DashboardFragment;
 import com.android.settings.development.featureflags.FeatureFlagPersistent;
+import com.android.settings.ethernet.EthernetSettingsPreferenceController;
 import com.android.settings.network.MobilePlanPreferenceController.MobilePlanPreferenceHost;
 import com.android.settings.search.BaseSearchIndexProvider;
 import com.android.settings.wifi.WifiMasterSwitchPreferenceController;
@@ -129,6 +130,7 @@ public class NetworkDashboardFragment extends DashboardFragment implements
         controllers.add(mobilePlanPreferenceController);
         controllers.add(wifiPreferenceController);
         controllers.add(privateDnsPreferenceController);
+        controllers.add(new EthernetSettingsPreferenceController(context, "ethernet_settings"));
         return controllers;
     }
 
