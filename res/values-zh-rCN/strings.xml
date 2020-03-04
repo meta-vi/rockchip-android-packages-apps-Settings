@@ -4645,4 +4645,8 @@
     <string name="screenshot_show">在状态栏上显示截屏按钮</string>
     <string name="screenshot_version">截屏管理器版本</string>
     <string name="later">秒以后截屏</string>
+    <string name="attestation_device_id">"串号信息"</string>
+    <string name="attestation_device_id_success">"已写号"</string>
+    <string name="attestation_device_id_failed">"未写号"</string>
+
 </resources>

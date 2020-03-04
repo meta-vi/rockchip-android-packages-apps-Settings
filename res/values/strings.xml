@@ -11403,4 +11403,8 @@
     <string name="screenshot_show">Show the screenshot button in the statusbar</string>
     <string name="screenshot_version">Show the version of screenshot manager.</string>
     <string name="later">s later capture</string>
+    <string name="attestation_device_id">device id info</string>
+    <string name="attestation_device_id_success">already written</string>
+    <string name="attestation_device_id_failed">none</string>
+
 </resources>
