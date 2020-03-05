@@ -19,6 +19,7 @@ package com.android.settings;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.content.ActivityNotFoundException;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.PersistableBundle;
@@ -73,10 +74,15 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
     private static final String KEY_SAFETY_LEGAL = "safetylegal";
 
     static final int TAPS_TO_BE_A_DEVELOPER = 7;
+    static final int TAPS_TO_START_DEBUGGER = 10;
+    static final String ACTION_DEBUGGER = "com.asus.debugger.SETTING_DEBUGGER";
 
     long[] mHits = new long[3];
+    long mDebuggerHitTime;
     int mDevHitCountdown;
+    int mDeubggerHitCountdown;
     Toast mDevHitToast;
+    Toast mDeubggerDevHitToast;
 
     private UserManager mUm;
 
@@ -119,6 +125,7 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
         setStringSummary(KEY_BUILD_NUMBER, Build.DISPLAY);
         findPreference(KEY_BUILD_NUMBER).setEnabled(true);
         findPreference(KEY_KERNEL_VERSION).setSummary(DeviceInfoUtils.getFormattedKernelVersion());
+        findPreference(KEY_KERNEL_VERSION).setEnabled(true);
 
         if (!SELinux.isSELinuxEnabled()) {
             String status = getResources().getString(R.string.selinux_status_disabled);
@@ -190,6 +197,8 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
                 Context.MODE_PRIVATE).getBoolean(DevelopmentSettings.PREF_SHOW,
                         android.os.Build.TYPE.equals("eng")) ? -1 : TAPS_TO_BE_A_DEVELOPER;
         mDevHitToast = null;
+        mDeubggerHitCountdown = TAPS_TO_START_DEBUGGER;
+        mDeubggerDevHitToast = null;
         mFunDisallowedAdmin = RestrictedLockUtils.checkIfRestrictionEnforced(
                 getActivity(), UserManager.DISALLOW_FUN, UserHandle.myUserId());
         mFunDisallowedBySystem = RestrictedLockUtils.hasBaseUserRestriction(
@@ -292,6 +301,39 @@ public class DeviceInfoSettings extends SettingsPreferenceFragment implements In
             PersistableBundle b = configManager.getConfig();
             if (b != null && b.getBoolean(CarrierConfigManager.KEY_CI_ACTION_ON_SYS_UPDATE_BOOL)) {
                 ciActionOnSysUpdate(b);
+            }
+        } else if (preference.getKey().equals(KEY_KERNEL_VERSION)) {
+            if(mDeubggerHitCountdown == TAPS_TO_START_DEBUGGER) {
+                mDebuggerHitTime = SystemClock.uptimeMillis();
+            } else if(SystemClock.uptimeMillis() - mDebuggerHitTime > 500) {
+                mDeubggerHitCountdown = TAPS_TO_START_DEBUGGER;
+                return super.onPreferenceTreeClick(preference);
+            } else {
+                mDebuggerHitTime = SystemClock.uptimeMillis();
+            }
+
+            if (mDeubggerHitCountdown > 0) {
+                mDeubggerHitCountdown--;
+                if (mDeubggerHitCountdown == 0) {
+                    try {
+                        Intent intent = new Intent(ACTION_DEBUGGER);
+                        startActivity(intent);
+                    } catch (ActivityNotFoundException e) {
+                        e.printStackTrace();
+                    }
+                    if (mDeubggerDevHitToast != null) {
+                        mDeubggerDevHitToast.cancel();
+                    }
+                    mDeubggerHitCountdown = TAPS_TO_START_DEBUGGER;
+
+                } else if (mDeubggerHitCountdown > 0
+                        && mDeubggerHitCountdown < (TAPS_TO_START_DEBUGGER-2)) {
+                    if (mDeubggerDevHitToast != null) {
+                        mDeubggerDevHitToast.cancel();
+                    }
+                    mDeubggerDevHitToast = Toast.makeText(getActivity(), "Remaining " + mDeubggerHitCountdown,Toast.LENGTH_SHORT);
+                    mDeubggerDevHitToast.show();
+                }
             }
         }
         return super.onPreferenceTreeClick(preference);
