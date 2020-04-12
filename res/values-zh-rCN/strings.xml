@@ -4683,4 +4683,17 @@
     <string name="attestation_device_id">"串号信息"</string>
     <string name="attestation_device_id_success">"已写号"</string>
     <string name="attestation_device_id_failed">"未写号"</string>
+
+    <!--hdmi settings-->
+    <string name="system_rotation">"系统方向"</string>
+    <string name="screen_title">"屏幕设置"</string>
+    <string name="screen_main_title">"主屏"</string>
+    <string name="screen_aux_title">"副屏"</string>
+    <string name="screen_switch">"开关"</string>
+    <string name="screen_resolution">"分辨率设置"</string>
+    <string name="screen_scale">"屏幕缩放"</string>
+    <string name="screen_rotation">"屏幕旋转"</string>
+    <string name="screen_full_vh">"满屏显示"</string>
+    <string name="confirm_dialog_title">保存确认</string>
+    <string name="confirm_dialog_message">将会取消</string>
 </resources>
