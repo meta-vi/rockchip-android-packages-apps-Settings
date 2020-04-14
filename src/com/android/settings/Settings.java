@@ -179,5 +179,6 @@ public class Settings extends SettingsActivity {
     public static class AccountDashboardActivity extends SettingsActivity {}
     public static class SystemDashboardActivity extends SettingsActivity {}
     public static class ScreenshotSettingsActivity extends SettingsActivity { /* empty */ }
+    public static class HdmiSettingsActivity extends SettingsActivity {}
 
 }
