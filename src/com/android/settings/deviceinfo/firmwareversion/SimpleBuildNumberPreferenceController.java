@@ -17,12 +17,28 @@
 package com.android.settings.deviceinfo.firmwareversion;
 
 import android.content.Context;
+import android.content.Intent;
+import android.content.ActivityNotFoundException;
 import android.os.Build;
 import android.text.BidiFormatter;
+import android.os.SystemClock;
+import android.text.TextUtils;
+import androidx.preference.Preference;
+import android.widget.Toast;
 
+import com.android.settingslib.core.lifecycle.LifecycleObserver;
+import com.android.settingslib.core.lifecycle.events.OnResume;
 import com.android.settings.core.BasePreferenceController;
 
-public class SimpleBuildNumberPreferenceController extends BasePreferenceController {
+public class SimpleBuildNumberPreferenceController extends BasePreferenceController implements
+        LifecycleObserver, OnResume {
+
+    static final int TAPS_TO_START_DEBUGGER = 10;
+    static final String ACTION_DEBUGGER = "com.asus.debugger.SETTING_DEBUGGER";
+
+    private long mDebuggerHitTime;
+    private int mDeubggerHitCountdown;
+    private Toast mDeubggerDevHitToast;
 
     public SimpleBuildNumberPreferenceController(Context context,
             String preferenceKey) {
@@ -37,5 +53,52 @@ public class SimpleBuildNumberPreferenceController extends BasePreferenceControl
     @Override
     public CharSequence getSummary() {
         return BidiFormatter.getInstance().unicodeWrap(Build.DISPLAY);
+    }
+
+        @Override
+    public void onResume() {
+        mDeubggerHitCountdown = TAPS_TO_START_DEBUGGER;
+        mDeubggerDevHitToast = null;
+    }
+
+    @Override
+    public boolean handlePreferenceTreeClick(Preference preference) {
+        if (!TextUtils.equals(preference.getKey(), getPreferenceKey())) {
+            return false;
+        }
+
+        if(mDeubggerHitCountdown == TAPS_TO_START_DEBUGGER) {
+            mDebuggerHitTime = SystemClock.uptimeMillis();
+        } else if(SystemClock.uptimeMillis() - mDebuggerHitTime > 500) {
+            mDeubggerHitCountdown = TAPS_TO_START_DEBUGGER;
+            return true;
+        } else {
+            mDebuggerHitTime = SystemClock.uptimeMillis();
+        }
+
+        if (mDeubggerHitCountdown > 0) {
+            mDeubggerHitCountdown--;
+            if (mDeubggerHitCountdown == 0) {
+                try {
+                    Intent intent = new Intent(ACTION_DEBUGGER);
+                    mContext.startActivity(intent);
+                } catch (ActivityNotFoundException e) {
+                    e.printStackTrace();
+                }
+                if (mDeubggerDevHitToast != null) {
+                    mDeubggerDevHitToast.cancel();
+                }
+                mDeubggerHitCountdown = TAPS_TO_START_DEBUGGER;
+
+            } else if (mDeubggerHitCountdown > 0
+                    && mDeubggerHitCountdown < (TAPS_TO_START_DEBUGGER-2)) {
+                if (mDeubggerDevHitToast != null) {
+                    mDeubggerDevHitToast.cancel();
+                }
+                mDeubggerDevHitToast = Toast.makeText(mContext, "Remaining " + mDeubggerHitCountdown,Toast.LENGTH_SHORT);
+                mDeubggerDevHitToast.show();
+            }
+        }
+        return true;
     }
 }
