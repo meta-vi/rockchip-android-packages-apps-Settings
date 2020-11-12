@@ -656,4 +656,9 @@
     <style name="AccessibilityDialogButtonDeny"
            parent="@style/AccessibilityDialogButton"></style>
 
+    <style name="PickerDialogTheme.Settings" parent="@*android:style/ThemeOverlay.Material.Dialog.DatePicker">
+        <item name="android:clipToPadding">true</item>
+        <item name="android:clipChildren">true</item>
+    </style>
+
 </resources>
