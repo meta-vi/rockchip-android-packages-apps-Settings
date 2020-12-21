@@ -43,12 +43,14 @@ import com.android.settingslib.core.lifecycle.events.OnStart;
 import com.android.settingslib.core.lifecycle.events.OnStop;
 
 import java.text.NumberFormat;
+import java.io.File;
 
 public class BrightnessLevelPreferenceController extends AbstractPreferenceController implements
         PreferenceControllerMixin, LifecycleObserver, OnStart, OnStop {
 
     private static final String TAG = "BrightnessPrefCtrl";
     private static final String KEY_BRIGHTNESS = "brightness";
+    private static final String CHECK_DSI_SYSFS_PATH = "/sys/class/drm/card0-DSI-1/status";
     private static final Uri BRIGHTNESS_URI;
     private static final Uri BRIGHTNESS_FOR_VR_URI;
     private static final Uri BRIGHTNESS_ADJ_URI;
@@ -94,7 +96,12 @@ public class BrightnessLevelPreferenceController extends AbstractPreferenceContr
 
     @Override
     public boolean isAvailable() {
-        return true;
+        File file = new File(CHECK_DSI_SYSFS_PATH);
+
+        if(file.exists())
+            return true;
+        else
+            return false;
     }
 
     @Override
