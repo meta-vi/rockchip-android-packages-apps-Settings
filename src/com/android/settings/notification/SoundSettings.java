@@ -47,6 +47,7 @@ import android.provider.SearchIndexableResource;
 import android.provider.Settings;
 import android.support.v7.preference.Preference;
 import android.support.v7.preference.Preference.OnPreferenceChangeListener;
+import android.support.v7.preference.Preference.OnPreferenceClickListener;
 import android.support.v7.preference.TwoStatePreference;
 import android.text.TextUtils;
 import android.util.Log;
@@ -395,6 +396,18 @@ public class SoundSettings extends SettingsPreferenceFragment implements Indexab
             SystemProperties.set("persist.audio.output", "3");
 
         mAudioOutput = (ListPreference) findPreference(KEY_AUDIO_OUTPUT);
+
+        mAudioOutput.setOnPreferenceClickListener(new OnPreferenceClickListener() {
+            public boolean onPreferenceClick(Preference preference) {
+                String txt = "";
+                txt = SystemProperties.get("persist.audio.output");
+                int txt_value = Integer.parseInt((String) txt);
+                Log.d(TAG, "txt_value = " + txt_value);
+                mAudioOutput.setValueIndex(txt_value);
+                return true;
+            }
+        });
+
         mAudioOutput.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
             public boolean onPreferenceChange(Preference preference, Object newValue) {
                 try {
@@ -406,13 +419,6 @@ public class SoundSettings extends SettingsPreferenceFragment implements Indexab
                 return true;
             }
         });
-
-        String txt = "";
-        txt = SystemProperties.get("persist.audio.output");
-        int txt_value = Integer.parseInt((String) txt);
-        Log.d(TAG, "txt_value = " + txt_value);
-
-        mAudioOutput.setValueIndex(txt_value);
     }
 
     private void setAudioOutput(int value) {
