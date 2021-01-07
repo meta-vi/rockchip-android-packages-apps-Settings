@@ -32,6 +32,7 @@ import android.os.storage.StorageEventListener;
 import android.os.storage.StorageManager;
 import android.os.storage.VolumeInfo;
 import android.os.storage.VolumeRecord;
+import android.os.SystemProperties;
 import android.text.TextUtils;
 import android.text.format.Formatter;
 import android.text.format.Formatter.BytesResult;
@@ -195,7 +196,8 @@ public class StorageSettings extends SettingsPreferenceFragment implements Index
         // Show unsupported disks to give a chance to init
         final List<DiskInfo> disks = mStorageManager.getDisks();
         for (DiskInfo disk : disks) {
-            if (disk.volumeCount == 0 && disk.size > 0) {
+            if (disk.volumeCount == 0 && disk.size > 0 &&
+                (!disk.isSd() && !"sd".equals(SystemProperties.get("ro.boot.storagemedia", "")))) {
                 final Preference pref = new Preference(context);
                 pref.setKey(disk.getId());
                 pref.setTitle(disk.getDescription());
