@@ -349,15 +349,12 @@ public class EnabledNetworkModePreferenceController extends
                     entryValues = mContext.getResources().getStringArray(
                             R.array.preferred_network_mode_values_world_mode);
                     entryValuesInt = Stream.of(entryValues).mapToInt(Integer::parseInt).toArray();
-                    if (entryValuesInt.length < 3) {
+                    if (entryValuesInt.length < 1) {
                         throw new IllegalArgumentException(
                                 "PREFERRED_NETWORK_MODE_CHOICES_WORLD_MODE index error.");
                     }
-                    addGlobalEntry(entryValuesInt[0]);
-                    addCustomEntry(mContext.getString(R.string.network_world_mode_cdma_lte),
-                            entryValuesInt[1]);
                     addCustomEntry(mContext.getString(R.string.network_world_mode_gsm_lte),
-                            entryValuesInt[2]);
+                            entryValuesInt[0]);
                     break;
                 default:
                     throw new IllegalArgumentException("Not supported enabled network types.");
@@ -377,7 +374,7 @@ public class EnabledNetworkModePreferenceController extends
         }
 
         private EnabledNetworks getEnabledNetworkType() {
-            EnabledNetworks enabledNetworkType = EnabledNetworks.ENABLED_NETWORKS_UNKNOWN;
+            EnabledNetworks enabledNetworkType = EnabledNetworks.PREFERRED_NETWORK_MODE_CHOICES_WORLD_MODE;
             final int phoneType = mTelephonyManager.getPhoneType();
             final PersistableBundle carrierConfig = mCarrierConfigManager.getConfigForSubId(mSubId);
 
