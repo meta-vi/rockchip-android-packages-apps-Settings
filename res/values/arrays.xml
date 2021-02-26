@@ -1350,8 +1350,6 @@
     </string-array>
 
     <string-array name="preferred_network_mode_values_world_mode" translatable="false">
-        <item>"10"</item>
-        <item>"8"</item>
         <item>"9"</item>
     </string-array>
 
