@@ -180,7 +180,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
 
     private void init() {
         //boolean showSystemRotation = mShowSettings != DISPLAY_SHOW_SETTINGS.ONLY_SHOW_AUX;
-        boolean showSystemRotation = false;
+        boolean showSystemRotation = true;
         if (showSystemRotation) {
             mSystemRotation = (ListPreference) findPreference(KEY_SYSTEM_ROTATION);
             mSystemRotation.setOnPreferenceChangeListener(this);
