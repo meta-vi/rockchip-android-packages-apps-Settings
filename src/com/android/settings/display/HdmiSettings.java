@@ -501,7 +501,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
             if (null == mAuxDisplayInfo) {
                 mMainScale.setEnabled(false);
             }
-            mMainCategory.removePreference(mMainScale);
+            //mMainCategory.removePreference(mMainScale);
             //mMainCategory.removePreference(mMainSwitch);
         } else {
             removePreference(KEY_MAIN_CATEGORY);
@@ -537,7 +537,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
             if (null == mAuxDisplayInfo) {
                 mAuxScale.setEnabled(false);
             }
-            mAuxCategory.removePreference(mAuxScale);
+            //mAuxCategory.removePreference(mAuxScale);
 
             mAuxScreenVH = (CheckBoxPreference) findPreference(KEY_AUX_SCREEN_VH);
             mAuxScreenVH.setChecked(SystemProperties.getBoolean("persist.sys.rotation.efull", false));
