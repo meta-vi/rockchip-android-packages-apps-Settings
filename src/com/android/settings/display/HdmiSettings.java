@@ -68,6 +68,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
     private static final int MSG_UPDATE_STATUS_UI = 1;
     private static final int MSG_SWITCH_DEVICE_STATUS = 2;
     private static final int MSG_UPDATE_DIALOG_INFO = 3;
+    private static final int MSG_SHOW_CONFIRM_DIALOG = 4;
     private static final int SWITCH_STATUS_OFF_ON = 0;
     private static final int SWITCH_STATUS_OFF = 1;
     private static final int SWITCH_STATUS_ON = 2;
@@ -75,6 +76,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
     private static final long TIME_WAIT_DEVICE_CONNECT = 10000;
     //we found setprop not effect sometimes if control quickly
     private static final boolean USED_NODE_SWITCH = true;
+    private static final boolean USED_OFFON_RESOLUTION = false;
 
     /**
      * TODO
@@ -286,6 +288,14 @@ public class HdmiSettings extends SettingsPreferenceFragment
                         mHandler.sendEmptyMessageDelayed(MSG_UPDATE_DIALOG_INFO, 1000);
                     }
                 }
+            } else if (MSG_SHOW_CONFIRM_DIALOG == msg.what) {
+                mHandler.removeMessages(MSG_SHOW_CONFIRM_DIALOG);
+                hideWaitingDialog();
+                if (ITEM_CONTROL.CHANGE_RESOLUTION_MAIN == msg.obj) {
+                    showConfirmSetMainModeDialog();
+                } else if (ITEM_CONTROL.CHANGE_RESOLUTION_AUX == msg.obj) {
+                    showConfirmSetAuxModeDialog();
+                }
             }
         }
     };
@@ -436,6 +446,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
         mHandler.removeMessages(MSG_UPDATE_STATUS);
         mHandler.removeMessages(MSG_SWITCH_DEVICE_STATUS);
         mHandler.removeMessages(MSG_UPDATE_DIALOG_INFO);
+        mHandler.removeMessages(MSG_SHOW_CONFIRM_DIALOG);
         hideWaitingDialog();
         Log.d(TAG, "onDestroy----------------");
     }
@@ -493,13 +504,16 @@ public class HdmiSettings extends SettingsPreferenceFragment
             if (mMainDisplayInfo != null) {
                 mMainResolution.setEntries(DrmDisplaySetting.getDisplayModes(mMainDisplayInfo).toArray(new String[0]));
                 mMainResolution.setEntryValues(DrmDisplaySetting.getDisplayModes(mMainDisplayInfo).toArray(new String[0]));
+                mMainResolution.setEnabled(true);
             } else {
                 mMainResolution.setEnabled(false);
             }
             mMainScale = findPreference(KEY_MAIN_SCALE);
             mMainScale.setOnPreferenceClickListener(this);
-            if (null == mAuxDisplayInfo) {
+            if (null == mMainDisplayInfo) {
                 mMainScale.setEnabled(false);
+            } else {
+                mMainScale.setEnabled(true);
             }
             //mMainCategory.removePreference(mMainScale);
             //mMainCategory.removePreference(mMainSwitch);
@@ -529,6 +543,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
             if (mAuxDisplayInfo != null) {
                 mAuxResolution.setEntries(DrmDisplaySetting.getDisplayModes(mAuxDisplayInfo).toArray(new String[0]));
                 mAuxResolution.setEntryValues(DrmDisplaySetting.getDisplayModes(mAuxDisplayInfo).toArray(new String[0]));
+                mAuxResolution.setEnabled(true);
             } else {
                 mAuxResolution.setEnabled(false);
             }
@@ -536,6 +551,8 @@ public class HdmiSettings extends SettingsPreferenceFragment
             mAuxScale.setOnPreferenceClickListener(this);
             if (null == mAuxDisplayInfo) {
                 mAuxScale.setEnabled(false);
+            } else {
+                mAuxScale.setEnabled(true);
             }
             //mAuxCategory.removePreference(mAuxScale);
 
@@ -635,7 +652,14 @@ public class HdmiSettings extends SettingsPreferenceFragment
                         mMainDisplayInfo = getDisplayInfo(0);
                         if (mMainDisplayInfo != null) {
                             DrmDisplaySetting.setDisplayModeTemp(mMainDisplayInfo, index);
-                            sendSwitchDeviceOffOnMsg(control, SWITCH_STATUS_OFF_ON);
+                            if (USED_OFFON_RESOLUTION) {
+                                sendSwitchDeviceOffOnMsg(control, SWITCH_STATUS_OFF_ON);
+                            } else {
+                                Message message = new Message();
+                                message.what = MSG_SHOW_CONFIRM_DIALOG;
+                                message.obj = control;
+                                mHandler.sendMessageDelayed(message, 300);
+                            }
                         } else {
                             Message message = new Message();
                             message.what = MSG_UPDATE_STATUS_UI;
@@ -648,7 +672,14 @@ public class HdmiSettings extends SettingsPreferenceFragment
                         mAuxDisplayInfo = getDisplayInfo(1);
                         if (mAuxDisplayInfo != null) {
                             DrmDisplaySetting.setDisplayModeTemp(mAuxDisplayInfo, index);
-                            sendSwitchDeviceOffOnMsg(control, SWITCH_STATUS_OFF_ON);
+                            if (USED_OFFON_RESOLUTION) {
+                                sendSwitchDeviceOffOnMsg(control, SWITCH_STATUS_OFF_ON);
+                            } else {
+                                Message message = new Message();
+                                message.what = MSG_SHOW_CONFIRM_DIALOG;
+                                message.obj = control;
+                                mHandler.sendMessageDelayed(message, 300);
+                            }
                         } else {
                             Message message = new Message();
                             message.what = MSG_UPDATE_STATUS_UI;
@@ -759,8 +790,15 @@ public class HdmiSettings extends SettingsPreferenceFragment
                         if (!isok) {
                             mMainResolution.setEnabled(false);
                             mMainScale.setEnabled(false);
-                            showWaitingDialog(R.string.dialog_wait_screen_connect);
-                            sendSwitchDeviceOffOnMsg(ITEM_CONTROL.REFRESH_MAIN_INFO, SWITCH_STATUS_OFF_ON);
+                            if (USED_OFFON_RESOLUTION) {
+                                showWaitingDialog(R.string.dialog_wait_screen_connect);
+                                sendSwitchDeviceOffOnMsg(ITEM_CONTROL.REFRESH_MAIN_INFO, SWITCH_STATUS_OFF_ON);
+                            } else {
+                                showWaitingDialog(R.string.dialog_update_resolution);
+                                sendUpdateStateMsg(ITEM_CONTROL.REFRESH_MAIN_INFO, 1000);
+                            }
+                        } else if (!USED_OFFON_RESOLUTION) {
+                            updateMainStateUI(ITEM_CONTROL.REFRESH_MAIN_INFO);
                         }
                     }
                 }
@@ -783,8 +821,15 @@ public class HdmiSettings extends SettingsPreferenceFragment
                         if (!isok) {
                             mAuxResolution.setEnabled(false);
                             mAuxScale.setEnabled(true);
-                            showWaitingDialog(R.string.dialog_wait_screen_connect);
-                            sendSwitchDeviceOffOnMsg(ITEM_CONTROL.REFRESH_AUX_INFO, SWITCH_STATUS_OFF_ON);//not effect with setprop? so directly write node
+                            if (USED_OFFON_RESOLUTION) {
+                                showWaitingDialog(R.string.dialog_wait_screen_connect);
+                                sendSwitchDeviceOffOnMsg(ITEM_CONTROL.REFRESH_AUX_INFO, SWITCH_STATUS_OFF_ON);//not effect with setprop? so directly write node
+                            } else {
+                                showWaitingDialog(R.string.dialog_update_resolution);
+                                sendUpdateStateMsg(ITEM_CONTROL.REFRESH_AUX_INFO, 1000);
+                            }
+                        } else if (!USED_OFFON_RESOLUTION) {
+                            updateAuxStateUI(ITEM_CONTROL.REFRESH_AUX_INFO);
                         }
                     }
                 }
