@@ -11503,4 +11503,5 @@
     <string name="screen_full_vh">screen full display</string>
     <string name="confirm_dialog_title">Save Confirm</string>
     <string name="confirm_dialog_message">Will cancel it</string>
+    <string name="hdmi_cec_switch">HDMI CEC</string>
 </resources>

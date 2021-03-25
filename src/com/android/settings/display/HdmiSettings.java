@@ -10,6 +10,8 @@ import android.os.Handler;
 import android.os.ServiceManager;
 import android.os.SystemProperties;
 import android.preference.Preference.OnPreferenceChangeListener;
+import android.provider.Settings;
+import android.provider.Settings.Global;
 import android.util.Log;
 import android.view.IWindowManager;
 import android.view.LayoutInflater;
@@ -53,6 +55,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
     private static final String KEY_AUX_SCREEN_VH_LIST = "aux_screen_vhlist";
     private static final String SYS_HDMI_STATE = "sys.hdmi_status.aux";
     private static final String SYS_DP_STATE = "sys.dp_status.aux";
+    private static final String KEY_HDMI_CEC_SWITCH = "hdmi_cec_switch";
     /**
      * TODO
      * 目前hwc只配置了hdmi和dp的开关，如果是其他的设备，需要配合修改，才能进行开关
@@ -82,6 +85,8 @@ public class HdmiSettings extends SettingsPreferenceFragment
     private DisplayListener mDisplayListener;
     private IWindowManager mWindowManager;
     private DISPLAY_SHOW_SETTINGS mShowSettings = ONLY_SHOW_AUX;
+    private SwitchPreference mHdmiCec;
+    private int mHdmiControlEnabled;
 
     enum DISPLAY_SHOW_SETTINGS {
         ONLY_SHOW_MAIN,
@@ -208,6 +213,19 @@ public class HdmiSettings extends SettingsPreferenceFragment
         } else {
             removePreference(KEY_SYSTEM_ROTATION);
         }
+
+
+        //HDMI CEC
+        mHdmiControlEnabled = Settings.Global.getInt(getContext().getContentResolver(), Global.HDMI_CONTROL_ENABLED, 0);
+        mHdmiCec = (SwitchPreference) findPreference(KEY_HDMI_CEC_SWITCH);
+        if (mHdmiControlEnabled == 1) {
+            mHdmiCec.setChecked(true);
+        } else {
+            mHdmiCec.setChecked(false);
+		}
+        mHdmiCec.setOnPreferenceClickListener(this);
+
+
         //main
         if (mShowSettings != ONLY_SHOW_AUX) {
             mMainDisplayInfo = getDisplayInfo(0);
@@ -312,6 +330,17 @@ public class HdmiSettings extends SettingsPreferenceFragment
         mOldAuxResolution = resolutionValue;
         if (resolutionValue != null) {
             mAuxResolution.setValue(resolutionValue);
+        }
+    }
+
+    public void UpdateHdmiCecValue() {
+        mHdmiControlEnabled = Settings.Global.getInt(getContext().getContentResolver(), Global.HDMI_CONTROL_ENABLED, 0);
+        if (mHdmiControlEnabled == 1) {
+            Settings.Global.putInt(getContext().getContentResolver(), Global.HDMI_CONTROL_ENABLED, 0);
+            Log.i(TAG, "Disable HDMI-CEC");
+        } else {
+            Settings.Global.putInt(getContext().getContentResolver(), Global.HDMI_CONTROL_ENABLED, 1);
+            Log.i(TAG, "Enable HDMI-CEC");
         }
     }
 
@@ -431,6 +460,8 @@ public class HdmiSettings extends SettingsPreferenceFragment
             }
         } else if (preference == mAuxResolution) {
             updateAuxState();
+        } else if (preference == mHdmiCec) {
+            UpdateHdmiCecValue();
         }
         return true;
     }
