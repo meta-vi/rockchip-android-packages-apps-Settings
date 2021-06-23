@@ -52,8 +52,16 @@ public class DrmDisplaySetting {
     }
 
     public static String[] getConnectorInfo() {
-        RkDisplayOutputManager manager = new RkDisplayOutputManager();
-        return manager.getConnectorInfo();
+        Object rkDisplayOutputManager = null;
+        try {
+            rkDisplayOutputManager = Class.forName("android.os.RkDisplayOutputManager").newInstance();
+        } catch (Exception e) {
+            // no handle
+        }
+        if (rkDisplayOutputManager != null) {
+            return (String[]) ReflectUtils.invokeMethodNoParameter(rkDisplayOutputManager, "getConnectorInfo");
+        }
+        return null;
     }
 
     public static Rect getOverScan(int display) {
