@@ -326,7 +326,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
         super.onCreate(savedInstanceState);
         context = getActivity();
         mRotation = getActivity().getRequestedOrientation();
-        getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
+        //getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
         mDisplayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
         mWindowManager = IWindowManager.Stub.asInterface(
                 ServiceManager.getService(Context.WINDOW_SERVICE));
@@ -453,7 +453,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
 
     private void init() {
         //boolean showSystemRotation = mShowSettings != DISPLAY_SHOW_SETTINGS.ONLY_SHOW_AUX;
-        boolean showSystemRotation = false;
+        boolean showSystemRotation = true;
         if (showSystemRotation) {
             mSystemRotation = (ListPreference) findPreference(KEY_SYSTEM_ROTATION);
             mSystemRotation.setOnPreferenceChangeListener(this);
