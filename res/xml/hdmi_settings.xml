@@ -7,6 +7,11 @@
         android:key="system_rotation"
         android:title="@string/system_rotation" />
 
+    <SwitchPreference
+        android:key="hdmi_cec_switch"
+        android:persistent="true"
+        android:title="@string/hdmi_cec_switch" />
+
     <PreferenceCategory
         android:key="main_category"
         android:title="@string/screen_title">
