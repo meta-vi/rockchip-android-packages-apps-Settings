@@ -20,6 +20,7 @@ import android.app.ActivityManager;
 import android.app.settings.SettingsEnums;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.os.RemoteException;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -49,6 +50,12 @@ public class BugreportPreference extends CustomDialogPreferenceCompat {
     protected void onPrepareDialogBuilder(Builder builder,
             DialogInterface.OnClickListener listener) {
         super.onPrepareDialogBuilder(builder, listener);
+
+        Intent bIntent = new Intent();
+        bIntent.setAction("com.asus.debugger.intent_action.bugreport");
+        bIntent.setPackage("com.android.settings");
+        //bIntent.setClass(context, KernelVersionPreferenceController.class);
+        getContext().sendBroadcast(bIntent);
 
         final View dialogView = View.inflate(getContext(), R.layout.bugreport_options_dialog, null);
         mInteractiveTitle = (CheckedTextView) dialogView
@@ -86,6 +93,7 @@ public class BugreportPreference extends CustomDialogPreferenceCompat {
 
             final Context context = getContext();
             if (mFullTitle.isChecked()) {
+
                 Log.v(TAG, "Taking full bugreport right away");
                 FeatureFactory.getFactory(context).getMetricsFeatureProvider().action(context,
                         SettingsEnums.ACTION_BUGREPORT_FROM_SETTINGS_FULL);
