@@ -44,6 +44,11 @@
             android:key="touch_sounds"
             android:title="@string/touch_sounds_title" />
 
+    <!-- Spdif sounds -->
+    <SwitchPreference
+            android:key="spdif_sounds"
+            android:title="@string/spdif_sounds_title" />
+
     <!-- Vibrate on touch -->
     <SwitchPreference
             android:key="vibrate_on_touch"

@@ -26,6 +26,15 @@ import android.os.Message;
 import android.os.UserHandle;
 import android.preference.SeekBarVolumizer;
 import android.text.TextUtils;
+import android.view.View;
+import android.view.ViewGroup;
+import android.view.KeyEvent;
+import android.view.inputmethod.BaseInputConnection;
+import android.os.RemoteException;
+import android.os.SystemProperties;
+import android.util.Log;
+import androidx.preference.SwitchPreference;
+import androidx.preference.Preference.OnPreferenceChangeListener;
 
 import androidx.annotation.VisibleForTesting;
 import androidx.preference.ListPreference;
@@ -77,6 +86,8 @@ public class SoundSettings extends DashboardFragment implements OnActivityResult
     private UpdatableListPreferenceDialogFragment mDialogFragment;
     private String mHfpOutputControllerKey;
     private String mVibrationPreferencesKey = "vibration_preference_screen";
+    private SwitchPreference mSpdifSounds;
+    private static final String KEY_SPDIF_SOUNDS = "spdif_sounds";
 
     @Override
     public int getMetricsCategory() {
@@ -97,6 +108,45 @@ public class SoundSettings extends DashboardFragment implements OnActivityResult
                             .findFragmentByTag(TAG);
             mDialogFragment = dialogFragment;
         }
+        initSpdifOutput();
+    }
+
+    private void initSpdifOutput() {
+        mSpdifSounds = (SwitchPreference)findPreference(KEY_SPDIF_SOUNDS);
+        String persist_spdif_sounds = "";
+        persist_spdif_sounds = SystemProperties.get("persist.spdif_sounds");
+
+        int persist_spdif_sounds_value = Integer.parseInt(persist_spdif_sounds);
+
+        if (persist_spdif_sounds_value == 1)
+            mSpdifSounds.setChecked(true);
+        else
+            mSpdifSounds.setChecked(false);
+
+        mSpdifSounds.setOnPreferenceChangeListener(new OnPreferenceChangeListener() {
+            public boolean onPreferenceChange(Preference preference, Object newValue) {
+
+                String value = String.valueOf(newValue);
+
+                if (value == "true")
+                    SystemProperties.set("persist.spdif_sounds","1");
+                else
+                    SystemProperties.set("persist.spdif_sounds","0");
+
+                String txta = "";
+                txta = SystemProperties.get("persist.spdif_sounds");
+                Log.i(TAG, "SPDIF Output Status : " + txta);
+
+                View view = View.inflate(getActivity(), R.layout.spdif_sounds, null);
+                BaseInputConnection mInputConnection = new BaseInputConnection(view.findViewById(R.id.hint), true);
+                KeyEvent kd = new KeyEvent(KeyEvent.ACTION_DOWN, KeyEvent.KEYCODE_MEDIA_PAUSE);
+                KeyEvent ku = new KeyEvent(KeyEvent.ACTION_UP, KeyEvent.KEYCODE_MEDIA_PAUSE);
+                mInputConnection.sendKeyEvent(kd);
+                mInputConnection.sendKeyEvent(ku);
+
+                return true;
+            }
+        });
     }
 
     @Override
