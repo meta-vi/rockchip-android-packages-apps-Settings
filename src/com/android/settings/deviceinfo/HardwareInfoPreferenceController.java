@@ -59,7 +59,8 @@ public class HardwareInfoPreferenceController extends BasePreferenceController {
         try {
             // Wait for msv suffix value.
             final String msvSuffix = msvSuffixTask.get();
-            return Build.MODEL + msvSuffix;
+            if(!msvSuffix.isEmpty())
+                return msvSuffix;
         } catch (ExecutionException e) {
             Log.e(TAG, "Execution error, so we only show model name");
         } catch (InterruptedException e) {
