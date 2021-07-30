@@ -23,10 +23,25 @@ import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
 import com.android.settings.slices.Sliceable;
 
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
 public class HardwareRevisionPreferenceController extends BasePreferenceController {
+
+    private static final String BOARD_VERSION = "/proc/boardver";
 
     public HardwareRevisionPreferenceController(Context context, String preferenceKey) {
         super(context, preferenceKey);
+    }
+
+    private static String readLine(String filename) throws IOException {
+        BufferedReader reader = new BufferedReader(new FileReader(filename), 256);
+        try {
+            return reader.readLine();
+        } finally {
+            reader.close();
+        }
     }
 
     @Override
@@ -48,6 +63,12 @@ public class HardwareRevisionPreferenceController extends BasePreferenceControll
 
     @Override
     public CharSequence getSummary() {
-        return SystemProperties.get("ro.boot.hardware.revision");
+        String board_version = "";
+        try {
+            board_version = readLine(BOARD_VERSION);
+        } catch (IOException e) {
+            // Fail quietly, as the file may not exist on some devices, or may be unreadable
+        }
+        return board_version;
     }
 }
