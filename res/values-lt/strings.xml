@@ -1630,7 +1630,7 @@
     <string name="restore_default_apn" msgid="6596048535642130689">"Atkuriami numatytieji APN nustatymai."</string>
     <string name="menu_restore" msgid="4310539620115151551">"Nustatyti iš naujo į numatytuosius nust."</string>
     <string name="restore_default_apn_completed" msgid="5167505087078340256">"Numatytųjų APN nustatymų nustatymas iš naujo baigtas."</string>
-    <string name="reset_dashboard_title" msgid="7423200250697886918">"Nustat. parinkt. iš naujo"</string>
+    <string name="reset_dashboard_title" msgid="7423200250697886918">"Nust. parinkt. iš naujo"</string>
     <string name="reset_dashboard_summary" msgid="4390780188264852956">"Tinklą, programas arba įrenginį galima nustatyti iš naujo"</string>
     <string name="reset_dashboard_summary_onlyApps" msgid="3304252260039419584">"Programas galima nustatyti iš naujo"</string>
     <string name="reset_network_title" msgid="1395494440355807616">"Iš naujo nustatyti „Wi-Fi“, mobiliųjų duomenų ir „Bluetooth“ nustatymus"</string>
@@ -2491,6 +2491,8 @@
     <string name="battery_tip_high_usage_title" product="tablet" msgid="8515903411746145740">"Planšetinis kompiuteris buvo naudojamas daugiau nei įprasta"</string>
     <string name="battery_tip_high_usage_title" product="device" msgid="6577086402173910457">"Įrenginys buvo naudojamas daugiau nei įprasta"</string>
     <string name="battery_tip_high_usage_summary" msgid="5356399389711499862">"Akumuliatoriaus energija gali išsekti greičiau nei įprasta"</string>
+    <string name="battery_tip_limited_temporarily_title" msgid="7152799456221596915">"Optimizuojama siekiant apsaugoti akumuliatorių"</string>
+    <string name="battery_tip_limited_temporarily_summary" msgid="6837061824463128857">"Akumuliatorius laikinai apribotas. Palieskite, kad sužinotumėte daugiau."</string>
     <string name="battery_tip_dialog_message" product="default" msgid="4681734836472195966">"Telefonas buvo naudojamas daugiau nei įprastai. Akumuliatoriaus energija gali išsekti greičiau, nei tikėjotės.\n\nDaugiausiai akumuliatoriaus energijos suvartojančios programos:"</string>
     <string name="battery_tip_dialog_message" product="tablet" msgid="3934298305232120382">"Planšetinis kompiuteris buvo naudojamas daugiau nei įprastai. Akumuliatoriaus energija gali išsekti greičiau, nei tikėjotės.\n\nDaugiausiai akumuliatoriaus energijos suvartojančios programos:"</string>
     <string name="battery_tip_dialog_message" product="device" msgid="2620789680336796054">"Įrenginys buvo naudojamas daugiau nei įprastai. Akumuliatoriaus energija gali išsekti greičiau, nei tikėjotės.\n\nDaugiausiai akumuliatoriaus energijos suvartojančios programos:"</string>
@@ -2560,6 +2562,8 @@
       <item quantity="other">Apribota %1$d programų</item>
     </plurals>
     <string name="battery_header_title_alternate" msgid="8371821625994616659">"<xliff:g id="NUMBER">^1</xliff:g>"<small>" "<font size="20">"<xliff:g id="UNIT">%</xliff:g>"</font></small>""</string>
+    <string name="battery_missing_message" msgid="5202575301365811053">"Nuskaitant akumuliatoriaus skaitiklį iškilo problema"</string>
+    <string name="battery_missing_help_message" msgid="4583322687535428926">"Nuskaitant akumuliatoriaus skaitiklį iškilo problema. Palieskite, kad "<annotation id="url">"sužinotumėte daugiau"</annotation></string>
     <string name="dialog_stop_title" msgid="5972757101865665655">"Sustabdyti programą?"</string>
     <string name="dialog_stop_message" product="default" msgid="2063536418875183799">"Telefonas negali įprastai tvarkyti akumuliatoriaus, nes „<xliff:g id="APP">%1$s</xliff:g>“ jį pažadina.\n\nKad pabandytumėte išspręsti šią problemą, galite sustabdyti programą.\n\nJei tai kartosis, gali reikėti pašalinti programą, kad pagerintumėte akumuliatoriaus našumą."</string>
     <string name="dialog_stop_message" product="tablet" msgid="426862716783569739">"Planšetinis kompiuteris negali įprastai tvarkyti akumuliatoriaus, nes „<xliff:g id="APP">%1$s</xliff:g>“ jį pažadina.\n\nKad pabandytumėte išspręsti šią problemą, galite sustabdyti programą.\n\nJei tai kartosis, gali reikėti pašalinti programą, kad pagerintumėte akumuliatoriaus našumą."</string>
@@ -4876,7 +4880,7 @@
     <string name="prevent_ringing_option_mute_summary" msgid="4885288334872920616">"Įjungti (nutildyti)"</string>
     <string name="prevent_ringing_option_none_summary" msgid="7004926708584574224">"Išjungti"</string>
     <string name="pref_title_network_details" msgid="7329759534269363308">"Išsami tinklo info."</string>
-    <string name="about_phone_device_name_warning" msgid="764557372426153827">"Įrenginio pavadinimas matomas jūsų telefone esančioms programoms. Kai prisijungiate prie „Bluetooth“ įrenginių arba nustatote „Wi-Fi“ viešosios interneto prieigos tašką, jį taip pat gali matyti kiti žmonės."</string>
+    <string name="about_phone_device_name_warning" msgid="1938930553285875166">"Įrenginio pavadinimas matomas jūsų telefone esančioms programoms. Kai prisijungiate prie „Bluetooth“ įrenginių ar „Wi-FI“ tinklo arba nustatote „Wi-Fi“ viešosios interneto prieigos tašką, jį taip pat gali matyti kiti žmonės."</string>
     <string name="devices_title" msgid="649715719278562515">"Įrenginiai"</string>
     <string name="homepage_all_settings" msgid="1877827279189801035">"Visi nustatymai"</string>
     <string name="homepage_personal_settings" msgid="8312279476519359656">"Pasiūlymai"</string>
@@ -5142,4 +5146,11 @@
     <string name="media_controls_no_players" msgid="3493023121892175946">"Nėra jokių pasiekiamų leistuvių"</string>
     <string name="keywords_media_controls" msgid="8345490568291778638">"medija"</string>
     <string name="connected_device_see_all_summary" msgid="2056010318537268108">"Bus įjungtas „Bluetooth“"</string>
+    <string name="aware_summary_when_bedtime_on" msgid="2063856008597376344">"Nepasiekiama, nes įjungtas laiko eiti miegoti režimas"</string>
+    <string name="bluetooth_message_access_notification_content" msgid="2986108412562309009">"Nepatikimas įrenginys nori pasiekti jūsų pranešimus. Palieskite, jei reikia išsamios informacijos."</string>
+    <string name="bluetooth_message_access_dialog_title" msgid="9009836130395061579">"Leisti pasiekti pranešimus?"</string>
+    <string name="bluetooth_message_access_dialog_content" msgid="2304761898608701739">"Nepatikimas „Bluetooth“ įrenginys „<xliff:g id="DEVICE_NAME_0">%1$s</xliff:g>“ nori pasiekti jūsų pranešimus.\n\nPrie „<xliff:g id="DEVICE_NAME_1">%2$s</xliff:g>“ dar niekada nebuvote prisijungę."</string>
+    <string name="bluetooth_phonebook_access_notification_content" msgid="4280361621526852063">"Nepatikimas įrenginys nori pasiekti jūsų kontaktus ir skambučių žurnalą. Palieskite, jei reikia išsamios informacijos."</string>
+    <string name="bluetooth_phonebook_access_dialog_title" msgid="7624607995928968721">"Leisti pasiekti kontaktus ir skambučių žurnalą?"</string>
+    <string name="bluetooth_phonebook_access_dialog_content" msgid="4766700015848574532">"Nepatikimas „Bluetooth“ įrenginys „<xliff:g id="DEVICE_NAME_0">%1$s</xliff:g>“ nori pasiekti jūsų kontaktus ir skambučių žurnalą. Tai apima duomenis apie gaunamuosius ir siunčiamuosius skambučius.\n\nPrie „<xliff:g id="DEVICE_NAME_1">%2$s</xliff:g>“ dar niekada nebuvote prisijungę."</string>
 </resources>

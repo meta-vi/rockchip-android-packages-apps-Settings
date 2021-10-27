@@ -36,7 +36,7 @@
     <string name="radioInfo_service_out" msgid="1868347333892403287">"ဆက်သွယ်မှုဧရိယာပြင်ပ"</string>
     <string name="radioInfo_service_emergency" msgid="6838935881091760942">"အရေးပေါ်ခေါ်ဆိုမှုများသာ"</string>
     <string name="radioInfo_service_off" msgid="6184928420860868571">"ရေဒီယို ပိတ်ထားသည်"</string>
-    <string name="radioInfo_roaming_in" msgid="8892550453644088692">"ပြင်ပကွန်ရက်နှင့် ချိတ်ဆက်ခြင်း"</string>
+    <string name="radioInfo_roaming_in" msgid="8892550453644088692">"ပြင်ပကွန်ရက်သုံးခြင်း"</string>
     <string name="radioInfo_roaming_not" msgid="3137594549464975054">"ပြင်ပကွန်ရက်နှင့် ချိတ်ဆက်မထားပါ"</string>
     <string name="radioInfo_data_disconnected" msgid="362604130117666924">"ချိတ်ဆက်မှုပြတ်တောက်သည်"</string>
     <string name="radioInfo_data_connecting" msgid="7280819598028917888">"ချိတ်ဆက်နေသည်"</string>
@@ -240,9 +240,9 @@
     <string name="radio_controls_summary" msgid="9028430178697624501">"Wi-Fi ၊ ဘလူးတုသ်၊ လေယာဉ်ပေါ်အသုံးပြုစနစ်၊ မိုဘိုင်းလ်ကွန်ရက်များနှင့် VPN များကို စီမံခန့်ခွဲရန်"</string>
     <string name="cellular_data_summary" msgid="6551434804367912367">"မိုဘိုင်းကွန်ရက်တွင် ဒေတာသုံးခွင့်ပြုပါ"</string>
     <string name="allow_data_usage_title" msgid="2645963379925196671">"ရိုမင်း လုပ်ချိန်မှာ ဒေတာ သုံးစွဲမှု ခွင့်ပြုရန်"</string>
-    <string name="roaming" msgid="3055365654530847985">"ပြင်ပကွန်ရက်နှင့် ချိတ်ဆက်ခြင်း"</string>
-    <string name="roaming_enable" msgid="7845716016861535340">"ရုန်းမင်းဖြစ်နေလျှင် ဒေတာဝန်ဆောင်မှုများကို ချိတ်ဆက်ပါ"</string>
-    <string name="roaming_disable" msgid="729512894708689604">"ရုန်းမင်းဖြစ်နေလျှင် ဒေတာဝန်ဆောင်မှုများကို ချိတ်ဆက်ပါ"</string>
+    <string name="roaming" msgid="3055365654530847985">"ပြင်ပကွန်ရက်သုံးခြင်း"</string>
+    <string name="roaming_enable" msgid="7845716016861535340">"ပြင်ပကွန်ရက်သုံးလျှင် ဒေတာဝန်ဆောင်မှုများကို ချိတ်ဆက်ပါ"</string>
+    <string name="roaming_disable" msgid="729512894708689604">"ပြင်ပကွန်ရက်သုံးလျှင် ဒေတာဝန်ဆောင်မှုများကို ချိတ်ဆက်ပါ"</string>
     <string name="roaming_reenable_message" msgid="5150423860521673540">"ဒေတာဆက်သွယ်မှုပြတ်တောက်သွားပါသည် အဘယ်ကြောင့်ဆိုသော် သင့်အိမ်၏ကွန်ယက်မှထွက်ကာ ဒေတာရုန်းမင်းကွန်ယက်ကိုလဲပိတ်ထားသောကြောင့်ဖြစ်သည်"</string>
     <string name="roaming_turn_it_on_button" msgid="6999283810847157816">"ဖွင့်မည်"</string>
     <string name="roaming_warning" msgid="7703647889040229013">"ပြင်ပကွန်ရက်နှင့် ချိတ်ဆက်သော အသုံးပြုခများ ကျသင့်နိုင်သည်။"</string>
@@ -714,8 +714,8 @@
     <string name="bluetooth_device_context_connect" msgid="4913860372216815855">"ချိတ်ဆက်ရန်"</string>
     <string name="bluetooth_device_context_disconnect" msgid="4464167389972513232">"ချိတ်ဆက်မှု ဖြုတ်ရန်"</string>
     <string name="bluetooth_device_context_pair_connect" msgid="2406032703622371826">"တွဲချိတ်ရန်နှင့် ချိတ်ဆက်ရန်"</string>
-    <string name="bluetooth_device_context_unpair" msgid="7525735305244087162">"တွဲချိတ်ခြင်းကိုပြတ်တောက်ရန်"</string>
-    <string name="bluetooth_device_context_disconnect_unpair" msgid="2001359431289794561">"ချိတ်ဆက်ခြင်းရပ်ဆိုင်းရန် နှင့် တွဲချိတ်ခြင်းကိုပြတ်တောက်ရန်"</string>
+    <string name="bluetooth_device_context_unpair" msgid="7525735305244087162">"တွဲချိတ်မှုဖြုတ်ရန်"</string>
+    <string name="bluetooth_device_context_disconnect_unpair" msgid="2001359431289794561">"ချိတ်ဆက်ခြင်းရပ်ဆိုင်းရန် နှင့် တွဲချိတ်မှုဖြုတ်ရန်"</string>
     <string name="bluetooth_device_context_connect_advanced" msgid="934657460643490773">"ရွေးချယ်စရာများ"</string>
     <string name="bluetooth_menu_advanced" msgid="7633682234855216066">"အဆင့်မြင့်"</string>
     <string name="bluetooth_advanced_titlebar" msgid="5369701494951467257">"အဆင့်မြင့် ဘလူးတုသ်"</string>
@@ -1373,7 +1373,7 @@
     <string name="status_esim_id" msgid="5158916796362809133">"EID"</string>
     <string name="status_service_state" msgid="1693424422121058791">"ဝန်ဆောင်မှု အခြေအနေ"</string>
     <string name="status_signal_strength" msgid="7644525712554444359">"ထုတ်လွင့်မှုအား"</string>
-    <string name="status_roaming" msgid="1253597174715663778">"ပြင်ပကွန်ရက်နှင့် ချိတ်ဆက်ခြင်း"</string>
+    <string name="status_roaming" msgid="1253597174715663778">"ပြင်ပကွန်ရက်သုံးခြင်း"</string>
     <string name="status_operator" msgid="4335640583552058491">"ကွန်ရက်"</string>
     <string name="status_wifi_mac_address" msgid="4447611754614388914">"Wi-Fi ၏ MAC လိပ်စာ"</string>
     <string name="status_device_wifi_mac_address" msgid="1896121694334176494">"စက်ပစ္စည်း Wi‑Fi MAC လိပ်စာ"</string>
@@ -1593,7 +1593,7 @@
     <string name="reset_dashboard_summary_onlyApps" msgid="3304252260039419584">"အက်ပ်များကို ပြင်ဆင်သတ်မှတ်နိုင်သည်"</string>
     <string name="reset_network_title" msgid="1395494440355807616">"Wi-Fi၊ မိုဘိုင်း၊ ဘလူးတုသ် ပြင်ဆင်သတ်မှတ်ရန်"</string>
     <string name="reset_network_desc" msgid="1112523764899788246">"၎င်းသည် အောက်ပါတို့အပါအဝင် ကွန်ရက်ဆက်တင်များအားလုံးကို ပြင်ဆင်သတ်မှတ်လိုက်ပါမည်−\n\n"<li>"Wi‑Fi"</li>\n<li>"မိုဘိုင်းဒေတာ"</li>\n<li>"ဘလူးတုသ်"</li></string>
-    <string name="reset_esim_title" msgid="6152167073280852849">"ဒေါင်းလုဒ်လုပ်ထားသောကတ် ဖျက်ပါ"</string>
+    <string name="reset_esim_title" msgid="6152167073280852849">"ဒေါင်းလုဒ်လုပ်ထားသော ဆင်းမ်ကတ်များ ဖျက်ခြင်း"</string>
     <string name="reset_esim_desc" msgid="4256518544336245086">"အစားထိုး ဆင်းမ်ကတ်များ ဒေါင်းလုဒ်လုပ်ရန် သင့်ဝန်ဆောင်မှုပေးသူကို ဆက်သွယ်ပါ။ ၎င်းက မိုဘိုင်းဝန်ဆောင်မှု အစီအစဉ်များကို ပယ်ဖျက်မည်မဟုတ်ပါ။"</string>
     <string name="reset_network_button_text" msgid="2281476496459610071">"ဆက်တင်များ ပြင်ဆင်သတ်မှတ်ရန်"</string>
     <string name="reset_network_final_desc" msgid="5304365082065278425">"ကွန်ရက်ဆက်တင်များ အားလုံးကို ပြင်ဆင်သတ်မှတ်လိုပါသလား။ ဤလုပ်ဆောင်ချက်ကို ပြန်ပြင်၍ မရပါ။"</string>
@@ -2212,7 +2212,7 @@
     <string name="accessibility_autoclick_custom_title" msgid="4597792235546232038">"မိမိစိတ်ကြိုက်"</string>
     <string name="accessibility_autoclick_shorter_desc" msgid="7631013255724544348">"ပိုတိုသည်"</string>
     <string name="accessibility_autoclick_longer_desc" msgid="2566025502981487443">"ပိုကြာသည်"</string>
-    <string name="accessibility_autoclick_seekbar_desc" msgid="8363959277814621118">"အလိုအလျောက် ကလစ်လုပ်ရန်အချိန်"</string>
+    <string name="accessibility_autoclick_seekbar_desc" msgid="8363959277814621118">"အလိုအလျောက် နှိပ်ရန်အချိန်"</string>
     <string name="accessibility_vibration_settings_title" msgid="5198184603753129450">"တုန်ခါမှုနှင့် တုန်ခါ၍တုံ့ပြန်မှုအား"</string>
     <string name="accessibility_notification_vibration_title" msgid="6205679908785776478">"အကြောင်းကြားချက် တုန်ခါမှု"</string>
     <string name="accessibility_ring_vibration_title" msgid="4689811297654320885">"ဖုန်းမြည်သံ တုန်ခါမှု"</string>
@@ -2429,6 +2429,8 @@
     <string name="battery_tip_high_usage_title" product="tablet" msgid="8515903411746145740">"တက်ဘလက်ကို ပုံမှန်ထက် ပိုသုံးထားသည်"</string>
     <string name="battery_tip_high_usage_title" product="device" msgid="6577086402173910457">"စက်ပစ္စည်းကို ပုံမှန်ထက် ပိုသုံးထားသည်"</string>
     <string name="battery_tip_high_usage_summary" msgid="5356399389711499862">"ပုံမှန်ထက် ဘက်ထရီ အကုန်မြန်နိုင်သည်"</string>
+    <string name="battery_tip_limited_temporarily_title" msgid="7152799456221596915">"ဘက်ထရီအခြေအနေကို အကောင်းဆုံးဖြစ်အောင် လုပ်နေသည်"</string>
+    <string name="battery_tip_limited_temporarily_summary" msgid="6837061824463128857">"ဘက်ထရီ ယာယီကန့်သတ်ထားသည်။ ပိုမိုလေ့လာရန် တို့ပါ။"</string>
     <string name="battery_tip_dialog_message" product="default" msgid="4681734836472195966">"သင့်ဖုန်းကို ပုံမှန်ထက် ပိုသုံးထားသည်။ သင့်ဘက်ထရီသည် ခန့်မှန်းထားသည်ထက် စောလျင်စွာ ကုန်နိုင်ပါသည်။\n\nဘက်ထရီ အများဆုံး အသုံးပြုနေသည့် အက်ပ်များမှာ−"</string>
     <string name="battery_tip_dialog_message" product="tablet" msgid="3934298305232120382">"သင့်တက်ဘလက်ကို ပုံမှန်ထက် ပိုသုံးထားသည်။ သင့်ဘက်ထရီသည် ခန့်မှန်းထားသည်ထက် စောလျင်စွာ ကုန်နိုင်ပါသည်။\n\nဘက်ထရီ အများဆုံး အသုံးပြုနေသည့် အက်ပ်များမှာ−"</string>
     <string name="battery_tip_dialog_message" product="device" msgid="2620789680336796054">"သင့်စက်ပစ္စည်းကို ပုံမှန်ထက် ပိုသုံးထားသည်။ သင့်ဘက်ထရီသည် ခန့်မှန်းထားသည်ထက် စောလျင်စွာ ကုန်နိုင်ပါသည်။\n\nဘက်ထရီ အများဆုံး အသုံးပြုနေသည့် အက်ပ်များမှာ−"</string>
@@ -2484,6 +2486,8 @@
       <item quantity="one">အက်ပ် %1$d ခု ကန့်သတ်ထားသည်</item>
     </plurals>
     <string name="battery_header_title_alternate" msgid="8371821625994616659">"<xliff:g id="NUMBER">^1</xliff:g>"<small>" "<font size="20">"<xliff:g id="UNIT">%</xliff:g>"</font></small>""</string>
+    <string name="battery_missing_message" msgid="5202575301365811053">"သင်၏ ဘက်ထရီမီတာကို ဖတ်ရာတွင် ပြဿနာရှိနေသည်"</string>
+    <string name="battery_missing_help_message" msgid="4583322687535428926">"သင်၏ ဘက်ထရီမီတာကို ဖတ်ရာတွင် ပြဿနာရှိနေသည်။ "<annotation id="url">"ပိုမိုလေ့လာရန်"</annotation>" တို့ပါ"</string>
     <string name="dialog_stop_title" msgid="5972757101865665655">"အက်ပ်ကို ရပ်ဆိုင်းလိုပါသလား။"</string>
     <string name="dialog_stop_message" product="default" msgid="2063536418875183799">"<xliff:g id="APP">%1$s</xliff:g> က သင်၏ဖုန်းကို အမြဲပွင့်နေစေသောကြောင့် ၎င်းသည် ဘက်ထရီကို ပုံမှန်စီမံခန့်ခွဲ၍ မရပါ။\n\nဤပြဿနာကို ဖြေရှင်းရန် ၎င်းအက်ပ်ကို ရပ်ဆိုင်းကြည့်နိုင်သည်။\n\nပြဿနာဆက်လက်ရှိနေသေးပါက ဘက်ထရီစွမ်းဆောင်ရည်ကို တိုးမြှင့်ရန်အတွက် အက်ပ်ကို ဖယ်ရှားရန် လိုအပ်နိုင်ပါသည်။"</string>
     <string name="dialog_stop_message" product="tablet" msgid="426862716783569739">"<xliff:g id="APP">%1$s</xliff:g> က သင်၏တက်ဘလက်ကို အမြဲပွင့်နေစေသောကြောင့် ၎င်းသည် ဘက်ထရီကို ပုံမှန်စီမံခန့်ခွဲ၍ မရပါ။\n\nဤပြဿနာကို ဖြေရှင်းရန် ၎င်းအက်ပ်ကို ရပ်ဆိုင်းကြည့်နိုင်သည်။\n\nပြဿနာဆက်လက်ရှိနေသေးပါက ဘက်ထရီစွမ်းဆောင်ရည်ကို တိုးမြှင့်ရန်အတွက် အက်ပ်ကို ဖယ်ရှားရန် လိုအပ်နိုင်ပါသည်။"</string>
@@ -2850,7 +2854,7 @@
     <string name="data_usage_enable_mobile" msgid="1996943748103310201">"မိုဘိုင်းဒေတာ"</string>
     <string name="data_usage_enable_3g" msgid="2818189799905446932">"2G-3Gဒေတာ"</string>
     <string name="data_usage_enable_4g" msgid="1526584080251993023">"4Gဒေတာ"</string>
-    <string name="data_roaming_enable_mobile" msgid="5745287603577995977">"ပြင်ပကွန်ရက်နှင့် ချိတ်ဆက်ခြင်း"</string>
+    <string name="data_roaming_enable_mobile" msgid="5745287603577995977">"ပြင်ပကွန်ရက်သုံးခြင်း"</string>
     <string name="data_usage_forground_label" msgid="5762048187044975428">"အရှေ့ပိုင်း:"</string>
     <string name="data_usage_background_label" msgid="5363718469293175279">"နောက်ခံ:"</string>
     <string name="data_usage_app_settings" msgid="5693524672522122485">"အက်ပ်ဆက်တင်များ"</string>
@@ -3041,7 +3045,7 @@
     <string name="user_guest" msgid="4545590092001460388">"ဧည့်သည်"</string>
     <string name="user_exit_guest_title" msgid="2653103120908427236">"ဧည့်သည်ကို ဖယ်ထုတ်ရန်"</string>
     <string name="user_exit_guest_confirm_title" msgid="1284823459630164754">"ဧည့်သည်ကို ဖယ်ထုတ်လိုက်ရမလား?"</string>
-    <string name="user_exit_guest_confirm_message" msgid="8995296853928816554">"ဒီချိတ်ဆက်မှု ထဲက အက်ပ်များ အားလုံး နှင့် ဒေတာကို ဖျက်ပစ်မည်။"</string>
+    <string name="user_exit_guest_confirm_message" msgid="8995296853928816554">"ဤချိတ်ဆက်မှုမှ အက်ပ်နှင့် ဒေတာအားလုံးကို ဖျက်ပါမည်။"</string>
     <string name="user_exit_guest_dialog_remove" msgid="7067727314172605181">"ဖယ်ထုတ်ပါ"</string>
     <string name="user_enable_calling" msgid="264875360626905535">"ဖုန်းခေါ်ဆိုမှုများ ဖွင့်မည်"</string>
     <string name="user_enable_calling_sms" msgid="8546430559552381324">"ဖုန်းခေါ်ဆိုမှုနှင့် SMS ဖွင့်မည်"</string>
@@ -3264,7 +3268,7 @@
     <string name="keywords_assist_gesture_launch" msgid="7710762655355161924">"ဟန်"</string>
     <string name="keywords_face_unlock" msgid="545338452730885392">"မျက်နှာ၊ လော့ခ်ဖွင့်ခြင်း၊ အထောက်အထား စိစစ်ခြင်း၊ လက်မှတ်ထိုးဝင်ခြင်း"</string>
     <string name="keywords_imei_info" msgid="8848791606402333514">"imei, meid, min, prl ဗားရှင်း၊ imei sv"</string>
-    <string name="keywords_sim_status" msgid="8784456547742075508">"ကွန်ရက်၊ မိုဘိုင်းကွန်ရက် အခြေအနေ၊ ဝန်ဆောင်မှု အခြေအနေ၊ လိုင်းဆွဲအား၊ မိုဘိုင်းကွန်ရက် အမျိုးအစား၊ ပြင်ပကွန်ရက်နှင့် ချိတ်ဆက်ခြင်း၊ iccid၊ eid"</string>
+    <string name="keywords_sim_status" msgid="8784456547742075508">"ကွန်ရက်၊ မိုဘိုင်းကွန်ရက် အခြေအနေ၊ ဝန်ဆောင်မှု အခြေအနေ၊ လိုင်းဆွဲအား၊ မိုဘိုင်းကွန်ရက် အမျိုးအစား၊ ပြင်ပကွန်ရက်သုံးခြင်း၊ iccid၊ eid"</string>
     <string name="keywords_model_and_hardware" msgid="4723665865709965044">"အမှတ်စဉ်၊ ဟာ့ဒ်ဝဲ ဗားရှင်း"</string>
     <string name="keywords_android_version" msgid="1629882125290323070">"android လုံခြုံရေး ပက်ချ် အဆင့်၊ baseband ဗားရှင်း၊ kernel ဗားရှင်း"</string>
     <string name="keywords_dark_ui_mode" msgid="6465231409128452489">"အပြင်အဆင်၊ ဖျော့သော၊ မှောင်သော၊ မုဒ်"</string>
@@ -3691,7 +3695,7 @@
     <string name="notification_content_block_summary" msgid="329171999992248925">"အရိပ်ထဲ သို့မဟုတ် တွဲချိတ်ထားသည့် စက်ပစ္စည်းများပေါ်တွင် အကြောင်းကြားချက်များကို ဘယ်တော့မှ မပြပါနှင့်"</string>
     <string name="notification_badge_title" msgid="6854537463548411313">"အကြောင်းကြားချက်အမှတ်အသားကို ခွင့်ပြုရန်"</string>
     <string name="notification_channel_badge_title" msgid="6505542437385640049">"အကြောင်းကြားချက် အစက် ပြရန်"</string>
-    <string name="app_notification_override_dnd_title" msgid="3769539356442226691">"\'မနှောင့်ယှက်ရ\' နေရာတွင် အစားထိုးခြင်း"</string>
+    <string name="app_notification_override_dnd_title" msgid="3769539356442226691">"\'မနှောင့်ယှက်ရ\' ကို အစားထိုးခြင်း"</string>
     <string name="app_notification_override_dnd_summary" msgid="4894641191397562920">"\"မနှောင့်ယှက်ရ\" ဖွင့်ထားသည့်အခါ ဤသတိပေးချက်များကို ဆက်ပြီး ဖော်ပြခွင့် ပြုပါ"</string>
     <string name="app_notification_visibility_override_title" msgid="7778628150022065920">"လော့ခ်ချထားချိန် မျက်နှာပြင်"</string>
     <string name="app_notification_row_banned" msgid="4513523107019706924">"ပိတ်ဆို့ထား"</string>
@@ -3879,8 +3883,8 @@
     <string name="suggestion_button_close" msgid="6865170855573283759">"ပိတ်ရန်"</string>
     <string name="device_feedback" msgid="5351614458411688608">"ဤကိရိယာအတွက် အကြံပြုချက် ပို့ရန်"</string>
     <string name="restr_pin_enter_admin_pin" msgid="4435410646541671918">"စီမံခန့်ခွဲသူ၏ ပင်နံပါတ်ကို ထည့်ပါ"</string>
-    <string name="switch_on_text" msgid="5664542327776075105">"ဖွင့်ထား၏"</string>
-    <string name="switch_off_text" msgid="1315547447393646667">"ပိတ်ထားသည်"</string>
+    <string name="switch_on_text" msgid="5664542327776075105">"ဖွင့်ရန်"</string>
+    <string name="switch_off_text" msgid="1315547447393646667">"ပိတ်ရန်"</string>
     <string name="screen_pinning_title" msgid="6927227272780208966">"အက်ပ်ပင်ထိုးခြင်း"</string>
     <string name="screen_pinning_description" msgid="6927147836599784578">"အက်ပ်ပင်ထိုးခြင်းသည် လက်ရှိအက်ပ်ကို ပင်မဖြုတ်မချင်း မြင်ကွင်းထဲတွင် ဆက်ထားခွင့်ပြုသည်။ ဥပမာအားဖြင့် ဤဝန်ဆောင်မှုသည် ယုံကြည်စိတ်ချရသည့် မိတ်ဆွေတစ်ဦးအား ဂိမ်းတစ်ခုခုကို ကစားခွင့်ပြုသည်။ \n\nအက်ပ်တစ်ခုကို ပင်ထိုးထားသည့်အခါ ပင်ထိုးထားသည့်အက်ပ်သည် အခြားအက်ပ်များကို ဖွင့်နိုင်ပြီး ကိုယ်ရေးကိုယ်တာဒေတာများကို အသုံးပြုခွင့်ရှိနိုင်ပါသည်။ \n\nအက်ပ်ပင်ထိုးခြင်းကို အသုံးပြုရန်- 	\n၁။	အက်ပ်ပင်ထိုးခြင်းကို ဖွင့်ပါ 	\n၂။	အနှစ်ချုပ်ကို ဖွင့်ပါ 	\n၃။	မျက်နှာပြင်ထိပ်ဘက်ရှိ အက်ပ်သင်္ကေတကို တို့ပြီး \'ပင်ထိုးရန်\' ကို နှိပ်ပါ"</string>
     <string name="screen_pinning_guest_user_description" msgid="4772752097527490014">"အက်ပ်ပင်ထိုးခြင်းသည် လက်ရှိအက်ပ်ကို ပင်မဖြုတ်မချင်း မြင်ကွင်းထဲတွင် ဆက်ထားခွင့်ပြုသည်။ ဥပမာ ယုံကြည်စိတ်ချရသည့် မိတ်ဆွေတစ်ဦးအား ဂိမ်းတစ်ခုခုကစားခွင့်ပြုရန် ဤဝန်ဆောင်မှုကို သုံးနိုင်သည်။ \n\nအက်ပ်တစ်ခုကို ပင်ထိုးသည့်အခါ ၎င်းက အခြားအက်ပ်များကို ဖွင့်နိုင်ပြီး ကိုယ်ရေးကိုယ်တာဒေတာများကို အသုံးပြုနိုင်သည်။ \n\nသင့်စက်ကို တစ်စုံတစ်ယောက်နှင့် လုံခြုံစွာမျှဝေလိုပါက ဧည့်သည်အသုံးပြုသူကို သုံးကြည့်ပါ။ \n\nအက်ပ်ပင်ထိုးခြင်းကို အသုံးပြုရန်- 	\n၁။	အက်ပ်ပင်ထိုးခြင်းကို ဖွင့်ပါ 	\n၂။	အနှစ်ချုပ်ကို ဖွင့်ပါ 	\n၃။	ဖန်သားပြင်ထိပ်ရှိ အက်ပ်သင်္ကေတကို တို့ပြီး \'ပင်ထိုးရန်\' ကို နှိပ်ပါ"</string>
@@ -4358,7 +4362,7 @@
     <string name="notification_log_details_key" msgid="2690467272328709046">"ကီး"</string>
     <string name="notification_log_details_group" msgid="1765952974599794393">"အုပ်စု"</string>
     <string name="notification_log_details_group_summary" msgid="4364622087007803822">"(အကျဉ်းချုပ်)"</string>
-    <string name="notification_log_details_visibility" msgid="6811292866832243357">"မြင်နိင်စွမ်း"</string>
+    <string name="notification_log_details_visibility" msgid="6811292866832243357">"မြင်နိုင်မှု"</string>
     <string name="notification_log_details_public_version" msgid="3057653571018432759">"အများသုံးဗားရှင်း"</string>
     <string name="notification_log_details_priority" msgid="4772047133062255513">"ဦးစားပေးမှု"</string>
     <string name="notification_log_details_importance" msgid="8516198274667183446">"အရေးပါမှု"</string>
@@ -4700,7 +4704,7 @@
     <string name="prevent_ringing_option_mute_summary" msgid="4885288334872920616">"ဖွင့်ရန် (အသံတိတ်ရန်)"</string>
     <string name="prevent_ringing_option_none_summary" msgid="7004926708584574224">"ပိတ်ရန်"</string>
     <string name="pref_title_network_details" msgid="7329759534269363308">"ကွန်ရက် အသေးစိတ်များ"</string>
-    <string name="about_phone_device_name_warning" msgid="764557372426153827">"သင့်စက်ပစ္စည်းအမည်ကို သင့်ဖုန်းပေါ်ရှိ အက်ပ်များက မြင်ရပါသည်။ သင် \'ဘလူးတုသ်\' စက်ပစ္စည်းများသို့ ချိတ်ဆက်သည့်အခါ သို့မဟုတ် Wi-Fi ဟော့စပေါ့ ထုတ်လွှင့်သည့်အခါ အခြားသူများက မြင်နိုင်ပါသည်။"</string>
+    <string name="about_phone_device_name_warning" msgid="1938930553285875166">"သင့်စက်ပစ္စည်းအမည်ကို သင့်ဖုန်းပေါ်ရှိ အက်ပ်များက မြင်ရပါသည်။ သင် ဘလူးတုသ်သုံးစက်များသို့ ချိတ်ဆက်သည့်အခါ၊ Wi-Fi ကွန်ရက်သို့ ချိတ်ဆက်သည့်အခါ သို့မဟုတ် Wi-Fi ဟော့စပေါ့ ထုတ်လွှင့်သည့်အခါ တို့တွင်လည်း ၎င်းကို အခြားသူများက မြင်နိုင်ပါသည်။"</string>
     <string name="devices_title" msgid="649715719278562515">"စက်များ"</string>
     <string name="homepage_all_settings" msgid="1877827279189801035">"ဆက်တင်အားလုံး"</string>
     <string name="homepage_personal_settings" msgid="8312279476519359656">"အကြံပြုချက်များ"</string>
@@ -4960,4 +4964,11 @@
     <string name="media_controls_no_players" msgid="3493023121892175946">"မည်သည့်ပလေယာကိုမျှ မရရှိနိုင်ပါ"</string>
     <string name="keywords_media_controls" msgid="8345490568291778638">"မီဒီယာ"</string>
     <string name="connected_device_see_all_summary" msgid="2056010318537268108">"ဘလူးတုသ် ပွင့်ပါမည်"</string>
+    <string name="aware_summary_when_bedtime_on" msgid="2063856008597376344">"အိပ်ချိန်မုဒ်ကို ဖွင့်ထားသောကြောင့် မရရှိနိုင်ပါ"</string>
+    <string name="bluetooth_message_access_notification_content" msgid="2986108412562309009">"မယုံကြည်ရသော စက်ပစ္စည်းက သင်၏ မက်ဆေ့ဂျ်များသို့ ဝင်ခွင့်ရလိုသည်။ အသေးစိတ်အချက်အလက်များအတွက် တို့ပါ။"</string>
+    <string name="bluetooth_message_access_dialog_title" msgid="9009836130395061579">"မက်ဆေ့ဂျ်များကို အသုံးပြုခွင့်ပေးမလား။"</string>
+    <string name="bluetooth_message_access_dialog_content" msgid="2304761898608701739">"မယုံကြည့်ရသော ဘလူးတုသ်သုံးစက် <xliff:g id="DEVICE_NAME_0">%1$s</xliff:g> က သင်၏ မက်ဆေ့ဂျ်များသို့ ဝင်ခွင့်ရလိုသည်။\n\nသင်သည် <xliff:g id="DEVICE_NAME_1">%2$s</xliff:g> ကို ယခင်က မချိတ်ဆက်ဖူးပါ။"</string>
+    <string name="bluetooth_phonebook_access_notification_content" msgid="4280361621526852063">"မယုံကြည်ရသော စက်ပစ္စည်းက သင်၏ အဆက်အသွယ်များနှင့် ခေါ်ဆိုမှုမှတ်တမ်းသို့ ဝင်ရောက်လိုသည်။ အသေးစိတ်အချက်အလက်များအတွက် တို့ပါ။"</string>
+    <string name="bluetooth_phonebook_access_dialog_title" msgid="7624607995928968721">"အဆက်အသွယ်များနှင့် ခေါ်ဆိုမှုမှတ်တမ်းသို့ ဝင်ခွင့်ပေးမလား။"</string>
+    <string name="bluetooth_phonebook_access_dialog_content" msgid="4766700015848574532">"မယုံကြည်ရသော ဘလူးတုသ်သုံးစက် <xliff:g id="DEVICE_NAME_0">%1$s</xliff:g> က သင်၏ အဆက်အသွယ်များနှင့် ခေါ်ဆိုမှုမှတ်တမ်းသို့ ဝင်ရောက်လိုသည်။ ၎င်းတွင် အဝင်နှင့် အထွက်ခေါ်ဆိုမှုများဆိုင်ရာ ဒေတာ ပါဝင်သည်။\n\nသင်သည် <xliff:g id="DEVICE_NAME_1">%2$s</xliff:g> ကို ယခင်က မချိတ်ဆက်ဖူးပါ။"</string>
 </resources>

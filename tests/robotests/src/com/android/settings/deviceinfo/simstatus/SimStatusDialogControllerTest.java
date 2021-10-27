@@ -42,6 +42,7 @@ import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.spy;
+import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 import static org.robolectric.Shadows.shadowOf;
@@ -161,6 +162,8 @@ public class SimStatusDialogControllerTest {
         doReturn(null).when(mSignalStrength).getCellSignalStrengths();
         doReturn(mPhoneStateListener).when(mController).getPhoneStateListener();
         doReturn(mSubscriptionInfo).when(mSubscriptionManager).getActiveSubscriptionInfo(anyInt());
+        when(mSubscriptionInfo.getSubscriptionId())
+            .thenReturn(SubscriptionManager.DEFAULT_SUBSCRIPTION_ID);
 
         ReflectionHelpers.setField(mController, "mTelephonyManager", mTelephonyManager);
         ReflectionHelpers.setField(mController, "mCarrierConfigManager", mCarrierConfigManager);
@@ -293,7 +296,7 @@ public class SimStatusDialogControllerTest {
 
         final String signalStrengthString =
                 mContext.getString(R.string.sim_signal_strength, lteDbm, lteAsu);
-        verify(mDialog).setText(SIGNAL_STRENGTH_VALUE_ID, signalStrengthString);
+        verify(mDialog, times(2)).setText(SIGNAL_STRENGTH_VALUE_ID, signalStrengthString);
     }
 
     @Test
@@ -310,7 +313,7 @@ public class SimStatusDialogControllerTest {
 
         final String signalStrengthString =
                 mContext.getString(R.string.sim_signal_strength, lteDbm, lteAsu);
-        verify(mDialog).setText(SIGNAL_STRENGTH_VALUE_ID, signalStrengthString);
+        verify(mDialog, times(2)).setText(SIGNAL_STRENGTH_VALUE_ID, signalStrengthString);
     }
 
     @Test
@@ -330,7 +333,7 @@ public class SimStatusDialogControllerTest {
 
         final String signalStrengthString =
                 mContext.getString(R.string.sim_signal_strength, lteDbm, lteAsu);
-        verify(mDialog).setText(SIGNAL_STRENGTH_VALUE_ID, signalStrengthString);
+        verify(mDialog, times(2)).setText(SIGNAL_STRENGTH_VALUE_ID, signalStrengthString);
     }
 
     @Test
@@ -394,8 +397,8 @@ public class SimStatusDialogControllerTest {
 
         mController.initialize();
 
-        verify(mDialog).removeSettingFromScreen(SIGNAL_STRENGTH_LABEL_ID);
-        verify(mDialog).removeSettingFromScreen(SIGNAL_STRENGTH_VALUE_ID);
+        verify(mDialog, times(2)).removeSettingFromScreen(SIGNAL_STRENGTH_LABEL_ID);
+        verify(mDialog, times(2)).removeSettingFromScreen(SIGNAL_STRENGTH_VALUE_ID);
     }
 
     @Test
@@ -405,7 +408,7 @@ public class SimStatusDialogControllerTest {
 
         mController.initialize();
 
-        verify(mDialog).setText(eq(SIGNAL_STRENGTH_VALUE_ID), any());
+        verify(mDialog, times(2)).setText(eq(SIGNAL_STRENGTH_VALUE_ID), any());
         verify(mDialog).removeSettingFromScreen(ICCID_INFO_LABEL_ID);
         verify(mDialog).removeSettingFromScreen(ICCID_INFO_VALUE_ID);
     }
