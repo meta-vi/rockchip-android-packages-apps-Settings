@@ -233,7 +233,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
         mContext = getActivity();
         mRotation = getActivity().getRequestedOrientation();
         //getActivity().setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LOCKED);
-        mDisplayManager = (DisplayManager) context.getSystemService(Context.DISPLAY_SERVICE);
+        mDisplayManager = (DisplayManager) mContext.getSystemService(Context.DISPLAY_SERVICE);
         mWindowManager = IWindowManager.Stub.asInterface(
                 ServiceManager.getService(Context.WINDOW_SERVICE));
         mDisplayListener = new DisplayListener();
