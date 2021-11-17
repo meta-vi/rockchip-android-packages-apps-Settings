@@ -113,10 +113,7 @@ public class SoundSettings extends DashboardFragment implements OnActivityResult
 
     private void initSpdifOutput() {
         mSpdifSounds = (SwitchPreference)findPreference(KEY_SPDIF_SOUNDS);
-        String persist_spdif_sounds = "";
-        persist_spdif_sounds = SystemProperties.get("persist.spdif_sounds");
-
-        int persist_spdif_sounds_value = Integer.parseInt(persist_spdif_sounds);
+        int persist_spdif_sounds_value = SystemProperties.getInt("persist.spdif_sounds", 0);
 
         if (persist_spdif_sounds_value == 1)
             mSpdifSounds.setChecked(true);
