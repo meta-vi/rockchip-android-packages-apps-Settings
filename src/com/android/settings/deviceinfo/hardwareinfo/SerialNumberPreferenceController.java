@@ -18,6 +18,7 @@ package com.android.settings.deviceinfo.hardwareinfo;
 
 import android.content.Context;
 import android.os.Build;
+import android.os.SystemProperties;
 
 import com.android.settings.R;
 import com.android.settings.core.BasePreferenceController;
@@ -48,6 +49,9 @@ public class SerialNumberPreferenceController extends BasePreferenceController {
 
     @Override
     public CharSequence getSummary() {
+        String ssn = SystemProperties.get("vendor.serialno");
+        if (ssn != null && !ssn.isEmpty())
+            return SystemProperties.get("vendor.serialno");
         return Build.getSerial();
     }
 }
