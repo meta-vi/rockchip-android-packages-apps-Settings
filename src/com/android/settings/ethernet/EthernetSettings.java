@@ -256,8 +256,11 @@ public class EthernetSettings extends SettingsPreferenceFragment
             return;
         }
         String[] ifaces = mEthManager.getAvailableInterfaces();
-        if (ifaces.length > 0) {
-            mIfaceName = ifaces[0];//"eth0";
+        for (int i = 0; i < ifaces.length; i++) {
+            if (mEthManager.isInterfaceup(ifaces[i])) {
+                mIfaceName = ifaces[i];//if device has two interface eth0 and eth1 or more, use the up interface;
+                break;
+            }
         }
         if (null == mIfaceName) {
             Log.e(TAG, "get ethernet ifaceName failed");
