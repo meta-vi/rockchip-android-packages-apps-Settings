@@ -62,7 +62,9 @@
         android:order="-58"
         settings:keywords="@string/keywords_system_update_settings"
         settings:controller="com.android.settings.system.SystemUpdatePreferenceController">
-        <intent android:action="android.settings.SYSTEM_UPDATE_SETTINGS"/>
+        <intent android:action="android.settings.ASUS_IOT_SYSTEM_UPDATE_SETTINGS">
+                <extra android:name="fromActivity" android:value="com.android.settings"/>
+        </intent>
     </Preference>
 
     <Preference
