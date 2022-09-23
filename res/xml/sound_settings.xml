@@ -191,6 +191,11 @@
         android:title="@string/touch_sounds_title"
         android:order="-30"/>
 
+    <!-- Spdif sounds -->
+    <SwitchPreference
+        android:key="spdif_sounds"
+        android:title="@string/spdif_sounds_title" />
+
     <!-- Show vibrate icon in status bar -->
     <SwitchPreference
         android:key="vibrate_icon"
