@@ -660,12 +660,16 @@ public class HdmiSettings extends SettingsPreferenceFragment
                     Log.d(TAG, "freezeRotation~~~value:" + (String) obj);
                     if (value == 0) {
                         mWindowManager.freezeRotation(Surface.ROTATION_0);
+                        android.os.SystemProperties.set("persist.sys.rotation.einit","0");
                     } else if (value == 90) {
                         mWindowManager.freezeRotation(Surface.ROTATION_90);
+                        android.os.SystemProperties.set("persist.sys.rotation.einit","1");
                     } else if (value == 180) {
                         mWindowManager.freezeRotation(Surface.ROTATION_180);
+                        android.os.SystemProperties.set("persist.sys.rotation.einit","2");
                     } else if (value == 270) {
                         mWindowManager.freezeRotation(Surface.ROTATION_270);
+                        android.os.SystemProperties.set("persist.sys.rotation.einit","3");
                     } else {
                         return true;
                     }
