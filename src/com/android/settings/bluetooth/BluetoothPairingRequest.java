@@ -37,8 +37,6 @@ public final class BluetoothPairingRequest extends BroadcastReceiver {
     if (action == null || !action.equals(BluetoothDevice.ACTION_PAIRING_REQUEST)) {
       return;
     }
-
-    /*
     // convert broadcast intent into activity intent (same action string)
     Intent pairingIntent = BluetoothPairingService.getPairingDialogIntent(context, intent);
 
@@ -59,10 +57,5 @@ public final class BluetoothPairingRequest extends BroadcastReceiver {
       intent.setClass(context, BluetoothPairingService.class);
       context.startServiceAsUser(intent, UserHandle.CURRENT);
     }
-    */
-
-    BluetoothDevice device =
-        intent.getParcelableExtra(BluetoothDevice.EXTRA_DEVICE);
-    device.setPairingConfirmation(true);
   }
 }
