@@ -49,10 +49,7 @@ public class AutoBrightnessPreferenceController extends TogglePreferenceControll
     @Override
     @AvailabilityStatus
     public int getAvailabilityStatus() {
-        return mContext.getResources().getBoolean(
-                com.android.internal.R.bool.config_automatic_brightness_available)
-                ? AVAILABLE_UNSEARCHABLE
-                : UNSUPPORTED_ON_DEVICE;
+        return UNSUPPORTED_ON_DEVICE;
     }
 
     @Override
