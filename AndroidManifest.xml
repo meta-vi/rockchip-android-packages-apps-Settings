@@ -2720,9 +2720,9 @@
             <intent-filter>
                  <action android:name="android.telephony.action.SECRET_CODE" />
                  <data android:scheme="android_secret_code" android:host="4636" />
+                 <action android:name="com.asus.debugger.intent_action.bugreport" />
             </intent-filter>
        </receiver>
-
         <!-- Standard picker for widgets -->
         <activity android:name="AppWidgetPickActivity"
                 android:label="@string/widget_picker_title"
