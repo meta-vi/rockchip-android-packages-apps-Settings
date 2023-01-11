@@ -51,7 +51,11 @@ import com.android.settingslib.core.lifecycle.events.OnStop;
 import com.android.settingslib.transition.SettingsTransitionHelper;
 
 import java.text.NumberFormat;
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.FileNotFoundException;
 
 public class BrightnessLevelPreferenceController extends AbstractPreferenceController implements
         PreferenceControllerMixin, LifecycleObserver, OnStart, OnStop {
@@ -59,6 +63,8 @@ public class BrightnessLevelPreferenceController extends AbstractPreferenceContr
     private static final String TAG = "BrightnessPrefCtrl";
     private static final String KEY_BRIGHTNESS = "brightness";
     private static final String CHECK_DSI_SYSFS_PATH = "/sys/class/drm/card0-DSI-1/status";
+    private static final String CHECK_EDP_SYSFS_PATH = "/sys/class/drm/card0-eDP-1/enabled";
+    private static final String ENABLED = "enabled";
     private static final Uri BRIGHTNESS_FOR_VR_URI;
     private static final Uri BRIGHTNESS_ADJ_URI;
 
@@ -118,8 +124,26 @@ public class BrightnessLevelPreferenceController extends AbstractPreferenceContr
     @Override
     public boolean isAvailable() {
         File file = new File(CHECK_DSI_SYSFS_PATH);
+        File fileEdp = new File(CHECK_EDP_SYSFS_PATH);
+        String stringEdp = null;
+        BufferedReader readerEdp = null;
 
-        if(file.exists())
+        if(fileEdp.exists()) {
+            try {
+                readerEdp = new BufferedReader(new FileReader(fileEdp));
+            }
+            catch (FileNotFoundException e) {
+		        e.printStackTrace();
+		    }
+            try {
+                stringEdp = readerEdp.readLine();
+            }
+            catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        if(file.exists() || (fileEdp.exists() && stringEdp.equals(ENABLED)))
             return true;
         else
             return false;
