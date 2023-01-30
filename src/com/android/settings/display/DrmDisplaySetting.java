@@ -38,7 +38,7 @@ public class DrmDisplaySetting {
             put("8", "Component");
             put("9", "9PinDIN");
             put("10", "DisplayPort");
-            put("11", "HDMIA");
+            put("11", "HDMI");
             put("12", "HDMIB");
             put("13", "TV");
             put("14", DRM_MODE_CONNECTOR_eDP);
