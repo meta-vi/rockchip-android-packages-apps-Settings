@@ -13718,4 +13718,5 @@
     <string name="dialog_update_resolution">Updating resolution...</string>
     <string name="dialog_wait_screen_connect">please wait while updating info to the device...</string>
     <string name="hdmi_cec_switch">HDMI CEC</string>
+    <string name="full_screen_switch">Full Screen</string>
 </resources>

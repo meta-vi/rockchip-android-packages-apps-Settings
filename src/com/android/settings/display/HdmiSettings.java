@@ -59,6 +59,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
     private static final String KEY_AUX_SCREEN_VH = "aux_screen_vh";
     private static final String KEY_AUX_SCREEN_VH_LIST = "aux_screen_vhlist";
     private static final String KEY_HDMI_CEC_SWITCH = "hdmi_cec_switch";
+    private static final String KEY_FULL_SCREEN_SWITCH = "full_screen_switch";
     private final static String SYS_NODE_HDMI_STATUS =
             "/sys/devices/platform/display-subsystem/drm/card0/card0-HDMI-A-1/status";
     private final static String SYS_NODE_DP_STATUS =
@@ -104,6 +105,8 @@ public class HdmiSettings extends SettingsPreferenceFragment
     private int mRotation = ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED;
     private SwitchPreference mHdmiCec;
     private int mHdmiControlEnabled;
+    private SwitchPreference mFullScreen;
+    private int mFullScreenControlEnabled;
 
     private HashMap<Integer, DisplayInfo> mDisplayInfoList = new HashMap<Integer, DisplayInfo>();
 
@@ -241,6 +244,13 @@ public class HdmiSettings extends SettingsPreferenceFragment
 
         init();
         mEnableDisplayListener = true;
+
+        //don't show full screen SwitchPreference if product name isn't Sanden
+        if (!SystemProperties.get("ro.product.name").equals("Sanden")) {
+            PreferenceScreen screen = getPreferenceScreen();
+            Preference pref = getPreferenceManager().findPreference("full_screen_switch");
+            screen.removePreference(pref);
+        }
     }
 
 
@@ -345,6 +355,22 @@ public class HdmiSettings extends SettingsPreferenceFragment
 		}
         mHdmiCec.setOnPreferenceClickListener(this);
 
+        //Full Screen control
+        if (SystemProperties.getBoolean("persist.fullscreen.enable", false)) {
+            mFullScreenControlEnabled = 1;
+        }
+        else
+        {
+			mFullScreenControlEnabled = 0;
+		}
+        mFullScreen = (SwitchPreference) findPreference(KEY_FULL_SCREEN_SWITCH);
+        if (mFullScreenControlEnabled == 1) {
+            mFullScreen.setChecked(true);
+        } else {
+            mFullScreen.setChecked(false);
+		}
+        mFullScreen.setOnPreferenceClickListener(this);
+
         int displayNumber = DrmDisplaySetting.getDisplayNumber();
         Log.v(TAG, "displayNumber=" + displayNumber);
         String[] connectorInfos = DrmDisplaySetting.getConnectorInfo();
@@ -419,6 +445,23 @@ public class HdmiSettings extends SettingsPreferenceFragment
         } else {
             Settings.Global.putInt(getContext().getContentResolver(), Global.HDMI_CONTROL_ENABLED, 1);
             Log.i(TAG, "Enable HDMI-CEC");
+        }
+    }
+
+    public void UpdateFullScreenValue() {
+        if (SystemProperties.getBoolean("persist.fullscreen.enable", false)) {
+            mFullScreenControlEnabled = 1;
+        }
+        else {
+            mFullScreenControlEnabled = 0;
+        }
+
+        if (mFullScreenControlEnabled == 1) {
+            SystemProperties.set("persist.fullscreen.enable", "false");
+            Log.i(TAG, "Disable Full Screen");
+        } else {
+            SystemProperties.set("persist.fullscreen.enable", "true");
+            Log.i(TAG, "enable Full Screen");
         }
     }
 
@@ -622,6 +665,8 @@ public class HdmiSettings extends SettingsPreferenceFragment
             mAuxScreenVHList.setValue(value);
         } else if (preference == mHdmiCec) {
             UpdateHdmiCecValue();
+        } else if (preference == mFullScreen) {
+            UpdateFullScreenValue();
         }
         return true;
     }

@@ -12,6 +12,11 @@
         android:persistent="true"
         android:title="@string/hdmi_cec_switch" />
 
+    <SwitchPreference
+        android:key="full_screen_switch"
+        android:persistent="true"
+        android:title="@string/full_screen_switch" />
+
     <PreferenceCategory
         android:key="aux_category"
         android:title="@string/screen_title">
