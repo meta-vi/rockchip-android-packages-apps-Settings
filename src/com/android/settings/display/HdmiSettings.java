@@ -448,6 +448,19 @@ public class HdmiSettings extends SettingsPreferenceFragment
         }
     }
 
+    public void set_fullscreen_reboot() {
+
+            try {
+                Intent intent_reboot = new Intent(Intent.ACTION_REBOOT);
+                intent_reboot.putExtra("nowait", 1);
+                intent_reboot.putExtra("interval", 1);
+                intent_reboot.putExtra("window", 0);
+                mContext.sendBroadcast(intent_reboot);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+    }
+
     public void UpdateFullScreenValue() {
         if (SystemProperties.getBoolean("persist.fullscreen.enable", false)) {
             mFullScreenControlEnabled = 1;
@@ -463,6 +476,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
             SystemProperties.set("persist.fullscreen.enable", "true");
             Log.i(TAG, "enable Full Screen");
         }
+	set_fullscreen_reboot();
     }
 
     private void sendSwitchDeviceOffOnMsg(ITEM_CONTROL control, int status) {
