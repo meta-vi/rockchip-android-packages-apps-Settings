@@ -246,7 +246,7 @@ public class HdmiSettings extends SettingsPreferenceFragment
         mEnableDisplayListener = true;
 
         //don't show full screen SwitchPreference if product name isn't Sanden
-        if (!SystemProperties.get("ro.product.name").equals("Sanden")) {
+        if (!SystemProperties.get("ro.product.name").equals("Sanden_VM") && !SystemProperties.get("ro.product.name").equals("Sanden_CM")) {
             PreferenceScreen screen = getPreferenceScreen();
             Preference pref = getPreferenceManager().findPreference("full_screen_switch");
             screen.removePreference(pref);
