@@ -69,11 +69,63 @@ import com.android.settingslib.core.instrumentation.Instrumentable;
 import com.android.settingslib.core.instrumentation.SharedPreferencesLogger;
 import com.android.settingslib.development.DevelopmentSettingsEnabler;
 import com.android.settingslib.drawer.DashboardCategory;
+import com.android.settings.DevelopmentPasswordManager;
 
 import com.google.android.setupcompat.util.WizardManagerHelper;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
+import android.os.Bundle;
+import android.text.InputType;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.Toast;
+import androidx.appcompat.app.AppCompatActivity;
+
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
+import java.util.Base64;
 import java.util.List;
+
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
+
+class PasswordDialog {
+
+    public interface PasswordDialogListener {
+        void onPasswordEntered(String password);
+    }
+
+    public static void showPasswordDialog(Context context, final PasswordDialogListener listener) {
+        AlertDialog.Builder builder = new AlertDialog.Builder(context);
+        builder.setTitle(R.string.title_password_dialog);
+
+        // Set up the input
+        final EditText input = new EditText(context);
+        input.setInputType(InputType.TYPE_CLASS_TEXT | InputType.TYPE_TEXT_VARIATION_PASSWORD);
+        builder.setView(input);
+
+        // Set up the buttons
+        builder.setPositiveButton(R.string.positive_button, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                String password = input.getText().toString();
+                listener.onPasswordEntered(password);
+            }
+        });
+        builder.setNegativeButton(R.string.negative_button, new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                listener.onPasswordEntered(null);
+                dialog.cancel();
+            }
+        });
+
+        builder.show();
+    }
+}
 
 
 public class SettingsActivity extends SettingsBaseActivity
@@ -81,6 +133,7 @@ public class SettingsActivity extends SettingsBaseActivity
         PreferenceFragmentCompat.OnPreferenceStartFragmentCallback,
         ButtonBarHandler, FragmentManager.OnBackStackChangedListener {
 
+    private DevelopmentPasswordManager mPasswordManager;
     private static final String LOG_TAG = "SettingsActivity";
 
     // Constants for state save/restore
@@ -187,6 +240,7 @@ public class SettingsActivity extends SettingsBaseActivity
     public SwitchBar getSwitchBar() {
         return mSwitchBar;
     }
+
 
     @Override
     public boolean onPreferenceStartFragment(PreferenceFragmentCompat caller, Preference pref) {
@@ -343,6 +397,9 @@ public class SettingsActivity extends SettingsBaseActivity
                 }
             }
         }
+
+        mPasswordManager = DevelopmentPasswordManager.getInstance();
+        mPasswordManager.setContext((Context) this);
 
         if (DEBUG_TIMING) {
             Log.d(LOG_TAG, "onCreate took " + (System.currentTimeMillis() - startTime) + " ms");
@@ -572,6 +629,37 @@ public class SettingsActivity extends SettingsBaseActivity
      */
     private Fragment switchToFragment(String fragmentName, Bundle args, boolean validate,
             int titleResId, CharSequence title) {
+        if(fragmentName.equals("com.android.settings.development.DevelopmentSettingsDashboardFragment")) {
+            PasswordDialog.showPasswordDialog(SettingsActivity.this, password -> {
+                // Handle the entered password
+                if (mPasswordManager.loadPassword().equals(mPasswordManager.calculateHmacSHA256(password, "meta"))) {
+                    // Password is correct, do something
+                    Log.d(LOG_TAG, "Password is correct, enter developer options screen");
+                    Log.d(LOG_TAG, "Switching to fragment " + fragmentName);
+                    if (validate && !isValidFragment(fragmentName)) {
+                        throw new IllegalArgumentException("Invalid fragment for this activity: "
+                                + fragmentName);
+                    }
+                    Fragment f = Utils.getTargetFragment(this, fragmentName, args);
+                    FragmentTransaction transaction = getSupportFragmentManager().beginTransaction();
+                    transaction.replace(R.id.main_content, f);
+                    if (titleResId > 0) {
+                        transaction.setBreadCrumbTitle(titleResId);
+                    } else if (title != null) {
+                        transaction.setBreadCrumbTitle(title);
+                    }
+                    transaction.commitAllowingStateLoss();
+                    getSupportFragmentManager().executePendingTransactions();
+                    Log.d(LOG_TAG, "Executed frag manager pendingTransactions");
+
+                } else {
+                    // Password is incorrect, log an error message
+                    Log.d(LOG_TAG, "Incorrect password, cannot enter developer options screen");
+                    finish();
+                }
+            });
+            return null;
+        }
         Log.d(LOG_TAG, "Switching to fragment " + fragmentName);
         if (validate && !isValidFragment(fragmentName)) {
             throw new IllegalArgumentException("Invalid fragment for this activity: "

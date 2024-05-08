@@ -67,6 +67,7 @@ import com.android.settingslib.development.DeveloperOptionsPreferenceController;
 import com.android.settingslib.development.DevelopmentSettingsEnabler;
 import com.android.settingslib.development.SystemPropPoker;
 import com.android.settingslib.search.SearchIndexable;
+import com.android.settings.development.ChangeDevelopmentPasswordPreferenceController;
 
 import com.google.android.setupcompat.util.WizardManagerHelper;
 
@@ -470,6 +471,7 @@ public class DevelopmentSettingsDashboardFragment extends RestrictedDashboardFra
             BluetoothA2dpConfigStore bluetoothA2dpConfigStore) {
         final List<AbstractPreferenceController> controllers = new ArrayList<>();
         controllers.add(new MemoryUsagePreferenceController(context));
+        controllers.add(new ChangeDevelopmentPasswordPreferenceController(context));
         controllers.add(new BugReportPreferenceController(context));
         controllers.add(new BugReportHandlerPreferenceController(context));
         controllers.add(new SystemServerHeapDumpPreferenceController(context));
@@ -627,3 +629,4 @@ public class DevelopmentSettingsDashboardFragment extends RestrictedDashboardFra
                 }
             };
 }
+

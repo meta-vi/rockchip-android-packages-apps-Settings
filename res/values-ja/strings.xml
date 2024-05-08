@@ -4971,4 +4971,22 @@
     <string name="bluetooth_phonebook_access_notification_content" msgid="4280361621526852063">"信頼できないデバイスが連絡先と通話履歴にアクセスしようとしています。タップして詳細をご確認ください。"</string>
     <string name="bluetooth_phonebook_access_dialog_title" msgid="7624607995928968721">"連絡先と通話履歴へのアクセスを許可しますか？"</string>
     <string name="bluetooth_phonebook_access_dialog_content" msgid="4766700015848574532">"信頼できない Bluetooth デバイス <xliff:g id="DEVICE_NAME_0">%1$s</xliff:g> が連絡先と通話履歴にアクセスしようとしています。これには着信や発信に関するデータも含まれます。\n\nこれまでに <xliff:g id="DEVICE_NAME_1">%2$s</xliff:g> に接続したことはありません。"</string>
+
+    <!-- Development password -->
+    <string name="title_password_dialog">パスワード入力</string>
+    <string name="positive_button">OK</string>
+    <string name="positive_button_change_password">変更</string>
+    <string name="negative_button">キャンセル</string>
+    <string name="title_change_development_password">開発者向けオプションにのパスワード変更</string>
+
+    <string name="title_enter_old_password">現在のパスワード</string>
+    <string name="title_enter_new_password">新しいパスワード</string>
+    <string name="title_enter_confirm_password">新しいパスワード（確認）</string>
+    <string name="txt_change_password_success">パスワードの変更に成功しました。</string>
+    <string name="txt_change_password_failed">パスワードの変更に失敗しました。</string>
+    <string name="txt_status_confirm_match">パスワード（確認）が正しいです。</string>
+    <string name="txt_status_confirm_not_match">パスワード（確認）が正しくありません。</string>
+    <string name="txt_status_old_password_correct">現在のパスワードが正しいです。</string>
+    <string name="txt_status_old_password_incorrect">現在のパスワードが正しくありません。</string>
+
 </resources>

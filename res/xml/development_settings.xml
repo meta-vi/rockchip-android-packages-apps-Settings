@@ -30,6 +30,11 @@
             android:summary="@string/summary_placeholder"
             android:fragment="com.android.settings.applications.ProcessStatsSummary" />
 
+        <com.android.settings.ChangeDevelopmentPasswordPreference
+            android:key="changedevelopmentpassword"
+            android:title="@string/title_change_development_password"
+            android:dialogTitle="@string/title_change_development_password" />
+
         <com.android.settings.BugreportPreference
             android:key="bugreport"
             android:title="@*android:string/bugreport_title"
@@ -680,3 +685,4 @@
         </Preference>
     </PreferenceCategory>
 </PreferenceScreen>
+

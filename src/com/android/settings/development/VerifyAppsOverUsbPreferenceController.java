@@ -98,7 +98,7 @@ public class VerifyAppsOverUsbPreferenceController extends DeveloperOptionsPrefe
     @Override
     public void updateState(Preference preference) {
         final RestrictedSwitchPreference restrictedPreference =
-            (RestrictedSwitchPreference) preference;
+                (RestrictedSwitchPreference) preference;
         if (!shouldBeEnabled()) {
             restrictedPreference.setChecked(false);
             restrictedPreference.setDisabledByAdmin(null);
