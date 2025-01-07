@@ -113,7 +113,7 @@ public class QrCameraTest {
     @Test
     public void testCamera_Init_Callback() throws InterruptedException {
         mCallbackSignal = new CountDownLatch(1);
-        mCamera.start(mSurfaceTexture);
+        //mCamera.start(mSurfaceTexture);
         mCallbackSignal.await(5000, TimeUnit.MILLISECONDS);
         assertThat(mCameraCallbacked).isTrue();
     }

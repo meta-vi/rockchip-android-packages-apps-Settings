@@ -45,17 +45,13 @@
             android:orientation="vertical">
 
             <FrameLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:clipChildren="true">
-                <TextureView
-                    android:id="@+id/preview_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/qrcode_preview_size"/>
-                <com.android.settings.wifi.qrcode.QrDecorateView
-                    android:id="@+id/decorate_view"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/qrcode_preview_size"/>
+                android:id="@+id/cam_preview_holder"
+                android:layout_width="match_parent"
+                android:layout_height="0dp"
+                android:layout_weight="1"
+                android:background="#DCDCDC"
+                android:clickable="true"
+                android:focusable="true">
             </FrameLayout>
 
             <TextView
@@ -63,7 +59,8 @@
                 style="@style/TextAppearance.ErrorText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
                 android:layout_marginStart="?attr/sudMarginSides"
                 android:layout_marginEnd="?attr/sudMarginSides"
                 android:textAlignment="center"

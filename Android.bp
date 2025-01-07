@@ -18,6 +18,7 @@ java_library {
     ],
 }
 
+
 // Build the Settings APK
 android_library {
     name: "Settings-core",
@@ -55,6 +56,11 @@ android_library {
         "zxing-core-1.7",
         "android.hardware.dumpstate-V1.0-java",
         "android.hardware.dumpstate-V1.1-java",
+        "androidx.camera_camera-core",
+        "androidx.camera_camera-lifecycle",
+        "androidx.camera_camera2",
+        "androidx.camera_camera-view",
+        "androidx.concurrent_futures",
     ],
 
     libs: [
@@ -90,4 +96,37 @@ android_app {
 android_library_import {
     name: "contextualcards",
     aars: ["libs/contextualcards.aar"],
+}
+
+android_library_import {
+    name: "androidx.camera_camera-core",
+    aars: ["libs/camera-core-1.2.3.aar"],
+    sdk_version: "current",
+    min_sdk_version: "21",
+}
+
+android_library_import {
+    name: "androidx.camera_camera-lifecycle",
+    aars: ["libs/camera-lifecycle-1.2.3.aar"],
+    sdk_version: "current",
+    min_sdk_version: "21",
+}
+
+android_library_import {
+    name: "androidx.camera_camera-view",
+    aars: ["libs/camera-view-1.2.3.aar"],
+    sdk_version: "current",
+    min_sdk_version: "21",
+}
+
+android_library_import {
+    name: "androidx.camera_camera2",
+    aars: ["libs/camera-camera2-1.2.3.aar"],
+    sdk_version: "current",
+    min_sdk_version: "21",
+}
+
+java_import {
+    name: "androidx.concurrent_futures",
+    jars: ["libs/concurrent-futures-1.1.0.jar"],
 }

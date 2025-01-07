@@ -41,11 +41,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.accessibility.AccessibilityEvent;
 import android.widget.TextView;
+import android.widget.FrameLayout;
 
 import androidx.annotation.StringRes;
 import androidx.annotation.UiThread;
 import androidx.annotation.VisibleForTesting;
 import androidx.lifecycle.ViewModelProviders;
+import androidx.lifecycle.LifecycleOwner;
+import androidx.camera.view.PreviewView;
 
 import com.android.settings.R;
 import com.android.settings.wifi.WifiDialogActivity;
@@ -88,8 +91,6 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
     private static final int ARG_RESTART_CAMERA = 1;
 
     private QrCamera mCamera;
-    private TextureView mTextureView;
-    private QrDecorateView mDecorateView;
     private TextView mErrorMessage;
 
     /** true if the fragment working for configurator, false enrollee*/
@@ -107,10 +108,17 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
     private int mLatestStatusCode = WifiDppUtils.EASY_CONNECT_EVENT_FAILURE_NONE;
 
     private WifiTracker mWifiTracker;
+    View cameraView;
+    private FrameLayout camPreviewHolder;
+
 
     private final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {
+            if (!isAdded()) {
+                Log.d(TAG, "cannot handle message, fragment detached!");
+                return;
+            }
             switch (msg.what) {
                 case MESSAGE_HIDE_ERROR_MESSAGE:
                     mErrorMessage.setVisibility(View.INVISIBLE);
@@ -132,7 +140,6 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
 
                     if (msg.arg1 == ARG_RESTART_CAMERA) {
                         setProgressBarShown(false);
-                        mDecorateView.setFocused(false);
                         restartCamera();
                     }
                     break;
@@ -159,7 +166,7 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
                     // We may get 2 WifiConfiguration if the QR code has no password in it,
                     // one for open network and one for enhanced open network.
                     final WifiManager wifiManager =
-                            getContext().getSystemService(WifiManager.class);
+                            requireContext().getSystemService(WifiManager.class);
                     final WifiNetworkConfig qrCodeWifiNetworkConfig =
                             (WifiNetworkConfig)msg.obj;
                     final List<WifiConfiguration> qrCodeWifiConfigurations =
@@ -212,7 +219,6 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
             mCamera.stop();
         }
 
-        mDecorateView.setFocused(true);
         mErrorMessage.setVisibility(View.INVISIBLE);
 
         WifiDppUtils.triggerVibrationForQrCodeRecognition(getContext());
@@ -273,6 +279,12 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
         }
 
         super.onPause();
+    }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        mHandler.removeCallbacksAndMessages(null);
     }
 
     @Override
@@ -350,7 +362,7 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
 
     @Override
     public final View onCreateView(LayoutInflater inflater, ViewGroup container,
-            Bundle savedInstanceState) {
+                                   Bundle savedInstanceState) {
         return inflater.inflate(R.layout.wifi_dpp_qrcode_scanner_fragment, container,
                 /* attachToRoot */ false);
     }
@@ -359,18 +371,13 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
     public void onViewCreated(View view, Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        mTextureView = view.findViewById(R.id.preview_view);
-        mTextureView.setSurfaceTextureListener(this);
-
-        mDecorateView = view.findViewById(R.id.decorate_view);
-
         setProgressBarShown(isWifiDppHandshaking());
 
         if (mIsConfiguratorMode) {
             setHeaderTitle(R.string.wifi_dpp_add_device_to_network);
 
             WifiNetworkConfig wifiNetworkConfig = ((WifiNetworkConfig.Retriever) getActivity())
-                .getWifiNetworkConfig();
+                    .getWifiNetworkConfig();
             if (!WifiNetworkConfig.isValidConfig(wifiNetworkConfig)) {
                 throw new IllegalStateException("Invalid Wi-Fi network for configuring");
             }
@@ -383,6 +390,27 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
         }
 
         mErrorMessage = view.findViewById(R.id.error_message);
+
+        camPreviewHolder = view.findViewById(R.id.cam_preview_holder);
+
+        // Create camera view
+        cameraView = createView(requireContext());
+        ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
+                ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT);
+        cameraView.setLayoutParams(layoutParams);
+        camPreviewHolder.removeAllViews();
+        camPreviewHolder.addView(cameraView);
+        initCamera(getViewLifecycleOwner(), cameraView);
+    }
+
+    private View createView(Context context) {
+        PreviewView previewView = new PreviewView(context);
+        previewView.setClickable(false);
+        previewView.setFocusable(false);
+        previewView.setScaleType(PreviewView.ScaleType.FILL_CENTER);
+        previewView.setImplementationMode(PreviewView.ImplementationMode.COMPATIBLE);
+        previewView.invalidate();
+        return (View) previewView;
     }
 
     @Override
@@ -394,7 +422,7 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
 
     @Override
     public void onSurfaceTextureAvailable(SurfaceTexture surface, int width, int height) {
-        initCamera(surface);
+
     }
 
     @Override
@@ -415,7 +443,7 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
 
     @Override
     public Size getViewSize() {
-        return new Size(mTextureView.getWidth(), mTextureView.getHeight());
+        return new Size(1920, 1080);
     }
 
     @Override
@@ -425,7 +453,6 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
 
     @Override
     public void setTransform(Matrix transform) {
-        mTextureView.setTransform(transform);
     }
 
     @Override
@@ -485,18 +512,11 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
         destroyCamera();
     }
 
-    private void initCamera(SurfaceTexture surface) {
-        // Check if the camera has already created.
+    private void initCamera(LifecycleOwner lifecycleOwner, View view) {
+        // Check if the camera has alread been created.
         if (mCamera == null) {
             mCamera = new QrCamera(getContext(), this);
-
-            if (isWifiDppHandshaking()) {
-                if (mDecorateView != null) {
-                    mDecorateView.setFocused(true);
-                }
-            } else {
-                mCamera.start(surface);
-            }
+            mCamera.start(lifecycleOwner, view);
         }
     }
 
@@ -587,7 +607,7 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
 
                     mLatestStatusCode = code;
                     final WifiManager wifiManager =
-                        getContext().getSystemService(WifiManager.class);
+                            getContext().getSystemService(WifiManager.class);
                     wifiManager.stopEasyConnectSession();
                     startWifiDppEnrolleeInitiator(mWifiQrCode);
                     return;
@@ -637,8 +657,10 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
                 mEnrolleeWifiConfiguration);
 
         final Activity hostActivity = getActivity();
-        hostActivity.setResult(Activity.RESULT_OK, resultIntent);
-        hostActivity.finish();
+        if(hostActivity != null) {
+            hostActivity.setResult(Activity.RESULT_OK, resultIntent);
+            hostActivity.finish();
+        }
     }
 
     @Override
@@ -659,21 +681,8 @@ public class WifiDppQrCodeScannerFragment extends WifiDppQrCodeBaseFragment impl
      * To resume camera decoding task after handshake fail or Wi-Fi connection fail.
      */
     private void restartCamera() {
-        if (mCamera == null) {
-            Log.d(TAG, "mCamera is not available for restarting camera");
-            return;
-        }
-
-        if (mCamera.isDecodeTaskAlive()) {
-            mCamera.stop();
-        }
-
-        final SurfaceTexture surfaceTexture = mTextureView.getSurfaceTexture();
-        if (surfaceTexture == null) {
-            throw new IllegalStateException("SurfaceTexture is not ready for restarting camera");
-        }
-
-        mCamera.start(surfaceTexture);
+        mCamera = null;
+        initCamera(getViewLifecycleOwner(), cameraView);
     }
 
     private void updateEnrolleeSummary() {
